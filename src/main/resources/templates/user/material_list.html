@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SHS DLSU Library | Browse Materials</title>
+    <!--/*/ <th:block th:include="fragments/template :: head"></th:block> /*/-->
+
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" class="skin-blue layout-top-nav"
+      style="height: auto; min-height: 100%;">
+
+<!--/*/ <th:block th:include="fragments/template :: navigation"></th:block> /*/-->
+<div class="container content">
+    <!-- title row -->
+    <div class="row">
+        <div class="col-xs-12">
+            <h1 class="page-header">
+                <i class="glyphicon glyphicon-book"></i> Browse Materials
+            </h1>
+
+        </div>
+        <!-- /.col -->
+    </div>
+    <div class="row" th:each="material : ${materialList}">
+        <div class="col-md-4 ">
+            <!--<img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto"-->
+            <!--alt="100x100"-->
+            <!--src="../dist/img/avatar04.png" data-holder-rendered="true">-->
+        </div>
+        <div class="row">
+            <a th:href="${~/ + 'view?id=' + material.id}">
+                <h1 th:text="${material.title + ' (' + material.year + ')'}"></h1>
+            </a>
+            <h4 th:text="${material.author}"></h4>
+            <h4 th:text="${material.publisher}"></h4>
+        </div>
+
+        <hr>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<!--/*/ <th:block th:include="fragments/template :: footer"></th:block> /*/-->
+
+<!--/*/ <th:block th:include="fragments/template :: script"></th:block> /*/-->
+</body>
+</html>

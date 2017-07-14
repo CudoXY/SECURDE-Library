@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SHS DLSU Library | Log in</title>
+
+    <!--/*/ <th:block th:include="fragments/template :: head"></th:block> /*/-->
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href="@{~/index}"><b>DLSU SHS</b> Online Library</a>
+    </div>
+    <div class="register-box-body">
+        <p class="login-box-msg">Register a new membership</p>
+
+        <form th:object="${user}" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" th:field="*{username}" class="form-control" placeholder="Username">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" th:field="*{password}" class="form-control" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" placeholder="Retype password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+
+            <label>Birth Date</label>
+            <div class="row">
+                <div class="col-xs-3">
+                    <div class="form-group">
+                        <select class="form-control" name="day">
+                            <th:block th:each="i: ${#numbers.sequence(1, 31)}">
+                                <option th:value="${i}" th:text="${i}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-xs-5">
+                    <div class="form-group">
+                        <select class="form-control" name="month">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <select class="form-control" name="year">
+                            <th:block th:each="i: ${#numbers.sequence(2001, 1900)}">
+                                <option name="year" th:value="${i}" th:text="${i}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" th:field="*{firstName}" placeholder="First Name">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" th:field="*{middleName}" placeholder="Middle Name">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" th:field="*{lastName}" placeholder="Last Name">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="email" class="form-control" th:field="*{email}" placeholder="Email">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="number" class="form-control" th:field="*{id}" placeholder="ID Number">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="radio-inline"><input type="radio" name="role" th:field="*{role}" value="1">Student</label>
+                <label class="radio-inline"><input type="radio" name="role" th:field="*{role}" value="2">Faculty</label>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Secret Question</label>
+                    <select class="form-control" th:field="*{secretQuestion.id}">
+                        <option value="1">What was the name of your elementary school?</option>
+                        <option value="2">Where does your nearest sibling live?</option>
+                        <option value="3">What is the name of your first pet?</option>
+                        <option value="4">Where would like to live the most?</option>
+                        <option value="5">What is your most favorite food?</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" placeholder="Secret Question Answer" th:field="*{secretAnswer}">
+                <span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+        <div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
+                Facebook</a>
+            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
+                Google+</a>
+        </div>
+
+        <a th:href="@{~/login}" class="text-center">I already have a membership</>
+    </div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery 3 -->
+
+<!--/*/ <th:block th:include="fragments/template :: script"></th:block> /*/-->
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+</body>
+</html>
