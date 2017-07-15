@@ -29,7 +29,7 @@
             <!--src="../dist/img/avatar04.png" data-holder-rendered="true">-->
         </div>
         <div class="row">
-            <a th:href="${~/ + 'view?id=' + material.id}">
+            <a th:href="@{~/catalog/view?id=} + ${material.id}">
                 <h1 th:text="${material.title + ' (' + material.year + ')'}"></h1>
             </a>
             <h4 th:text="${material.author}"></h4>
