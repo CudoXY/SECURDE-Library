@@ -1,31 +1,30 @@
 package library.controllers;
 
 import library.domain.Borrow;
+import library.domain.Material;
+import library.domain.User;
 import library.services.BorrowService;
 import library.services.MaterialService;
+import library.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Controller
 public class MaterialController
 {
+    @Autowired
     private BorrowService borrowService;
+
+    @Autowired
     private MaterialService materialService;
 
-    @Autowired
-    public void setBorrowService(BorrowService borrowService) {
-        this.borrowService = borrowService;
-    }
-
-    @Autowired
-    public void setMaterialService(MaterialService materialService) {
-        this.materialService = materialService;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
 //	@RequestMapping("/catalog")
 //	public String viewCatalog(
@@ -60,17 +59,22 @@ public class MaterialController
     {
         System.out.println("before viewMaterial");
         model.addAttribute("material", materialService.getMaterialById(materialId));
+        model.addAttribute("borrow", new Borrow());
         System.out.println("viewMaterial");
         return "user/material_view";
     }
 
 
-    @RequestMapping(value = "/view/borrow", method = RequestMethod.POST)
-    public String borrow(Borrow borrow)
+    @RequestMapping(value = "/catalog/borrow", method = RequestMethod.POST)
+    public String borrow(Borrow borrow, @CookieValue(value = "userId", defaultValue = "-1") int userId)
     {
+        User user = em.getReference(User.class, 11427817);
+        borrow.setMaterial(em.getReference(Material.class,"book1"));
+
+        borrow.setBorrower(user);
         borrowService.borrowMaterial(borrow);
         System.out.println("borrowMaterial");
-        return "redirect:/view?id=" + borrow.getId();
+        return "redirect:";
     }
 //
 //    @RequestMapping("product/edit/{id}")
