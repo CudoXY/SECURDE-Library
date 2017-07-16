@@ -10,7 +10,6 @@ public class Tag
 	private int id;
 
 	@ManyToOne(cascade = {CascadeType.ALL})
-	@JoinColumn
 	private Material material;
 	private String name;
 

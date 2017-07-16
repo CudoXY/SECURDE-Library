@@ -11,11 +11,9 @@ public class MaterialReserve
     private int id;
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn
     private User borrower;
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn
     private Material material;
 
     private Timestamp dateReserved;

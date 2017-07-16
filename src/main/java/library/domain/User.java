@@ -25,7 +25,6 @@ public class User
     private boolean isLocked;
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn
     private SecretQuestion secretQuestion;
 
     private String secretAnswer;

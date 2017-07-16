@@ -11,7 +11,6 @@ public class RoomReservation
 	private int id;
 
 	@ManyToOne(cascade = {CascadeType.ALL})
-	@JoinColumn
 	private User reservedBy;
 
 	private int roomId;

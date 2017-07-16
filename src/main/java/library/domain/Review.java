@@ -11,11 +11,11 @@ public class Review
     private int id;
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn
+
     private User user;
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn
+
     private Material material;
 
     private Timestamp dateReviewed;
