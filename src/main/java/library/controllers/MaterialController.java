@@ -59,16 +59,17 @@ public class MaterialController
     {
         System.out.println("before viewMaterial");
         model.addAttribute("material", materialService.getMaterialById(materialId));
-        model.addAttribute("borrow", new Borrow());
         System.out.println("viewMaterial");
         return "user/material_view";
     }
 
 
     @RequestMapping(value = "/catalog/borrow", method = RequestMethod.POST)
-    public String borrow(Borrow borrow, @CookieValue(value = "userId", defaultValue = "-1") int userId)
+    public String borrow(String materialId, @CookieValue(value = "userId", defaultValue = "-1") int userId)
     {
         User user = em.getReference(User.class, 11427817);
+
+        Borrow borrow = new Borrow();
         borrow.setMaterial(em.getReference(Material.class,"book1"));
 
         borrow.setBorrower(user);

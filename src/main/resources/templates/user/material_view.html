@@ -27,8 +27,8 @@
                 <h4>Published at <p th:text="${material.year}"></p></h4> <br>
 
                 <div class="btn-group">
-                    <form th:object="${borrow}" th:action="@{/catalog/borrow}"  method="post">
-                        <input type="hidden" th:attr="name='material.id'" th:value="${material.id}"/>
+                    <form th:action="@{/catalog/borrow}"  method="post">
+                        <input type="hidden" th:attr="name='materialId'" th:value="${material.id}"/>
                         <button type="submit" class="btn btn-default">Borrow</button>
                     </form>
                     <div class="col-md-1"></div>
