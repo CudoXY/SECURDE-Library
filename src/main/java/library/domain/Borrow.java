@@ -1,6 +1,7 @@
 package library.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Entity
@@ -10,14 +11,19 @@ public class Borrow
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     private User borrower;
 
+    @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     private Material material;
 
+    @NotNull
     private Timestamp dateBorrowed;
+
     private Timestamp dateReturned;
+
     public int getId()
     {
         return id;

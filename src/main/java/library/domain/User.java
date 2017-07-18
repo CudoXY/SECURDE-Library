@@ -1,6 +1,8 @@
 package library.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Entity
@@ -8,25 +10,44 @@ public class User
 {
     @Id
     private int id;
+
+    @NotNull
     private String firstName;
+
     private String middleName;
+
+    @NotNull
     private String lastName;
 
+    @NotNull
     @Column(unique = true)
     private String username;
 
+    @NotNull
     private String password;
 
+    @NotNull
     @Column(unique = true)
+    @Size(min = 6, message = "Email cannot be blank")
     private String email;
+
+    @NotNull
     private int role;
+
+    @NotNull
     private Date birthDate;
+
+    @NotNull
     private boolean isTemporary;
+
+    @NotNull
     private boolean isLocked;
 
+    @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     private SecretQuestion secretQuestion;
 
+    @NotNull
     private String secretAnswer;
 
     public int getId()

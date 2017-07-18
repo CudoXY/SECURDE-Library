@@ -1,6 +1,7 @@
 package library.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Tag
@@ -9,8 +10,11 @@ public class Tag
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	@NotNull
 	@ManyToOne(cascade = {CascadeType.ALL})
 	private Material material;
+
+	@NotNull
 	private String name;
 
 

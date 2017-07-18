@@ -1,6 +1,7 @@
 package library.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -9,10 +10,19 @@ public class Material
     @Id
     private String id;
 
+    @NotNull
     private String title;
+
+    @NotNull
     private String author;
+
+    @NotNull
     private String publisher;
+
+    @NotNull
     private int year;
+
+    @NotNull
     private int category;
 
     public String getId()

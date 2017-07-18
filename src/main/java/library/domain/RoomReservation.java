@@ -1,6 +1,7 @@
 package library.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -10,13 +11,18 @@ public class RoomReservation
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	@NotNull
 	@ManyToOne(cascade = {CascadeType.ALL})
 	private User reservedBy;
 
+	@NotNull
 	private int roomId;
-	private Date dateReserved;
-	private int timeReserved;
 
+	@NotNull
+	private Date dateReserved;
+
+	@NotNull
+	private int timeReserved;
 
 	public int getId()
 	{

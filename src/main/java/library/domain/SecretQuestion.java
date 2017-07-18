@@ -1,6 +1,7 @@
 package library.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -9,6 +10,9 @@ public class SecretQuestion
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @NotNull
+    private String question;
 
     public Integer getId()
     {
@@ -29,6 +33,4 @@ public class SecretQuestion
     {
         this.question = question;
     }
-
-    private String question;
 }

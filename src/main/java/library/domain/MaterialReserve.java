@@ -1,6 +1,7 @@
 package library.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Entity
@@ -10,12 +11,15 @@ public class MaterialReserve
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     private User borrower;
 
+    @NotNull
     @ManyToOne(cascade = {CascadeType.ALL})
     private Material material;
 
+    @NotNull
     private Timestamp dateReserved;
 
     public int getId()
