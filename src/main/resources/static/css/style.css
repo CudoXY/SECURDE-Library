@@ -1,0 +1,11 @@
+.user-block .description
+{
+    display: inline;
+    margin-left: 0px;
+}
+
+.main-header #navbar-search-filter.form-control
+{
+    background: rgba(255,255,255,0.2);
+    border-color: transparent;
+}

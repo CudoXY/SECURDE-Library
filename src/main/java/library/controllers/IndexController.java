@@ -26,4 +26,11 @@ public class IndexController
 		model.addAttribute("user", userService.getUserById(userId));
 		return "user/homepage";
 	}
+
+	@RequestMapping("/reserve")
+	String reserve(Model model, @CookieValue(value = "userId", defaultValue = "-1") int userId)
+	{
+		model.addAttribute("user", userService.getUserById(userId));
+		return "user/roomreserve";
+	}
 }
