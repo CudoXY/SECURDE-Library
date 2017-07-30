@@ -77,107 +77,107 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 //
 //        log.info("Saved Mug - id:" + mug.getId());
 
-        Material m = new Material();
-        m.setId("book1");
-        m.setAuthor("Author 1");
-        m.setCategory(1);
-        m.setPublisher("Publisher 1");
-        m.setTitle("Book 1");
-        m.setYear(2017);
-        materialRepository.save(m);
-
-        m = new Material();
-        m.setId("book2");
-        m.setAuthor("Author 2");
-        m.setCategory(1);
-        m.setPublisher("Publisher 2");
-        m.setTitle("Book 2");
-        m.setYear(2010);
-        materialRepository.save(m);
-
-        m = new Material();
-        m.setId("book3");
-        m.setAuthor("Author 1");
-        m.setCategory(1);
-        m.setPublisher("Publisher 1");
-        m.setTitle("Book 3");
-        m.setYear(2017);
-        materialRepository.save(m);
-
-        m = new Material();
-        m.setId("book4");
-        m.setAuthor("Author 1");
-        m.setCategory(1);
-        m.setPublisher("Publisher 2");
-        m.setTitle("Book 4");
-        m.setYear(2012);
-        materialRepository.save(m);
-
-        m = new Material();
-        m.setId("book5");
-        m.setAuthor("Author 1");
-        m.setCategory(1);
-        m.setPublisher("Publisher 3");
-        m.setTitle("Book 5");
-        m.setYear(2015);
-        materialRepository.save(m);
-
-        // Magazine
-
-        m = new Material();
-        m.setId("magazine1");
-        m.setAuthor("Author 3");
-        m.setCategory(2);
-        m.setPublisher("Publisher 4");
-        m.setTitle("Magazine 3");
-        m.setYear(2017);
-        materialRepository.save(m);
-
-        m = new Material();
-        m.setId("magazine2");
-        m.setAuthor("Author 3");
-        m.setCategory(2);
-        m.setPublisher("Publisher 4");
-        m.setTitle("Magazine 3");
-        m.setYear(2015);
-        materialRepository.save(m);
-
-        m = new Material();
-        m.setId("magazine3");
-        m.setAuthor("Author 3");
-        m.setCategory(2);
-        m.setPublisher("Publisher 4");
-        m.setTitle("Magazine 4");
-        m.setYear(2017);
-        materialRepository.save(m);
-
-        m = new Material();
-        m.setId("magazine3");
-        m.setAuthor("Author 4");
-        m.setCategory(2);
-        m.setPublisher("Publisher 5");
-        m.setTitle("Magazine 5");
-        m.setYear(2016);
-        materialRepository.save(m);
-
-        // Thesis
-
-        m = new Material();
-        m.setId("thesis1");
-        m.setAuthor("Author 6");
-        m.setCategory(3);
-        m.setPublisher("Publisher 6");
-        m.setTitle("Thesis 1");
-        m.setYear(2017);
-        materialRepository.save(m);
-
-        m = new Material();
-        m.setId("thesis2");
-        m.setAuthor("Author 7");
-        m.setCategory(3);
-        m.setPublisher("Publisher 7");
-        m.setTitle("Thesis 2");
-        m.setYear(2017);
-        materialRepository.save(m);
+//        Material m = new Material();
+//        m.setId("book1");
+//        m.setAuthor("Author 1");
+//        m.setCategory(1);
+//        m.setPublisher("Publisher 1");
+//        m.setTitle("Book 1");
+//        m.setYear(2017);
+//        materialRepository.save(m);
+//
+//        m = new Material();
+//        m.setId("book2");
+//        m.setAuthor("Author 2");
+//        m.setCategory(1);
+//        m.setPublisher("Publisher 2");
+//        m.setTitle("Book 2");
+//        m.setYear(2010);
+//        materialRepository.save(m);
+//
+//        m = new Material();
+//        m.setId("book3");
+//        m.setAuthor("Author 1");
+//        m.setCategory(1);
+//        m.setPublisher("Publisher 1");
+//        m.setTitle("Book 3");
+//        m.setYear(2017);
+//        materialRepository.save(m);
+//
+//        m = new Material();
+//        m.setId("book4");
+//        m.setAuthor("Author 1");
+//        m.setCategory(1);
+//        m.setPublisher("Publisher 2");
+//        m.setTitle("Book 4");
+//        m.setYear(2012);
+//        materialRepository.save(m);
+//
+//        m = new Material();
+//        m.setId("book5");
+//        m.setAuthor("Author 1");
+//        m.setCategory(1);
+//        m.setPublisher("Publisher 3");
+//        m.setTitle("Book 5");
+//        m.setYear(2015);
+//        materialRepository.save(m);
+//
+//        // Magazine
+//
+//        m = new Material();
+//        m.setId("magazine1");
+//        m.setAuthor("Author 3");
+//        m.setCategory(2);
+//        m.setPublisher("Publisher 4");
+//        m.setTitle("Magazine 3");
+//        m.setYear(2017);
+//        materialRepository.save(m);
+//
+//        m = new Material();
+//        m.setId("magazine2");
+//        m.setAuthor("Author 3");
+//        m.setCategory(2);
+//        m.setPublisher("Publisher 4");
+//        m.setTitle("Magazine 3");
+//        m.setYear(2015);
+//        materialRepository.save(m);
+//
+//        m = new Material();
+//        m.setId("magazine3");
+//        m.setAuthor("Author 3");
+//        m.setCategory(2);
+//        m.setPublisher("Publisher 4");
+//        m.setTitle("Magazine 4");
+//        m.setYear(2017);
+//        materialRepository.save(m);
+//
+//        m = new Material();
+//        m.setId("magazine3");
+//        m.setAuthor("Author 4");
+//        m.setCategory(2);
+//        m.setPublisher("Publisher 5");
+//        m.setTitle("Magazine 5");
+//        m.setYear(2016);
+//        materialRepository.save(m);
+//
+//        // Thesis
+//
+//        m = new Material();
+//        m.setId("thesis1");
+//        m.setAuthor("Author 6");
+//        m.setCategory(3);
+//        m.setPublisher("Publisher 6");
+//        m.setTitle("Thesis 1");
+//        m.setYear(2017);
+//        materialRepository.save(m);
+//
+//        m = new Material();
+//        m.setId("thesis2");
+//        m.setAuthor("Author 7");
+//        m.setCategory(3);
+//        m.setPublisher("Publisher 7");
+//        m.setTitle("Thesis 2");
+//        m.setYear(2017);
+//        materialRepository.save(m);
 	}
 }
