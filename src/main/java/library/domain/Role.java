@@ -3,6 +3,6 @@ package library.domain;
 public enum Role
 {
 
-    STUDENT, FACULTY, STAFF, MANAGER, ADMIN
+    ROLE_STUDENT, ROLE_FACULTY, ROLE_STAFF, ROLE_MANAGER, ROLE_ADMIN
 
 }

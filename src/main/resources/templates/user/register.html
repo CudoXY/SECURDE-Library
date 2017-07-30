@@ -91,12 +91,12 @@
             </div>
             <div class="form-group has-feedback">
                 <label th:each="role : ${T(library.domain.Role).values()}"
-                       th:if="${role == T(library.domain.Role).STUDENT || role == T(library.domain.Role).FACULTY}"
+                       th:if="${role == T(library.domain.Role).ROLE_STUDENT || role == T(library.domain.Role).ROLE_FACULTY}"
                        class="radio-inline"><input type="radio"
                                                    th:name="role"
                                                    th:value="${role}"
-                                                   th:text="${role == T(library.domain.Role).STUDENT ? 'Student' : 'Faculty'}"
-                                                   th:checked="${role == T(library.domain.Role).STUDENT}"></label>
+                                                   th:text="${role == T(library.domain.Role).ROLE_STUDENT ? 'Student' : 'Faculty'}"
+                                                   th:checked="${role == T(library.domain.Role).ROLE_STUDENT}"></label>
             </div>
             <div class="form-group has-feedback">
                 <label>Secret Question</label>
