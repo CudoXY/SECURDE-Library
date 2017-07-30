@@ -9,16 +9,13 @@ import library.domain.helper.SearchFilter;
 import library.services.BorrowService;
 import library.services.MaterialService;
 import library.services.ReviewService;
-import library.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.Date;
 

@@ -8,175 +8,194 @@ import java.sql.Date;
 @Entity
 public class User
 {
-    @Id
-    private int id;
+	@Id
+	private int id;
 
-    @NotNull
-    private String firstName;
+	@NotNull
+	private String firstName;
 
-    private String middleName;
+	private String middleName;
 
-    @NotNull
-    private String lastName;
+	@NotNull
+	private String lastName;
 
-    @NotNull
-    @Column(unique = true)
-    private String username;
+	@NotNull
+	@Column(unique = true)
+	private String username;
 
-    @NotNull
-    private String password;
+	@NotNull
+	private String password;
 
-    @NotNull
-    @Column(unique = true)
-    @Size(min = 6, message = "Email cannot be blank")
-    private String email;
+	@Transient
+	private String passwordRepeat;
 
-    @NotNull
-    private int role;
+	@NotNull
+	@Column(unique = true)
+	@Size(min = 6, message = "Email cannot be blank")
+	private String email;
 
-    @NotNull
-    private Date birthDate;
+	@Column(name = "role", nullable = false)
+	@Enumerated(EnumType.ORDINAL)
+	private Role role;
 
-    @NotNull
-    private boolean isTemporary;
+	@NotNull
+	private Date birthDate;
 
-    @NotNull
-    private boolean isLocked;
+	@NotNull
+	private boolean isTemporary;
 
-    @NotNull
-    @ManyToOne(cascade = {CascadeType.ALL})
-    private SecretQuestion secretQuestion;
+	@NotNull
+	private boolean isLocked;
 
-    @NotNull
-    private String secretAnswer;
+	@NotNull
+	@ManyToOne(cascade = {CascadeType.ALL})
+	private SecretQuestion secretQuestion;
 
-    public int getId()
-    {
-        return id;
-    }
+	@NotNull
+	private String secretAnswer;
 
-    public void setId(int id)
-    {
-        this.id = id;
-    }
+	public User()
+	{
+		birthDate = new Date(new java.util.Date().getTime());
+	}
 
-    public String getFirstName()
-    {
-        return firstName;
-    }
+	public int getId()
+	{
+		return id;
+	}
 
-    public void setFirstName(String firstName)
-    {
-        this.firstName = firstName;
-    }
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-    public String getMiddleName()
-    {
-        return middleName;
-    }
+	public String getFirstName()
+	{
+		return firstName;
+	}
 
-    public void setMiddleName(String middleName)
-    {
-        this.middleName = middleName;
-    }
+	public void setFirstName(String firstName)
+	{
+		this.firstName = firstName;
+	}
 
-    public String getLastName()
-    {
-        return lastName;
-    }
+	public String getMiddleName()
+	{
+		return middleName;
+	}
 
-    public void setLastName(String lastName)
-    {
-        this.lastName = lastName;
-    }
+	public void setMiddleName(String middleName)
+	{
+		this.middleName = middleName;
+	}
 
-    public String getUsername()
-    {
-        return username;
-    }
+	public String getLastName()
+	{
+		return lastName;
+	}
 
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
+	public void setLastName(String lastName)
+	{
+		this.lastName = lastName;
+	}
 
-    public String getPassword()
-    {
-        return password;
-    }
+	public String getUsername()
+	{
+		return username;
+	}
 
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
+	public void setUsername(String username)
+	{
+		this.username = username;
+	}
 
-    public String getEmail()
-    {
-        return email;
-    }
+	public String getPassword()
+	{
+		return password;
+	}
 
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
 
-    public int getRole()
-    {
-        return role;
-    }
+	public String getPasswordRepeat()
+	{
+		return passwordRepeat;
+	}
 
-    public void setRole(int role)
-    {
-        this.role = role;
-    }
+	public void setPasswordRepeat(String passwordRepeat)
+	{
+		this.passwordRepeat = passwordRepeat;
+	}
 
-    public Date getBirthDate()
-    {
-        return birthDate;
-    }
+	public String getEmail()
+	{
+		return email;
+	}
 
-    public void setBirthDate(Date birthDate)
-    {
-        this.birthDate = birthDate;
-    }
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
 
-    public SecretQuestion getSecretQuestion()
-    {
-        return secretQuestion;
-    }
+	public Role getRole()
+	{
+		return role;
+	}
 
-    public void setSecretQuestion(SecretQuestion secretQuestion)
-    {
-        this.secretQuestion = secretQuestion;
-    }
+	public void setRole(Role role)
+	{
+		this.role = role;
+	}
 
-    public String getSecretAnswer()
-    {
-        return secretAnswer;
-    }
+	public Date getBirthDate()
+	{
+		return birthDate;
+	}
 
-    public void setSecretAnswer(String secretAnswer)
-    {
-        this.secretAnswer = secretAnswer;
-    }
+	public void setBirthDate(Date birthDate)
+	{
+		this.birthDate = birthDate;
+	}
 
-    public boolean isTemporary()
-    {
-        return isTemporary;
-    }
+	public boolean isTemporary()
+	{
+		return isTemporary;
+	}
 
-    public void setTemporary(boolean temporary)
-    {
-        isTemporary = temporary;
-    }
+	public void setTemporary(boolean temporary)
+	{
+		isTemporary = temporary;
+	}
 
-    public boolean isLocked()
-    {
-        return isLocked;
-    }
+	public boolean isLocked()
+	{
+		return isLocked;
+	}
 
-    public void setLocked(boolean locked)
-    {
-        isLocked = locked;
-    }
+	public void setLocked(boolean locked)
+	{
+		isLocked = locked;
+	}
+
+	public SecretQuestion getSecretQuestion()
+	{
+		return secretQuestion;
+	}
+
+	public void setSecretQuestion(SecretQuestion secretQuestion)
+	{
+		this.secretQuestion = secretQuestion;
+	}
+
+	public String getSecretAnswer()
+	{
+		return secretAnswer;
+	}
+
+	public void setSecretAnswer(String secretAnswer)
+	{
+		this.secretAnswer = secretAnswer;
+	}
 }
