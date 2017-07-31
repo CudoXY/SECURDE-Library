@@ -12,11 +12,11 @@ public class Review
     private int id;
 
     @NotNull
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     private User user;
 
     @NotNull
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     private Material material;
 
     @NotNull

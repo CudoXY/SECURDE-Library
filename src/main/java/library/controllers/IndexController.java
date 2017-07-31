@@ -30,10 +30,4 @@ public class IndexController
 		System.out.println("auth = " + auth);
 		return "user/homepage";
 	}
-
-	@RequestMapping("/reserve")
-	String reserve()
-	{
-		return "user/roomreserve";
-	}
 }
