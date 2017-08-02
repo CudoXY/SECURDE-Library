@@ -1,25 +1,34 @@
 package library.controllers;
 
 import library.domain.User;
-import library.services.UserService;
+import library.domain.validator.UserCreateFormValidator;
+import library.services.secretquestion.SecretQuestionService;
+import library.services.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.sql.Date;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 @Controller
 public class RegisterController
 {
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	private UserService userService;
+	private SecretQuestionService secretQuestionService;
+	private UserCreateFormValidator userCreateFormValidator;
 
 	@Autowired
 	public void setUserService(UserService userService)
@@ -27,36 +36,65 @@ public class RegisterController
 		this.userService = userService;
 	}
 
-	@RequestMapping(value = "register", method = RequestMethod.POST)
-	public String saveProduct(int month, int day, int year, User user, HttpServletRequest request, HttpServletResponse response)
+	@Autowired
+	public void setSecretQuestionService(SecretQuestionService secretQuestionService)
 	{
-		GregorianCalendar c = new GregorianCalendar(year, month, day);
-		System.out.println(c.get(Calendar.MONTH) - 1);
-		System.out.println(c.get(Calendar.DAY_OF_MONTH));
-		System.out.println(c.get(Calendar.YEAR));
-		Date birthDate = new Date(c.getTimeInMillis());
-		user.setBirthDate(birthDate);
-
-		System.out.println("saveProduct " + "POST");
-
-		userService.addUser(user);
-
-		Cookie cookie = new Cookie("userId", user.getId() + "");
-		cookie.setPath("/MyApplication");
-		cookie.setHttpOnly(true);
-		cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
-		response.addCookie(cookie);
-
-		return "redirect:/";
+		this.secretQuestionService = secretQuestionService;
 	}
 
-	@RequestMapping(value = "register", method = RequestMethod.GET)
-	public String load(Model model)
+	@Autowired
+	public void setUserCreateFormValidator(UserCreateFormValidator userCreateFormValidator)
 	{
-		model.addAttribute("user", new User());
+		this.userCreateFormValidator = userCreateFormValidator;
+	}
 
-		System.out.println("load " + "GET");
+	@InitBinder("user")
+	public void initBinder(WebDataBinder binder)
+	{
+		binder.addValidators(userCreateFormValidator);
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String getUserCreatePage(Model model)
+	{
+		LOGGER.debug("Getting user create form");
+		model.addAttribute("user", new User());
+		model.addAttribute("questionList", secretQuestionService.getAll());
 		return "user/register";
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String handleUserCreateForm(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, int month, int day, int year)
+	{
+
+		GregorianCalendar c = new GregorianCalendar(year, month - 1, day);
+		Date birthDate = new Date(c.getTimeInMillis());
+		user.setBirthDate(birthDate);
+		user.setLocked(false);
+		user.setTemporary(false);
+
+		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", user, bindingResult));
+
+		if (bindingResult.hasErrors())
+		{
+			// failed validation
+			return "user/register";
+		}
+
+		try
+		{
+			userService.save(user);
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			// probably email already exists - very rare case when multiple admins are adding same user
+			// at the same time and form validation has passed for more than one of them.
+			LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
+			bindingResult.reject("email.exists", "Email already exists");
+			return "user/register";
+		}
+		// ok, redirect
+		return "redirect:/";
 	}
 
 

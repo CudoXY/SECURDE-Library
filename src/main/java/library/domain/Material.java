@@ -1,27 +1,36 @@
 package library.domain;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
 @Entity
+@Indexed
 public class Material
 {
     @Id
     private String id;
 
+    @Field
     @NotNull
     private String title;
 
+    @Field
     @NotNull
     private String author;
 
+    @Field
     @NotNull
     private String publisher;
 
+    @Field(store = Store.NO)
     @NotNull
     private int year;
 
+    @Field(store = Store.NO)
     @NotNull
     private int category;
 

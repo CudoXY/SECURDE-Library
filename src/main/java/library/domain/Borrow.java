@@ -12,11 +12,11 @@ public class Borrow
     private int id;
 
     @NotNull
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     private User borrower;
 
     @NotNull
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     private Material material;
 
     @NotNull

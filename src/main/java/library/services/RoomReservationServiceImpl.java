@@ -6,7 +6,8 @@ import library.repositories.RoomReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.List;
 
 @Service
 public class RoomReservationServiceImpl implements RoomReservationService {
@@ -25,7 +26,7 @@ public class RoomReservationServiceImpl implements RoomReservationService {
         u.setId(userId);
 
         room.setReservedBy(u);
-        room.setDateReserved(new java.sql.Date(new Date().getTime()));
+        room.setDateReserved(new java.sql.Date(new java.util.Date().getTime()));
         return roomReservationRepository.save(room);
     }
 
@@ -36,8 +37,8 @@ public class RoomReservationServiceImpl implements RoomReservationService {
     }
 
     @Override
-    public void getRoomReservationByDateTime(RoomReservation roomReservation)
+    public List<RoomReservation> getRoomReservationByDate(Date date)
     {
-        roomReservationRepository.delete(roomReservation);
+       return roomReservationRepository.findAllByDateReserved(date);
     }
 }

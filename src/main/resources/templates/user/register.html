@@ -14,6 +14,8 @@
         <p class="login-box-msg">Register a new membership</p>
 
         <form th:object="${user}" method="post">
+            <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+
             <div class="form-group has-feedback">
                 <input type="text" th:field="*{username}" class="form-control" placeholder="Username">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -23,13 +25,13 @@
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Retype password">
+                <input type="password" th:field="*{passwordRepeat}" class="form-control" placeholder="Retype password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
 
             <label>Birth Date</label>
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-md-3">
                     <div class="form-group">
                         <select class="form-control" name="day">
                             <th:block th:each="i: ${#numbers.sequence(1, 31)}">
@@ -39,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="col-xs-5">
+                <div class="col-md-5">
                     <div class="form-group">
                         <select class="form-control" name="month">
                             <option value="1">January</option>
@@ -57,7 +59,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-md-4">
                     <div class="form-group">
                         <select class="form-control" name="year">
                             <th:block th:each="i: ${#numbers.sequence(2001, 1900)}">
@@ -88,25 +90,35 @@
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <label class="radio-inline"><input type="radio" name="role" th:field="*{role}" value="1">Student</label>
-                <label class="radio-inline"><input type="radio" name="role" th:field="*{role}" value="2">Faculty</label>
+                <label th:each="role : ${T(library.domain.Role).values()}"
+                       th:if="${role == T(library.domain.Role).ROLE_STUDENT || role == T(library.domain.Role).ROLE_FACULTY}"
+                       class="radio-inline"><input type="radio"
+                                                   th:name="role"
+                                                   th:value="${role}"
+                                                   th:text="${role == T(library.domain.Role).ROLE_STUDENT ? 'Student' : 'Faculty'}"
+                                                   th:checked="${role == T(library.domain.Role).ROLE_STUDENT}"></label>
             </div>
-            <div class="row">
-                <div class="form-group">
-                    <label>Secret Question</label>
-                    <select class="form-control" th:field="*{secretQuestion.id}">
-                        <option value="1">What was the name of your elementary school?</option>
-                        <option value="2">Where does your nearest sibling live?</option>
-                        <option value="3">What is the name of your first pet?</option>
-                        <option value="4">Where would like to live the most?</option>
-                        <option value="5">What is your most favorite food?</option>
-                    </select>
-                </div>
+            <div class="form-group has-feedback">
+                <label>Secret Question</label>
+                <select class="form-control" th:field="*{secretQuestion}">
+                    <option th:each="q : ${questionList}" th:value="${q.id}" th:text="${q.question}"/>
+                </select>
             </div>
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" placeholder="Secret Question Answer" th:field="*{secretAnswer}">
                 <span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
             </div>
+
+            <div th:if="${#fields.hasErrors('global')}" class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <ul>
+                    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+                        <span th:text="${e.global}? '*' : ${e.fieldName + ' | '}">The field name</span>
+                        <span th:text="${e.message}">The error message</span>
+                    </li>
+                </ul>
+            </div>
+
             <div class="row">
                 <div class="col-xs-8">
                 </div>
@@ -116,15 +128,9 @@
                 </div>
                 <!-- /.col -->
             </div>
+
         </form>
 
-        <div class="social-auth-links text-center">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
-                Facebook</a>
-            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
-                Google+</a>
-        </div>
 
         <a th:href="@{~/login}" class="text-center">I already have a membership</>
     </div>

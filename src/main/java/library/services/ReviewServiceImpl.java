@@ -1,9 +1,8 @@
 package library.services;
 
-import library.domain.Material;
 import library.domain.Review;
-import library.domain.User;
 import library.repositories.ReviewRepository;
+import library.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +20,22 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review publishReview(String message, int userId, String materialId)
+    public Iterable<Review> getReviewList(String materialId)
     {
-        User u = new User();
-        u.setId(userId);
+        return reviewRepository.findAllByMaterial_Id(materialId);
+    }
 
-        Material m = new Material();
-        m.setId(materialId);
+    @Override
+    public Iterable<Review> getReviewListDesc(String materialId)
+    {
+        return reviewRepository.findAllByMaterial_IdOrderByDateReviewedDesc(materialId);
+    }
 
-        Review r = new Review();
-        r.setMaterial(m);
-        r.setUser(u);
-        r.setDateReviewed(new Timestamp(new Date().getTime()));
-        r.setMessage(message);
+    @Override
+    public Review publishReview(Review review)
+    {
+        review.setDateReviewed(new Timestamp(new Date().getTime()));
 
-        return reviewRepository.save(r);
+        return reviewRepository.save(review);
     }
 }
