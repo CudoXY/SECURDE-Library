@@ -67,15 +67,15 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 	//		room.setRoomName("Room Nonoczech");
 //		roomRepository.save(room);
 
-		RoomReservation roomReservation = new RoomReservation();
-		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
-		roomReservation.setReservedBy(userRepository.findOneById(123));
-		roomReservation.setRoom(roomRepository.findOneById(1));
-		roomReservation.setTimeReserved(7);
-		System.out.println(
-				roomReservation + " "  + roomReservation.getId() + " " + roomReservation.getDateReserved()  + " " + roomReservation.getReservedBy().getId() + " " +roomReservation.getRoom().getRoomName() + " " +roomReservation.getTimeReserved()
-		);
-		roomReservationRepository.save(roomReservation);
+//		RoomReservation roomReservation = new RoomReservation();
+//		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
+//		roomReservation.setReservedBy(userRepository.findOneById(123));
+//		roomReservation.setRoom(roomRepository.findOneById(1));
+//		roomReservation.setTimeReserved(7);
+//		System.out.println(
+//				roomReservation + " "  + roomReservation.getId() + " " + roomReservation.getDateReserved()  + " " + roomReservation.getReservedBy().getId() + " " +roomReservation.getRoom().getRoomName() + " " +roomReservation.getTimeReserved()
+//		);
+//		roomReservationRepository.save(roomReservation);
 
 //		SecretQuestion s = new SecretQuestion();
 //		s.setQuestion("What was the name of your elementary school?");

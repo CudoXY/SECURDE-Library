@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class ManageAuthorController
+public class ManageBookController
 {
     private MaterialService materialService;
 
@@ -17,10 +17,10 @@ public class ManageAuthorController
         this.materialService = materialService;
     }
 
-    @RequestMapping(value = "/manage/author", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/books", method = RequestMethod.GET)
     String load(Model model)
     {
-        model.addAttribute("authorList", materialService.getMaterialList());
-        return "admin/admin_authors";
+        model.addAttribute("bookList", materialService.getMaterialListByCategory(1));
+        return "admin/admin_books";
     }
 }

@@ -1,39 +1,26 @@
-package library.controllers;
+package library.controllers.admin;
 
-import library.services.user.UserService;
+import library.services.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class IndexController
+public class ManageMaterialController
 {
-
-	private UserService userService;
+	private MaterialService materialService;
 
 	@Autowired
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
+	public void setMaterialService(MaterialService materialService) {
+		this.materialService = materialService;
 	}
 
-
-	@RequestMapping("/")
-	String index()
+	@RequestMapping(value = "/manage/material", method = RequestMethod.GET)
+	String load(Model model)
 	{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-		System.out.println("auth = " + auth);
-		return "user/homepage";
-	}
-
-	@RequestMapping("/manage/material")
-	String index1(Model model)
-	{
+		model.addAttribute("materialList", materialService.getMaterialList());
 		return "admin/admin_all_materials";
 	}
 }

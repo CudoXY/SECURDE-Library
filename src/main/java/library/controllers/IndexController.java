@@ -30,11 +30,4 @@ public class IndexController
 		System.out.println("auth = " + auth);
 		return "user/homepage";
 	}
-
-	@RequestMapping("/reserve")
-	String index1(Model model, @CookieValue(value = "userId", defaultValue = "-1") int userId)
-	{
-		model.addAttribute("user", userService.getUserById(userId));
-		return "user/roomreserve";
-	}
 }
