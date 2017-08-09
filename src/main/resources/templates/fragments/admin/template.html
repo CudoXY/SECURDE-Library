@@ -44,7 +44,7 @@
     <th:block th:fragment="header">
         <header class="main-header">
             <!-- Logo -->
-            <a href="admin_dashboard.html" class="logo">
+            <a th:href="@{~/manage/dashboard}" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>SHS</b></span>
                 <!-- logo for regular state and mobile devices -->
@@ -127,7 +127,7 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
                     <li>
-                        <a th:href = "@{~/manage/dashboard.html}">
+                        <a th:href = "@{~/manage/dashboard}">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         </a>
                     </li>
