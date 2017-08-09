@@ -127,39 +127,39 @@
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
                     <li>
-                        <a href="admin_dashboard.html">
+                        <a th:href = "@{~/manage/dashboard.html}">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="treeview">
-                        <a href="admin_books.html">
+                        <a th:href = "@{~/manage/material}">
                             <i class="fa fa-folder"></i> <span>Materials</span>
                             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="active"><a href="admin_all_materials.html"><i class="fa fa-reorder"></i> All
+                            <li class="active"><a th:href = "@{~/manage/material}"><i class="fa fa-reorder"></i> All
                                 Materials</a>
                             </li>
-                            <li><a href="admin_books.html"><i class="fa fa-book"></i> Books</a></li>
-                            <li><a href="admin_magazines.html"><i class="fa fa-newspaper-o"></i> Magazines</a></li>
-                            <li><a href="admin_thesis.html"><i class="fa fa-graduation-cap"></i> Thesis</a></li>
+                            <li><a th:href = "@{~/manage/books}"><i class="fa fa-book"></i> Books</a></li>
+                            <li><a th:href = "@{~/manage/magazine}"><i class="fa fa-newspaper-o"></i> Magazines</a></li>
+                            <li><a th:href = "@{~/manage/thesis}"><i class="fa fa-graduation-cap"></i> Thesis</a></li>
                         </ul>
                     </li>
 
                     <li>
-                        <a href="admin_authors.html">
+                        <a th:href = "@{~/manage/author}">
                             <i class="fa fa-users"></i> <span>Authors</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_publishers.html">
+                        <a th:href = "@{~/manage/publisher}">
                             <i class="fa fa-leanpub"></i> <span>Publishers</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin_rooms.html">
+                        <a th:href = "@{~/manage/room}">
                             <i class="fa fa-comments"></i> <span>Meeting Rooms</span>
                         </a>
                     </li>
