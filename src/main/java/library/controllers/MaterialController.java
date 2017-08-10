@@ -6,9 +6,11 @@ import library.domain.Review;
 import library.domain.User;
 import library.domain.helper.Filter;
 import library.domain.helper.SearchFilter;
+import library.repositories.UserRepository;
 import library.services.BorrowService;
 import library.services.MaterialService;
 import library.services.ReviewService;
+import library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,21 +38,8 @@ public class MaterialController
 	@Autowired
 	private MaterialService materialService;
 
-	@PersistenceContext
-	private EntityManager em;
-
-//	@RequestMapping("/catalog")
-//	public String viewCatalog(
-//			@RequestParam(value = "c", required = false) Integer categoryId,
-//			@RequestParam(value = "search", required = false) String search,
-//			@RequestParam(value = "by", required = false) String by,
-//			Model model)
-//	{
-//		model.addAttribute("message", "Catalog poh");
-//		model.addAttribute("parameter", categoryId + " " + search + " " + by);
-//		System.out.println("viewCatalog");
-//		return "user/material_view";
-//	}
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String search(
@@ -98,35 +88,44 @@ public class MaterialController
 	}
 
 
-	@PreAuthorize("hasAuthority('STUDENT')")
+	@PreAuthorize("hasRole('STUDENT')")
 	@RequestMapping(value = "/borrow", method = RequestMethod.POST)
-	public String borrow(String materialId)
+	public String borrow(String materialId, RedirectAttributes redirectAttributes)
 	{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = em.getReference(User.class, 11427817);
+		User user = getCurrentUser();
 
 		Borrow borrow = new Borrow();
-		borrow.setMaterial(em.getReference(Material.class, materialId));
+		borrow.setMaterial(materialService.getMaterialById(materialId));
 
 		borrow.setBorrower(user);
 		borrowService.borrowMaterial(borrow);
-		System.out.println("borrowMaterial");
-		return "redirect:";
+
+		redirectAttributes.addFlashAttribute("materialId", materialId);
+		return "redirect:/catalog/view?id=" + materialId;
 	}
 
 
 	@RequestMapping(value = "/review", method = RequestMethod.POST)
-	public String review(Review review, @CookieValue(value = "userId", defaultValue = "-1") int userId)
+	public String review(Review review, RedirectAttributes redirectAttributes)
 	{
-		User user = em.getReference(User.class, 11427817);
+		User user = getCurrentUser();
+		String materialId = review.getMaterial().getId();
 
-		review.setMaterial(em.getReference(Material.class, review.getMaterial().getId()));
+		review.setMaterial(materialService.getMaterialById(materialId));
 		review.setDateReviewed(new Timestamp(new Date().getTime()));
 		review.setUser(user);
 
 		reviewService.publishReview(review);
 		System.out.println("review");
-		return "redirect:";
+
+		redirectAttributes.addFlashAttribute("materialId", materialId);
+		return "redirect:/catalog/view?id=" + materialId;
+	}
+
+	private User getCurrentUser()
+	{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return userService.getUserByIdNumber(Integer.parseInt(auth.getName()));
 	}
 //
 //    @RequestMapping("product/edit/{id}")
