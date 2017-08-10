@@ -7,56 +7,49 @@
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" class="skin-blue layout-top-nav"
       style="height: auto; min-height: 100%;">
 <!--/*/ <th:block th:include="fragments/template :: navigation"></th:block> /*/-->
-
-    <div class = "col-md-8 row-centered">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">Room Reservation</h3>
-                <!-- /.box-header -->
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="rsvTable">
-                        <tbody>
-                        <tr>
-                            <th>Room</th>
-                            <th>07:00 AM</th>
-                            <th>08:00 AM</th>
-                            <th>09:00 AM</th>
-                            <th>10:00 AM</th>
-                            <th>11:00 AM</th>
-                            <th>12:00 PM</th>
-                            <th>01:00 PM</th>
-                            <th>02:00 PM</th>
-                            <th>03:00 PM</th>
-                            <th>04:00 PM</th>
-                            <th>05:00 PM</th>
-                            <th>06:00 PM</th>
-                            <th>07:00 PM</th>
-                            <th>08:00 PM</th>
-                            <th>09:00 PM</th>
-                        </tr>
-                        <tr th:each="room : ${roomList}">
-                            <td th:text="${room.roomName}"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_b"></td>
-                            <td class="lc_rm_a"></td>
-                            <td class="lc_rm_a"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.box-body -->
+<!--
+<div class="col-md-8 row-centered">-->
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Room Reservation</h3>
+            <!-- /.box-header -->
+            <div class="table-responsive">
+                <table class="table table-bordered" id="rsvTable">
+                    <tbody>
+                    <tr>
+                        <th>Room</th>
+                        <th>07:00 AM</th>
+                        <th>08:00 AM</th>
+                        <th>09:00 AM</th>
+                        <th>10:00 AM</th>
+                        <th>11:00 AM</th>
+                        <th>12:00 PM</th>
+                        <th>01:00 PM</th>
+                        <th>02:00 PM</th>
+                        <th>03:00 PM</th>
+                        <th>04:00 PM</th>
+                        <th>05:00 PM</th>
+                        <th>06:00 PM</th>
+                        <th>07:00 PM</th>
+                        <th>08:00 PM</th>
+                        <th>09:00 PM</th>
+                    </tr>
+                    <!--<form action="#"  th:object="" method="post">-->
+                        <tr th:each="room,room_index : ${roomList}">
+                        <td th:text="${room.roomName}"></td>
+                        <th:block th:each="timeSlot,i: ${timeSlotList}">
+                            <th:block th:if="${i.index >= (timeSlotCount * room_index.index) && i.index < (timeSlotCount * (room_index.index + 1))}">
+                                <td th:if="${timeSlot.reservedBy == null}" th:class="lc_rm_a"th:text="${(timeSlotCount * room_index.index)}"></td>
+                                <td th:if="${timeSlot.reservedBy != null}" th:class="lc_rm_b" th:text="${(timeSlot.time)}"></td>
+                            </th:block>
+                        </th:block>
+                    </tr>
+                    <!--</form>-->
+                    </tbody>
+                </table>
             </div>
+            <form action=""
+            <!-- /.box-body -->
         </div>
     </div>
 <!-- Footer -->

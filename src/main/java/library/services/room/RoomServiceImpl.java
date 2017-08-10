@@ -7,6 +7,8 @@ import library.repositories.SecretQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoomServiceImpl implements RoomService
 {
@@ -19,7 +21,7 @@ public class RoomServiceImpl implements RoomService
     }
 
     @Override
-    public Iterable<Room> getAll()
+    public List<Room> getAll()
     {
         return roomRepository.findAll();
     }

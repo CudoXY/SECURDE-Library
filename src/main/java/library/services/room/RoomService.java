@@ -2,7 +2,9 @@ package library.services.room;
 
 import library.domain.Room;
 
+import java.util.List;
+
 public interface RoomService
 {
-	Iterable<Room> getAll();
+	List<Room> getAll();
 }
