@@ -1,6 +1,7 @@
 package library.domain.validator;
 
 import library.domain.User;
+import library.domain.form.FormRegistration;
 import library.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,21 +26,21 @@ public class UserCreateFormValidator implements Validator
 	@Override
 	public boolean supports(Class<?> clazz)
 	{
-		return clazz.equals(User.class);
+		return clazz.equals(FormRegistration.class);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors)
 	{
 		LOGGER.debug("Validating {}", target);
-		User user = (User) target;
+		FormRegistration user = (FormRegistration) target;
 		validatePasswords(errors, user);
 		validateEmail(errors, user);
 		validateUsername(errors, user);
 		validateIdNumber(errors, user);
 	}
 
-	private void validatePasswords(Errors errors, User form)
+	private void validatePasswords(Errors errors, FormRegistration form)
 	{
 		if (!form.getPassword().equals(form.getPasswordRepeat()))
 		{
@@ -47,7 +48,7 @@ public class UserCreateFormValidator implements Validator
 		}
 	}
 
-	private void validateEmail(Errors errors, User form)
+	private void validateEmail(Errors errors, FormRegistration form)
 	{
 		if (userService.getUserByEmail(form.getEmail()).isPresent())
 		{
@@ -55,7 +56,7 @@ public class UserCreateFormValidator implements Validator
 		}
 	}
 
-	private void validateUsername(Errors errors, User form)
+	private void validateUsername(Errors errors, FormRegistration form)
 	{
 		if (userService.getUserByUsername(form.getUsername()).isPresent())
 		{
@@ -63,7 +64,7 @@ public class UserCreateFormValidator implements Validator
 		}
 	}
 
-	private void validateIdNumber(Errors errors, User form)
+	private void validateIdNumber(Errors errors, FormRegistration form)
 	{
 		if (userService.getUserById(form.getId()).isPresent())
 		{

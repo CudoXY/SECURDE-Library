@@ -141,21 +141,10 @@
                             <li class="active"><a th:href = "@{~/manage/material}"><i class="fa fa-reorder"></i> All
                                 Materials</a>
                             </li>
-                            <li><a th:href = "@{~/manage/books}"><i class="fa fa-book"></i> Books</a></li>
-                            <li><a th:href = "@{~/manage/magazine}"><i class="fa fa-newspaper-o"></i> Magazines</a></li>
-                            <li><a th:href = "@{~/manage/thesis}"><i class="fa fa-graduation-cap"></i> Thesis</a></li>
+                            <li><a th:href = "@{~/manage/material?category_id=1}"><i class="fa fa-book"></i> Books</a></li>
+                            <li><a th:href = "@{~/manage/material?category_id=2}"><i class="fa fa-newspaper-o"></i> Magazines</a></li>
+                            <li><a th:href = "@{~/manage/material?category_id=3}"><i class="fa fa-graduation-cap"></i> Thesis</a></li>
                         </ul>
-                    </li>
-
-                    <li>
-                        <a th:href = "@{~/manage/author}">
-                            <i class="fa fa-users"></i> <span>Authors</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href = "@{~/manage/publisher}">
-                            <i class="fa fa-leanpub"></i> <span>Publishers</span>
-                        </a>
                     </li>
                     <li>
                         <a th:href = "@{~/manage/room}">

@@ -1,7 +1,9 @@
 package library.controllers;
 
 import library.domain.User;
+import library.domain.form.FormRegistration;
 import library.domain.validator.UserCreateFormValidator;
+import library.services.currentuser.CurrentUserService;
 import library.services.secretquestion.SecretQuestionService;
 import library.services.user.UserService;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.sql.Date;
@@ -29,6 +32,13 @@ public class RegisterController
 	private UserService userService;
 	private SecretQuestionService secretQuestionService;
 	private UserCreateFormValidator userCreateFormValidator;
+	private CurrentUserService currentUserService;
+
+	@Autowired
+	public void setCurrentUserService(CurrentUserService currentUserService)
+	{
+		this.currentUserService = currentUserService;
+	}
 
 	@Autowired
 	public void setUserService(UserService userService)
@@ -58,33 +68,47 @@ public class RegisterController
 	public String getUserCreatePage(Model model)
 	{
 		LOGGER.debug("Getting user create form");
-		model.addAttribute("user", new User());
+		if (!model.containsAttribute("user")) {
+			model.addAttribute("user", new FormRegistration());
+		}
 		model.addAttribute("questionList", secretQuestionService.getAll());
 		return "user/register";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String handleUserCreateForm(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, int month, int day, int year)
+	public String handleUserCreateForm(@Valid @ModelAttribute("user") final FormRegistration form, final BindingResult bindingResult,
+									   final RedirectAttributes redirectAttributes)
 	{
+		User u = new User();
+		u.setFirstName(form.getFirstName());
+		u.setMiddleName(form.getMiddleName());
+		u.setLastName(form.getLastName());
+		u.setRole(form.getRole());
+		u.setPassword(form.getPasswordRepeat());
+		u.setEmail(form.getEmail());
+		u.setId(form.getId());
+		u.setSecretQuestion(form.getSecretQuestion());
+		u.setSecretAnswer(form.getSecretAnswer());
 
-		GregorianCalendar c = new GregorianCalendar(year, month - 1, day);
+		GregorianCalendar c = new GregorianCalendar(form.getYear(), form.getMonth() - 1, form.getDay());
 		Date birthDate = new Date(c.getTimeInMillis());
-		user.setBirthDate(birthDate);
-		user.setLocked(false);
-		user.setTemporary(false);
-		user.setDateRegistered(new Date(new java.util.Date().getTime()));
-        System.out.println(user.getDateRegistered());
-        System.out.println(String.format("Processing user create form=%s, bindingResult=%s", user, bindingResult));
+		u.setBirthDate(birthDate);
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", form, bindingResult));
 
 		if (bindingResult.hasErrors())
 		{
 			// failed validation
-			return "user/register";
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
+			redirectAttributes.addFlashAttribute("user", form);
+			return "redirect:/register";
 		}
 
 		try
 		{
-			userService.save(user);
+			userService.save(u);
+
+			currentUserService.autologin(u.getUsername(), u.getPasswordRepeat());
 		}
 		catch (DataIntegrityViolationException e)
 		{
