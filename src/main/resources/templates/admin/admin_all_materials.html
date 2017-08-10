@@ -84,7 +84,7 @@
                                             <button type="button" class="btn btn-default">
                                                 <i class="fa fa-home"> Borrow</i>
                                             </button>
-                                            <button type="button" class="btn btn-default">
+                                            <button type="button" class="btn btn-default" th:object="${delMaterial}" th:action="@{~/manage/material/delete}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -114,11 +114,11 @@
 
                                     <!-- /.box-header -->
                                     <!-- form start -->
-                                    <form role="form" th:object="${material}" th:action="@{~/manage/material/save}" method="post">
+                                    <form role="form" th:object="${saveMaterial}" th:action="@{~/manage/material/save}" method="post">
                                         <div class="box-body">
                                             <div class="form-group">
-                                                <label for="title2">Location</label>
-                                                <input type="number" th:field = "*{id}" class="form-control" id="location1" placeholder="Title">
+                                                <label for="location1">Location</label>
+                                                <input type="text" th:field = "*{id}" class="form-control" id="location1" placeholder="Location">
                                             </div>
                                             <div class="form-group">
                                                 <label for="title2">Title</label>
@@ -181,8 +181,8 @@
                                     <form role="form" th:object="${material}" th:action="@{~/manage/material/update}" method="post">
                                         <div class="box-body">
                                             <div class="form-group">
-                                                <label for="title2">Location</label>
-                                                <input type="number" th:field = "*{id}" class="form-control" id="location2" placeholder="Title">
+                                                <label for="location2">Location</label>
+                                                <input type="text" th:field = "*{id}" class="form-control" id="location2" placeholder="Location">
                                             </div>
                                             <div class="form-group">
                                                 <label for="title2">Title</label>

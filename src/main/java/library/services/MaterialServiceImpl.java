@@ -116,6 +116,10 @@ public class MaterialServiceImpl implements MaterialService {
         return materialRepository.save(material);
     }
 
-
+    @Override
+    public void deleteMaterial(Material material)
+    {
+        materialRepository.deleteById(material.getId());
+    }
 
 }

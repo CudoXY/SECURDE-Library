@@ -47,7 +47,7 @@ public class ManageMaterialController
 	}
 
 	@RequestMapping(value = "/manage/material/save", method = RequestMethod.POST)
-	public String save(@Valid @ModelAttribute("material") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
+	public String save(@Valid @ModelAttribute("saveMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
 	{
 
 
@@ -77,7 +77,7 @@ public class ManageMaterialController
 	}
 
 	@RequestMapping(value = "/manage/material/update", method = RequestMethod.POST)
-	public String update(@Valid @ModelAttribute("material") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
+	public String update(@Valid @ModelAttribute("upMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
 	{
 
 
@@ -102,6 +102,15 @@ public class ManageMaterialController
 			bindingResult.reject("material.exist", "Material already exists");
 			return "manage/material";
 		}
+		// ok, redirect
+		return "redirect:/manage/material";
+	}
+	@RequestMapping(value = "/manage/material/delete", method = RequestMethod.POST)
+	public String delete(@Valid @ModelAttribute("delMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
+	{
+
+
+		materialService.deleteMaterial(material);
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
