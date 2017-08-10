@@ -68,16 +68,16 @@
                                     <th></th>
                                 </tr>
                                 <tr th:each="material : ${materialList}">
-                                    <td th:text="${material.id}">183</td>
-                                    <td th:text="${material.title}">Introduction to Algorithims</td>
-                                    <td th:text="${material.author}">Neil Patrick Del Gallego</td>
-                                    <td th:text="${material.publisher}">Nanay Mo</td>
-                                    <td th:text="${material.year}">2015</td>
+                                    <td th:id = "${material.id}+'id'" th:text="${material.id}">183</td>
+                                    <td th:id="${material.id}+'title'" th:text="${material.title}">Introduction to Algorithims</td>
+                                    <td th:id="${material.id}+'author'" th:text="${material.author}">Neil Patrick Del Gallego</td>
+                                    <td th:id="${material.id}+'publisher'" th:text="${material.publisher}">Nanay Mo</td>
+                                    <td th:id="${material.id}+'year'" th:text="${material.year}">2015</td>
                                     <td>Book</td>
                                     <td><span class="label label-success">In Shelf</span></td>
                                     <td>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default" data-toggle="modal"
+                                            <button type="button" th:id="${material.id}" class="editMaterial btn btn-default" data-toggle="modal"
                                                     data-target="#modal-edit">
                                                 <i class="fa fa-edit"> Edit</i>
                                             </button>
@@ -114,37 +114,50 @@
 
                                     <!-- /.box-header -->
                                     <!-- form start -->
-                                    <form role="form">
+                                    <form role="form" th:object="${material}" th:action="@{~/manage/material/save}" method="post">
                                         <div class="box-body">
                                             <div class="form-group">
-                                                <label for="title1">Title</label>
-                                                <input type="text" class="form-control" id="title1" placeholder="Title">
+                                                <label for="title2">Location</label>
+                                                <input type="number" th:field = "*{id}" class="form-control" id="location1" placeholder="Title">
                                             </div>
                                             <div class="form-group">
-                                                <label for="auth1">Author/s</label>
-                                                <input type="text" class="form-control" id="auth1" placeholder="Author">
+                                                <label for="title2">Title</label>
+                                                <input type="text" th:field = "*{title}" class="form-control" id="title1" placeholder="Title">
                                             </div>
                                             <div class="form-group">
-                                                <label for="pub1">Publisher</label>
-                                                <input type="text" class="form-control" id="pub1"
+                                                <label for="auth2">Author/s</label>
+                                                <input type="text" th:field = "*{author}" class="form-control" id="auth1" placeholder="Author">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pub2">Publisher</label>
+                                                <input type="text" th:field = "*{publisher}" class="form-control" id="pub1"
                                                        placeholder="Publisher">
                                             </div>
                                             <div class="form-group">
-                                                <label for="year1">Year</label>
-                                                <input type="text" class="form-control" id="year1" placeholder="Year">
+                                                <label for="year2">Year</label>
+                                                <input type="number" th:field = "*{year}"class="form-control" id="year1" placeholder="Year">
                                             </div>
                                             <div class="form-group">
+                                                <label>Type of Material</label>
+                                                <select name = "materialType" class="form-control select2" placeholder="Filter"
+                                                        style="width: 100%;">
+                                                    <option th:each="materialType : ${T(library.domain.helper.Category).values()}"
+                                                            th:value="${materialType.ordinal() + 1}"
+                                                            th:text="${materialType}">
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-success">Update</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
-                                </button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+
                         </div>
                         <!-- /.modal-content -->
                     </div>
@@ -165,7 +178,7 @@
 
                                     <!-- /.box-header -->
                                     <!-- form start -->
-                                    <form role="form" th:object="${material}" th:action="@{~/manage/material/save}" method="post">
+                                    <form role="form" th:object="${material}" th:action="@{~/manage/material/update}" method="post">
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="title2">Location</label>
@@ -263,5 +276,31 @@
 
 <!-- jQuery 3 -->
 <!--/*/ <th:block th:include="fragments/admin/template :: script"></th:block> /*/-->
+<script>
+    $(document).ready(function(){
+        $(".editMaterial").click(function(){
+            var id = this.id;
+            console.log(id);
+            var materialId = $("#" + id + "id").text();
+            console.log($("#" + id + "id").text());
+            var materialTitle = $("#" + id + "title").text();
+            console.log($("#" + id + "title").text());
+            var materialAuthor = $("#" + id + "author").text();
+            console.log($("#" + id + "author").text());
+            var materialPublisher = $("#" + id + "publisher").text();
+            console.log($("#" + id + "publisher").text());
+            var materialYear = $("#" + id + "year").text();
+            console.log($("#" + id + "year").text());
+            var materialCategory = $("#" + id + "category").text();
+
+            $("#location1").val(materialId);
+            $("#title1").val(materialTitle);
+            $("#auth1").val(materialAuthor);
+            $("#pub1").val(materialPublisher);
+            $("#year1").val(materialYear);
+
+        });
+    });
+</script>
 </body>
 </html>

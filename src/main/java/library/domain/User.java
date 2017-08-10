@@ -20,7 +20,7 @@ public class User
 
 	@NotNull
 	@Column(unique = true)
-	private String username;
+	private int idNumber;
 
 	@NotNull
 	private String password;
@@ -102,14 +102,14 @@ public class User
 		this.lastName = lastName;
 	}
 
-	public String getUsername()
+	public int getIdNumber()
 	{
-		return username;
+		return idNumber;
 	}
 
-	public void setUsername(String username)
+	public void setIdNumber(int idNumber)
 	{
-		this.username = username;
+		this.idNumber = idNumber;
 	}
 
 	public String getPassword()
