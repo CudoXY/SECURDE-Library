@@ -200,5 +200,9 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 //        m.setTitle("Thesis 2");
 //        m.setYear(2017);
 //        materialRepository.save(m);
+		User user = new User();
+		user.setId(68782);
+		user.setPassword("test");
+		user.setPassword("test");
 	}
 }

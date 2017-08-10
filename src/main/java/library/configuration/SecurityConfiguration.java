@@ -43,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 		http.authorizeRequests()
 				.antMatchers("/", "/public/**").permitAll()
-//				.antMatchers("/catalog/**").hasAuthority("STUDENT")
+				//.antMatchers("/manage/user/**").hasAuthority("ADMIN")
 				.and()
 				.formLogin()
 				.loginPage("/login")

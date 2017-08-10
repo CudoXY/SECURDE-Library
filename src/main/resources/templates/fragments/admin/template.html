@@ -134,8 +134,8 @@
                         <a th:href = "@{~/manage/material}">
                             <i class="fa fa-folder"></i> <span>Materials</span>
                             <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
                         </a>
                         <ul class="treeview-menu">
                             <li class="active"><a th:href = "@{~/manage/material}"><i class="fa fa-reorder"></i> All
@@ -154,10 +154,17 @@
 
                     <th:block th:if="${currentUser != null}">
                         <th:block th:if="${currentUser.role == T(library.domain.Role).ROLE_ADMIN}">
-                            <li>
-                                <a th:href = "@{~/manage/room}">
-                                    <i class="fa fa-comments"></i> <span>GERGREGREGE Rooms</span>
+                            <li class="treeview">
+                                <a th:href = "@{~/manage/admin}">
+                                    <i class="fa fa-folder"></i> <span>Admin Tools</span>
+                                    <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
                                 </a>
+                                <ul class="treeview-menu">
+                                    <li class="active"><a th:href = "@{~/manage/user}"><i class="fa fa-users"></i>List of Users</a></li>
+                                    <li><a th:href = "@{~/manage/user/new}"><i class="fa fa-user-plus"></i>Create Temporary Staff</a></li>
+                                </ul>
                             </li>
                         </th:block>>
                     </th:block>
