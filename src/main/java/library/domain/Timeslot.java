@@ -9,6 +9,15 @@ import java.sql.Timestamp;
 public class Timeslot {
     private int roomId;
     private int time;
+    private User reservedBy;
+
+    public User getReservedBy() {
+        return reservedBy;
+    }
+
+    public void setReservedBy(User reservedBy) {
+        this.reservedBy = reservedBy;
+    }
 
     public int getRoomId() {
         return roomId;
