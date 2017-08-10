@@ -8,15 +8,14 @@ import java.sql.Date;
 @Entity
 public class User
 {
-	@Id
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@NotNull
 	private String firstName;
 
 	private String middleName;
 
-	@NotNull
 	private String lastName;
 
 	@NotNull
@@ -29,7 +28,6 @@ public class User
 	@Transient
 	private String passwordRepeat;
 
-	@NotNull
 	@Column(unique = true)
 	@Size(min = 6, message = "Email cannot be blank")
 	private String email;
@@ -38,7 +36,6 @@ public class User
 	@Enumerated(EnumType.ORDINAL)
 	private Role role;
 
-	@NotNull
 	private Date birthDate;
 
 	@NotNull
@@ -47,19 +44,27 @@ public class User
 	@NotNull
 	private boolean isLocked;
 
-	@NotNull
 	@ManyToOne
 	private SecretQuestion secretQuestion;
 
-	@NotNull
 	private String secretAnswer;
+
+	private Date dateRegistered;
 
 	public User()
 	{
 		birthDate = new Date(new java.util.Date().getTime());
 	}
 
-	public int getId()
+    public Date getDateRegistered() {
+        return dateRegistered;
+    }
+
+    public void setDateRegistered(Date dateRegistered) {
+        this.dateRegistered = dateRegistered;
+    }
+
+    public int getId()
 	{
 		return id;
 	}

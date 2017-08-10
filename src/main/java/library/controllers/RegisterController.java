@@ -72,8 +72,9 @@ public class RegisterController
 		user.setBirthDate(birthDate);
 		user.setLocked(false);
 		user.setTemporary(false);
-
-		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", user, bindingResult));
+		user.setDateRegistered(new Date(new java.util.Date().getTime()));
+        System.out.println(user.getDateRegistered());
+        System.out.println(String.format("Processing user create form=%s, bindingResult=%s", user, bindingResult));
 
 		if (bindingResult.hasErrors())
 		{
@@ -96,6 +97,4 @@ public class RegisterController
 		// ok, redirect
 		return "redirect:/";
 	}
-
-
 }

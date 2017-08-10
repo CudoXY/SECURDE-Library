@@ -1,4 +1,6 @@
-package library.domain;
+package library.domain.form;
+
+import library.domain.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,18 +10,11 @@ import javax.validation.constraints.NotNull;
  */
 
 public class FormCreateTempAccount {
-    @NotNull
-    @Column(unique = true)
     private String username;
-
-    @NotNull
     private String password;
 
-    @Transient
     private String passwordRepeat;
 
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
     private Role role;
 
     public String getUsername() {

@@ -64,7 +64,7 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 //		room.setRoomName("Room Despacity");
 //		roomRepository.save(room);
 //		room = new Room();
-	//		room.setRoomName("Room Nonoczech");
+//			room.setRoomName("Room Nonoczech");
 //		roomRepository.save(room);
 
 //		RoomReservation roomReservation = new RoomReservation();
@@ -72,9 +72,6 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 //		roomReservation.setReservedBy(userRepository.findOneById(123));
 //		roomReservation.setRoom(roomRepository.findOneById(1));
 //		roomReservation.setTimeReserved(7);
-//		System.out.println(
-//				roomReservation + " "  + roomReservation.getId() + " " + roomReservation.getDateReserved()  + " " + roomReservation.getReservedBy().getId() + " " +roomReservation.getRoom().getRoomName() + " " +roomReservation.getTimeReserved()
-//		);
 //		roomReservationRepository.save(roomReservation);
 
 //		SecretQuestion s = new SecretQuestion();

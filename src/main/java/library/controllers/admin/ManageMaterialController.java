@@ -21,15 +21,6 @@ public class ManageMaterialController
 	String load(Model model)
 	{
 		model.addAttribute("materialList", materialService.getMaterialList());
-
 		return "admin/admin_all_materials";
 	}
-
-//	@RequestMapping(value = "/manage/material", method = RequestMethod.P)
-//	String load(Model model)
-//	{
-//		model.addAttribute("materialList", materialService.getMaterialList());
-//
-//		return "admin/admin_all_materials";
-//	}
 }
