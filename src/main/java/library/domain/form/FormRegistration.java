@@ -1,76 +1,52 @@
-package library.domain;
+package library.domain.form;
 
-import javax.persistence.*;
+import library.domain.Role;
+import library.domain.SecretQuestion;
+
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.sql.Date;
 
-@Entity
-public class User
+/**
+ * Created by CudoXY on 8/10/2017.
+ */
+public class FormRegistration
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-
+	@NotNull
 	private String firstName;
 
 	private String middleName;
 
+	@NotNull
 	private String lastName;
 
 	@NotNull
-	@Column(unique = true)
 	private int idNumber;
 
 	@NotNull
 	private String password;
 
-	@Transient
+	@NotNull
 	private String passwordRepeat;
 
-	@Column(unique = true)
-	@Size(min = 6, message = "Email cannot be blank")
+	@NotNull
 	private String email;
 
-	@Column(name = "role", nullable = false)
-	@Enumerated(EnumType.ORDINAL)
+	@NotNull
 	private Role role;
 
-	private Date birthDate;
+	@NotNull
+	private int month;
 
-	private boolean isTemporary;
+	@NotNull
+	private int day;
 
-	private boolean isLocked;
+	@NotNull
+	private int year;
 
-	@ManyToOne
+	@NotNull
 	private SecretQuestion secretQuestion;
 
+	@NotNull
 	private String secretAnswer;
-
-	private Date dateRegistered;
-
-	public User()
-	{
-		birthDate = new Date(new java.util.Date().getTime());
-	}
-
-    public Date getDateRegistered() {
-        return dateRegistered;
-    }
-
-    public void setDateRegistered(Date dateRegistered) {
-        this.dateRegistered = dateRegistered;
-    }
-
-    public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
 
 	public String getFirstName()
 	{
@@ -152,34 +128,34 @@ public class User
 		this.role = role;
 	}
 
-	public Date getBirthDate()
+	public int getMonth()
 	{
-		return birthDate;
+		return month;
 	}
 
-	public void setBirthDate(Date birthDate)
+	public void setMonth(int month)
 	{
-		this.birthDate = birthDate;
+		this.month = month;
 	}
 
-	public boolean isTemporary()
+	public int getDay()
 	{
-		return isTemporary;
+		return day;
 	}
 
-	public void setTemporary(boolean temporary)
+	public void setDay(int day)
 	{
-		isTemporary = temporary;
+		this.day = day;
 	}
 
-	public boolean isLocked()
+	public int getYear()
 	{
-		return isLocked;
+		return year;
 	}
 
-	public void setLocked(boolean locked)
+	public void setYear(int year)
 	{
-		isLocked = locked;
+		this.year = year;
 	}
 
 	public SecretQuestion getSecretQuestion()
