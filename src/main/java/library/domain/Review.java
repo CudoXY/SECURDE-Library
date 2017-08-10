@@ -1,5 +1,8 @@
 package library.domain;
 
+import library.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;

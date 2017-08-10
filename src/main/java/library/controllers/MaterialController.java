@@ -13,6 +13,7 @@ import library.services.ReviewService;
 import library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -78,10 +79,19 @@ public class MaterialController
 			@RequestParam(value = "id") String materialId,
 			Model model)
 	{
+		User u = getCurrentUser();
+
 		System.out.println("before viewMaterial");
 		model.addAttribute("material", materialService.getMaterialById(materialId));
 		model.addAttribute("review", new Review());
-		System.out.println("viewMaterial");
+
+		if (u != null)
+		{
+			System.out.println("materialId = " + materialId);
+			System.out.println("userId = " + u.getId());
+			System.out.println("canUserReview = " + reviewService.canUserReview(materialId, u.getId()));
+			model.addAttribute("canUserReview", reviewService.canUserReview(materialId, u.getId()));
+		}
 
 		model.addAttribute("reviewList", reviewService.getReviewListDesc(materialId));
 		return "user/material_view";
@@ -125,6 +135,9 @@ public class MaterialController
 	private User getCurrentUser()
 	{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth instanceof AnonymousAuthenticationToken)
+			return null;
+
 		return userService.getUserByIdNumber(Integer.parseInt(auth.getName()));
 	}
 //
