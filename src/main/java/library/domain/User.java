@@ -38,10 +38,8 @@ public class User
 
 	private Date birthDate;
 
-	@NotNull
 	private boolean isTemporary;
 
-	@NotNull
 	private boolean isLocked;
 
 	@ManyToOne
