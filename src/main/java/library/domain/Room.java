@@ -6,33 +6,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Created by Brandon on 7/31/2017.
+ */
 @Entity
-public class Room
-{
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
+    private int id;
     @NotNull
-    private String name;
+    private String roomName;
 
-    public Integer getId()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getName()
-    {
-        return name;
+    public String getRoomName() {
+        return roomName;
     }
 
-    public void setName(String name)
-    {
-        this.name = name;
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 }

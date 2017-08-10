@@ -38,3 +38,26 @@ div.alert.alert-danger.alert-dismissible > ul
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
+
+.lc_rm_b {
+    background-color: #7EABCD;
+    padding: 0px;
+    margin: 0px;
+    background-image: url('//lcimages.s3.amazonaws.com/room-hour-cell.gif');
+}
+.lc_rm_a {
+    background-color: #22b14c;
+    color: #22B14C;
+    padding: 0px;
+    margin: 10px;
+    background-image: url('//lcimages.s3.amazonaws.com/room-hour-cell.gif');
+    cursor: pointer;
+}
+
+.lc_rm_t {
+    background-color: #F5B93C;
+    padding: 0px;
+    margin: 0px;
+    background-image: url('//lcimages.s3.amazonaws.com/room-hour-cell.gif');
+    cursor: pointer;
+}

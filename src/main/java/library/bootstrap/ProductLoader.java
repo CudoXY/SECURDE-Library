@@ -1,23 +1,40 @@
 package library.bootstrap;
 
-import library.domain.Material;
-import library.domain.SecretQuestion;
-import library.repositories.MaterialRepository;
-import library.repositories.SecretQuestionRepository;
+import library.domain.*;
+import library.repositories.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+
 @Component
 public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 {
 
 	private MaterialRepository materialRepository;
+	private RoomRepository roomRepository;
+	private RoomReservationRepository roomReservationRepository;
 	private SecretQuestionRepository secretQuestionRepository;
+	private UserRepository userRepository;
 
 	private Logger log = Logger.getLogger(ProductLoader.class);
+
+	@Autowired
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	@Autowired
+	public void setRoomRepository(RoomRepository roomRepository) {
+		this.roomRepository = roomRepository;
+	}
+	@Autowired
+	public void setRoomReservationRepository(RoomReservationRepository roomReservationRepository) {
+		this.roomReservationRepository = roomReservationRepository;
+	}
 
 	@Autowired
 	public void setMaterialRepository(MaterialRepository materialRepository)
@@ -34,6 +51,32 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event)
 	{
+//		Room room = new Room();
+//		room.setRoomName("Marnel Commons");
+//		roomRepository.save(room);
+//		room = new Room();
+//		room.setRoomName("Pereddila Room");
+//		roomRepository.save(room);
+//		room = new Room();
+//		room.setRoomName("Doctor Council Hall");
+//		roomRepository.save(room);
+//		room = new Room();
+//		room.setRoomName("Room Despacity");
+//		roomRepository.save(room);
+//		room = new Room();
+	//		room.setRoomName("Room Nonoczech");
+//		roomRepository.save(room);
+
+//		RoomReservation roomReservation = new RoomReservation();
+//		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
+//		roomReservation.setReservedBy(userRepository.findOneById(123));
+//		roomReservation.setRoom(roomRepository.findOneById(1));
+//		roomReservation.setTimeReserved(7);
+//		System.out.println(
+//				roomReservation + " "  + roomReservation.getId() + " " + roomReservation.getDateReserved()  + " " + roomReservation.getReservedBy().getId() + " " +roomReservation.getRoom().getRoomName() + " " +roomReservation.getTimeReserved()
+//		);
+//		roomReservationRepository.save(roomReservation);
+
 //		SecretQuestion s = new SecretQuestion();
 //		s.setQuestion("What was the name of your elementary school?");
 //		secretQuestionRepository.save(s);
@@ -57,26 +100,7 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 //		s = new SecretQuestion();
 //		s.setQuestion("test question poh");
 //		secretQuestionRepository.save(s);
-
-
-//        Product shirt = new Product();
-//        shirt.setDescription("Spring Framework Guru Shirt");
-//        shirt.setPrice(new BigDecimal("18.95"));
-//        shirt.setImageUrl("https://springframework.guru/wp-content/uploads/2015/04/spring_framework_guru_shirt-rf412049699c14ba5b68bb1c09182bfa2_8nax2_512.jpg");
-//        shirt.setProductId("235268845711068308");
-//        materialRepository.save(shirt);
 //
-//        log.info("Saved Shirt - id: " + shirt.getId());
-//
-//        Product mug = new Product();
-//        mug.setDescription("Spring Framework Guru Mug");
-//        mug.setImageUrl("https://springframework.guru/wp-content/uploads/2015/04/spring_framework_guru_coffee_mug-r11e7694903c348e1a667dfd2f1474d95_x7j54_8byvr_512.jpg");
-//        mug.setProductId("168639393495335947");
-//        mug.setPrice(new BigDecimal("11.95"));
-//        materialRepository.save(mug);
-//
-//        log.info("Saved Mug - id:" + mug.getId());
-
 //        Material m = new Material();
 //        m.setId("book1");
 //        m.setAuthor("Author 1");

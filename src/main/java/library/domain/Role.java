@@ -1,5 +1,7 @@
 package library.domain;
 
+import javax.persistence.Entity;
+
 public enum Role
 {
 

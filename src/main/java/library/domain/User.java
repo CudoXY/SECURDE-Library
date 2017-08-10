@@ -48,7 +48,7 @@ public class User
 	private boolean isLocked;
 
 	@NotNull
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne
 	private SecretQuestion secretQuestion;
 
 	@NotNull

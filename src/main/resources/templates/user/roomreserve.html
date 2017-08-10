@@ -1,241 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>SHS DLSU Library | Dashboard</title>
-
+    <title>SHS DLSU Library | Home</title>
     <!--/*/ <th:block th:include="fragments/template :: head"></th:block> /*/-->
 </head>
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" class="skin-blue layout-top-nav"
       style="height: auto; min-height: 100%;">
-
 <!--/*/ <th:block th:include="fragments/template :: navigation"></th:block> /*/-->
-<section class="invoice">
-    <!-- title row -->
-    <div class="row">
-        <div class="col-xs-12">
-            <h1 class="page-header">
-                <i class="fa fa-globe"></i> Room Reservation
-                <small>Date: 2/10/2017</small>
-            </h1>
-        </div>
-        <!-- /.col -->
-    </div>
-
-    <!-- Table row -->
-    <div class="row">
-        <div class="col-xs-8">
-            <div class="box-body">
-                <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <table id="example1" class="table table-bordered table-striped dataTable" role="grid"
-                                   aria-describedby="example1_info">
-                                <thead>
-                                <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="example1"
-                                        data-vivaldi-spatnav-clickable="1" rowspan="1" colspan="1" aria-sort="ascending"
-                                        aria-label="No.: activate to sort column descending">No.
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                        data-vivaldi-spatnav-clickable="1" rowspan="1" colspan="1"
-                                        aria-label="Room Name: activate to sort column ascending">
-                                        Room Name
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                        data-vivaldi-spatnav-clickable="1" rowspan="1" colspan="1"
-                                        aria-label="Time Available: activate to sort column ascending">Time Available
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                        data-vivaldi-spatnav-clickable="1" rowspan="1" colspan="1"
-                                        aria-label="Date: activate to sort column ascending">Date
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                        data-vivaldi-spatnav-clickable="1" rowspan="1" colspan="1"
-                                        aria-label="status: activate to sort column ascending">Selection
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr role="row" class="odd">
-                                    <td class="sorting_1">1</td>
-                                    <td>Tacloban</td>
-                                    <td>7:00 AM - 8:00 AM</td>
-                                    <td>5/7/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="even">
-                                    <td class="sorting_1">2</td>
-                                    <td>Las Piñas</td>
-                                    <td>8:00 AM - 8:00 AM</td>
-                                    <td>5/7/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="odd">
-                                    <td class="sorting_1">3</td>
-                                    <td>Alabang</td>
-                                    <td>9:00 AM - 10:00 AM </td>
-                                    <td>5/7/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="even">
-                                    <td class="sorting_1">4</td>
-                                    <td>Laguna</td>
-                                    <td>10:00 AM - 11:00 AM</td>
-                                    <td>5/7/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="odd">
-                                    <td class="sorting_1">5</td>
-                                    <td>Cavite</td>
-                                    <td>3:00 PM - 4:00 PM</td>
-                                    <td>5/7/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="even">
-                                    <td class="sorting_1">5</td>
-                                    <td>Cavite</td>
-                                    <td>1:00 PM - 2:00 PM</td>
-                                    <td>6/7/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="odd">
-                                    <td class="sorting_1">5</td>
-                                    <td>Cavite</td>
-                                    <td>2:00 PM - 3:00 PM</td>
-                                    <td>6/7/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="even">
-                                    <td class="sorting_1">4</td>
-                                    <td>Laguna</td>
-                                    <td>4:00 PM - 5:00 PM</td>
-                                    <td>6/7/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="odd">
-                                    <td class="sorting_1">2</td>
-                                    <td>Las Piñas</td>
-                                    <td>8:00 AM- 9:00 AM</td>
-                                    <td>6/8/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                <tr role="row" class="even">
-                                    <td class="sorting_1">2</td>
-                                    <td>Las Piñas</td>
-                                    <td>9:00 AM - 10:00 AM</td>
-                                    <td>6/8/2017</td>
-                                    <td><button type="button" class="btn btn-block btn-primary">Available</button></td>
-                                </tr>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th rowspan="1" colspan="1">No.</th>
-                                    <th rowspan="1" colspan="1">Room Name</th>
-                                    <th rowspan="1" colspan="1">Time Available</th>
-                                    <th rowspan="1" colspan="1">Date</th>
-                                    <th rowspan="1" colspan="1">Selection</th>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--<table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Room Number</th>
-                    <th>Room Name</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Walang Sagot sa Tanong</td>
-                    <td>10-02-2017</td>
-                    <td>7:00 PM to 8:00 PM</td>
-                    <td><button type="button" class="btn btn-default btn-block">Select</button></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Kamikazee Chiksilog</td>
-                    <td>11-12-2017</td>
-                    <td>7:00 AM to 8:00 AM</td>
-                    <td>
-                        <button type="button" class="btn btn-success btn-block">Selected</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Kamikazee Chiksilog</td>
-                    <td>07-04-2017</td>
-                    <td>9:00 AM to 12:00 PM</td>
-                    <td><button type="button" class="btn btn-warning btn-block">Remove</button></td>
-                </tr>
-                </tbody>
-            </table>-->
-        </div>
-        <!-- /.col -->
-        <div class="col-xs-4">
-            <p class="lead">Selected Rooms</p>
-
+<!--
+<div class="col-md-8 row-centered">-->
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Room Reservation</h3>
+            <!-- /.box-header -->
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-bordered" id="rsvTable">
                     <tbody>
                     <tr>
-                        <th style="width:50%">Alabang-1:</th>
-                        <td>8:00 AM - 9:00 AM | 5/7/2017</td>
-                        <td><span class="glyphicon glyphicon-remove"></span></td>
+                        <th>Room</th>
+                        <th>07:00 AM</th>
+                        <th>08:00 AM</th>
+                        <th>09:00 AM</th>
+                        <th>10:00 AM</th>
+                        <th>11:00 AM</th>
+                        <th>12:00 PM</th>
+                        <th>01:00 PM</th>
+                        <th>02:00 PM</th>
+                        <th>03:00 PM</th>
+                        <th>04:00 PM</th>
+                        <th>05:00 PM</th>
+                        <th>06:00 PM</th>
+                        <th>07:00 PM</th>
+                        <th>08:00 PM</th>
+                        <th>09:00 PM</th>
                     </tr>
-                    <tr>
-                        <th>Laguna-1:</th>
-                        <td>8:00 AM - 9:00 AM | 5/7/2017</td>
-                        <td><span class="glyphicon glyphicon-remove"></span></td>
+                    <!--<form action="#"  th:object="" method="post">-->
+                        <tr th:each="room,room_index : ${roomList}">
+                        <td th:text="${room.roomName}"></td>
+                        <th:block th:each="timeSlot,i: ${timeSlotList}">
+                            <th:block th:if="${i.index >= (timeSlotCount * room_index.index) && i.index < (timeSlotCount * (room_index.index + 1))}">
+                                <td th:if="${timeSlot.reservedBy == null}" th:class="lc_rm_a"th:text="${(timeSlotCount * room_index.index)}"></td>
+                                <td th:if="${timeSlot.reservedBy != null}" th:class="lc_rm_b" th:text="${(timeSlot.time)}"></td>
+                            </th:block>
+                        </th:block>
                     </tr>
-                    <tr>
-                        <th>Cavite-2:</th>
-                        <td>1:00 PM - 2:00 PM | 5/7/2017</td>
-                        <td><span class="glyphicon glyphicon-remove"></span></td>
-                    </tr>
-                    <tr>
-                        <th>Tacloban-1:</th>
-                        <td>2:00 PM - 3:00 PM | 5/7/2017</td>
-                        <td><span class="glyphicon glyphicon-remove"></span></td>
-                    </tr>
+                    <!--</form>-->
                     </tbody>
                 </table>
             </div>
-            <div class="form-group  ">
-                <div class="col-md-10 pull-right">
-                    <button type="button" class="btn btn-default">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </div>
-
+            <form action=""
+            <!-- /.box-body -->
         </div>
     </div>
-
-    <!-- /.row -->
-</section>
 <!-- Footer -->
 <!--/*/ <th:block th:include="fragments/template :: footer"></th:block> /*/-->
 
 <!--/*/ <th:block th:include="fragments/template :: script"></th:block> /*/-->
 <script>
-    $(function () {
-        $('#example1').DataTable()
-        $('#example2').DataTable({
-            'paging'      : true,
-            'lengthChange': false,
-            'searching'   : false,
-            'ordering'    : true,
-            'info'        : true,
-            'autoWidth'   : false
-        })
+    $(".lc_rm_a").click(function(){
+        $(this).toggleClass('lc_rm_a');
+        $(this).toggleClass('lc_rm_t');
     })
+
+    %("#rsvTable").append(
+
+    )
 </script>
 </body>
 </html>

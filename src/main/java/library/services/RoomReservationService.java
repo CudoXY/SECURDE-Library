@@ -3,12 +3,14 @@ package library.services;
 
 import library.domain.RoomReservation;
 
+import java.sql.Date;
+import java.util.List;
+
 public interface RoomReservationService
 {
 	RoomReservation reserveRoom(RoomReservation room, int userId);
 	void cancelReservation(RoomReservation room, int userId);
-	void getRoomReservationByDateTime(RoomReservation roomReservation);
+	List<RoomReservation> getRoomReservationByDate(Date date);
 
 	//    Staff
-
 }

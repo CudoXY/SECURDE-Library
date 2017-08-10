@@ -12,11 +12,12 @@ public class RoomReservation
 	private int id;
 
 	@NotNull
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne
 	private User reservedBy;
 
 	@NotNull
-	private int roomId;
+	@ManyToOne
+	private Room room;
 
 	@NotNull
 	private Date dateReserved;
@@ -24,53 +25,43 @@ public class RoomReservation
 	@NotNull
 	private int timeReserved;
 
-	public int getId()
-	{
+	public int getId() {
 		return id;
 	}
 
-	public void setId(int id)
-	{
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public User getReservedBy()
-	{
+	public User getReservedBy() {
 		return reservedBy;
 	}
 
-	public void setReservedBy(User reservedBy)
-	{
+	public void setReservedBy(User reservedBy) {
 		this.reservedBy = reservedBy;
 	}
 
-	public int getRoomId()
-	{
-		return roomId;
+	public Room getRoom() {
+		return room;
 	}
 
-	public void setRoomId(int roomId)
-	{
-		this.roomId = roomId;
+	public void setRoom(Room room) {
+		this.room = room;
 	}
 
-	public Date getDateReserved()
-	{
+	public Date getDateReserved() {
 		return dateReserved;
 	}
 
-	public void setDateReserved(Date dateReserved)
-	{
+	public void setDateReserved(Date dateReserved) {
 		this.dateReserved = dateReserved;
 	}
 
-	public int getTimeReserved()
-	{
+	public int getTimeReserved() {
 		return timeReserved;
 	}
 
-	public void setTimeReserved(int timeReserved)
-	{
+	public void setTimeReserved(int timeReserved) {
 		this.timeReserved = timeReserved;
 	}
 }
