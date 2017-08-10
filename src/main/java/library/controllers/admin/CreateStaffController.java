@@ -53,7 +53,7 @@ public class CreateStaffController {
     public String handleUserCreateForm(@Valid @ModelAttribute("user") FormCreateTempAccount user, BindingResult bindingResult)
     {
         User newUser = new User();
-        newUser.setIdNumber(user.getIdNumber());
+        newUser.setId(user.getIdNumber());
         newUser.setPassword(user.getPassword());
         newUser.setPasswordRepeat(user.getPasswordRepeat());
         newUser.setRole(user.getRole());
