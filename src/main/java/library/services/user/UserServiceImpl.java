@@ -22,13 +22,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByEmail(String email)
+    public User getUserByEmail(String email)
     {
         return userRepository.findOneByEmail(email);
     }
 
     @Override
-    public Optional<User> getUserByIdNumber(int idNumber) {
+    public User getUserByIdNumber(int idNumber) {
         return userRepository.findOneByIdNumber(idNumber);
     }
 

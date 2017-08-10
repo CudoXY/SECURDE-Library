@@ -48,7 +48,7 @@ public class UserCreateFormValidator implements Validator
 
 	private void validateEmail(Errors errors, FormRegistration form)
 	{
-		if (userService.getUserByEmail(form.getEmail()).isPresent())
+		if (userService.getUserByEmail(form.getEmail()) != null)
 		{
 			errors.reject("email.exists", "User with this email already exists");
 		}
@@ -56,7 +56,7 @@ public class UserCreateFormValidator implements Validator
 
 	private void validateIdNumber(Errors errors, FormRegistration form)
 	{
-		if (userService.getUserByIdNumber(form.getIdNumber()).isPresent())
+		if (userService.getUserByIdNumber(form.getIdNumber()) != null)
 		{
 			errors.reject("id.exists", "User with this ID number already exists");
 		}
