@@ -55,13 +55,9 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <select class="form-control" name="role">
-                                        <option value="">Select Library Role</option>
                                         <option th:each="role : ${T(library.domain.Role).values()}"
-                                                th:if="${role == T(library.domain.Role).ROLE_STAFF || role == T(library.domain.Role).ROLE_MANAGER}"
                                                 th:value="${role}"
-                                                th:text="${role == T(library.domain.Role).ROLE_STAFF ? 'Staff' : 'Manager'}"
-                                                th:seleceted="${role == T(library.domain.Role).ROLE_STAFF ? 'Staff' : 'Manager'}">
-
+                                                th:text="${role == T(library.domain.Role).ROLE_STUDENT ? 'Student': role == T(library.domain.Role).ROLE_FACULTY ? 'Faculty' : role == T(library.domain.Role).ROLE_STAFF ? 'Staff' : role == T(library.domain.Role).ROLE_MANAGER ? 'Manager' : 'Admin'}">
                                         </option>
                                     </select>
                                 </div>

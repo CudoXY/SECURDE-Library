@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface UserService
 {
-    Optional<User> getUserByEmail(String email);
+    User getUserByEmail(String email);
 
-    Optional<User> getUserByIdNumber(int idNumber);
+    User getUserByIdNumber(int idNumber);
 
     Iterable<User> getAllUsers();
 
