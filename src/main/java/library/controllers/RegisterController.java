@@ -84,10 +84,9 @@ public class RegisterController
 		u.setMiddleName(form.getMiddleName());
 		u.setLastName(form.getLastName());
 		u.setRole(form.getRole());
-		u.setUsername(form.getUsername());
+		u.setIdNumber(form.getIdNumber());
 		u.setPassword(form.getPasswordRepeat());
 		u.setEmail(form.getEmail());
-		u.setId(form.getId());
 		u.setSecretQuestion(form.getSecretQuestion());
 		u.setSecretAnswer(form.getSecretAnswer());
 
@@ -109,7 +108,7 @@ public class RegisterController
 		{
 			userService.save(u);
 
-			currentUserService.autologin(u.getUsername(), u.getPasswordRepeat());
+			currentUserService.autologin(u.getIdNumber() + "", u.getPasswordRepeat());
 		}
 		catch (DataIntegrityViolationException e)
 		{

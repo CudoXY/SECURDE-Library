@@ -1,6 +1,5 @@
 package library.domain.validator;
 
-import library.domain.User;
 import library.domain.form.FormRegistration;
 import library.services.user.UserService;
 import org.slf4j.Logger;
@@ -36,7 +35,6 @@ public class UserCreateFormValidator implements Validator
 		FormRegistration user = (FormRegistration) target;
 		validatePasswords(errors, user);
 		validateEmail(errors, user);
-		validateUsername(errors, user);
 		validateIdNumber(errors, user);
 	}
 
@@ -56,17 +54,9 @@ public class UserCreateFormValidator implements Validator
 		}
 	}
 
-	private void validateUsername(Errors errors, FormRegistration form)
-	{
-		if (userService.getUserByUsername(form.getUsername()).isPresent())
-		{
-			errors.reject("username.exists", "User with this username already exists");
-		}
-	}
-
 	private void validateIdNumber(Errors errors, FormRegistration form)
 	{
-		if (userService.getUserById(form.getId()).isPresent())
+		if (userService.getUserByIdNumber(form.getIdNumber()).isPresent())
 		{
 			errors.reject("id.exists", "User with this ID number already exists");
 		}

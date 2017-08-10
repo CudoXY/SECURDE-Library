@@ -3,19 +3,13 @@ package library.domain.form;
 import library.domain.Role;
 import library.domain.SecretQuestion;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.sql.Date;
 
 /**
  * Created by CudoXY on 8/10/2017.
  */
 public class FormRegistration
 {
-	@NotNull
-	private int id;
-
 	@NotNull
 	private String firstName;
 
@@ -25,7 +19,7 @@ public class FormRegistration
 	private String lastName;
 
 	@NotNull
-	private String username;
+	private int idNumber;
 
 	@NotNull
 	private String password;
@@ -53,16 +47,6 @@ public class FormRegistration
 
 	@NotNull
 	private String secretAnswer;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
 
 	public String getFirstName()
 	{
@@ -94,14 +78,14 @@ public class FormRegistration
 		this.lastName = lastName;
 	}
 
-	public String getUsername()
+	public int getIdNumber()
 	{
-		return username;
+		return idNumber;
 	}
 
-	public void setUsername(String username)
+	public void setIdNumber(int idNumber)
 	{
-		this.username = username;
+		this.idNumber = idNumber;
 	}
 
 	public String getPassword()

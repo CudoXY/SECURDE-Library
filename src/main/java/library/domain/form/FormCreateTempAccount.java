@@ -2,27 +2,24 @@ package library.domain.form;
 
 import library.domain.Role;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 /**
  * Created by Brandon on 8/10/2017.
  */
 
 public class FormCreateTempAccount {
-    private String username;
+    private int idNumber;
     private String password;
 
     private String passwordRepeat;
 
     private Role role;
 
-    public String getUsername() {
-        return username;
+    public int getIdNumber() {
+        return idNumber;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setIdNumber(int idNumber) {
+        this.idNumber = idNumber;
     }
 
     public String getPassword() {
