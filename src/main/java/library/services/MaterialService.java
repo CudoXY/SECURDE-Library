@@ -18,4 +18,6 @@ public interface MaterialService
 
 	//    Staff
 	Material saveMaterial(Material material);
+
+//	Material updateMaterial(Material material);
 }
