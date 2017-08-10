@@ -53,8 +53,8 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 	{
 		loadSecretQuestions();
 		loadMaterials();
-		loadRooms();
-		loadRoomReservations();
+//		loadRooms();
+//		loadRoomReservations();
 	}
 
 	private void loadRoomReservations()
