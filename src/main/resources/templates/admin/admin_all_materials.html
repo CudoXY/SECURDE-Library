@@ -165,48 +165,50 @@
 
                                     <!-- /.box-header -->
                                     <!-- form start -->
-                                    <form role="form">
+                                    <form role="form" th:object="${material}" th:action="@{~/manage/material/save}" method="post">
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="title2">Location</label>
-                                                <input type="number" class="form-control" id="location2" placeholder="Title">
+                                                <input type="number" th:field = "*{id}" class="form-control" id="location2" placeholder="Title">
                                             </div>
                                             <div class="form-group">
                                                 <label for="title2">Title</label>
-                                                <input type="text" class="form-control" id="title2" placeholder="Title">
+                                                <input type="text" th:field = "*{title}" class="form-control" id="title2" placeholder="Title">
                                             </div>
                                             <div class="form-group">
                                                 <label for="auth2">Author/s</label>
-                                                <input type="text" class="form-control" id="auth2" placeholder="Author">
+                                                <input type="text" th:field = "*{author}" class="form-control" id="auth2" placeholder="Author">
                                             </div>
                                             <div class="form-group">
                                                 <label for="pub2">Publisher</label>
-                                                <input type="text" class="form-control" id="pub2"
+                                                <input type="text" th:field = "*{publisher}" class="form-control" id="pub2"
                                                        placeholder="Publisher">
                                             </div>
                                             <div class="form-group">
                                                 <label for="year2">Year</label>
-                                                <input type="text" class="form-control" id="year2" placeholder="Year">
+                                                <input type="number" th:field = "*{year}"class="form-control" id="year2" placeholder="Year">
                                             </div>
                                             <div class="form-group">
                                                 <label>Type of Material</label>
-                                                <select class="form-control select2" placeholder="Filter"
+                                                <select name = "materialType" class="form-control select2" placeholder="Filter"
                                                         style="width: 100%;">
-                                                    <option selected="selected">Book</option>
-                                                    <option>Magazine</option>
-                                                    <option>Thesis</option>
+                                                    <option th:each="materialType : ${T(library.domain.helper.Category).values()}"
+                                                            th:value="${materialType.ordinal() + 1}"
+                                                            th:text="${materialType}">
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-success">Done</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
-                                </button>
-                                <button type="button" class="btn btn-success">Done</button>
-                            </div>
+
                         </div>
                         <!-- /.modal-content -->
                     </div>
