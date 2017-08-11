@@ -9,7 +9,6 @@ import java.sql.Date;
 public class User
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	private String firstName;
@@ -17,10 +16,6 @@ public class User
 	private String middleName;
 
 	private String lastName;
-
-	@NotNull
-	@Column(unique = true)
-	private int idNumber;
 
 	@NotNull
 	private String password;
@@ -100,16 +95,6 @@ public class User
 	public void setLastName(String lastName)
 	{
 		this.lastName = lastName;
-	}
-
-	public int getIdNumber()
-	{
-		return idNumber;
-	}
-
-	public void setIdNumber(int idNumber)
-	{
-		this.idNumber = idNumber;
 	}
 
 	public String getPassword()

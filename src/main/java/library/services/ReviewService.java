@@ -12,6 +12,8 @@ public interface ReviewService
 
 	Review publishReview(Review review);
 
+	boolean canUserReview(String materialId, int userId);
+
 	//    Staff
 
 }

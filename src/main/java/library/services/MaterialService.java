@@ -20,4 +20,6 @@ public interface MaterialService
 	Material saveMaterial(Material material);
 
 //	Material updateMaterial(Material material);
+
+	void deleteMaterial(String materialID);
 }

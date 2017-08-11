@@ -51,10 +51,10 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event)
 	{
-		/*loadSecretQuestions();
+		loadSecretQuestions();
 		loadMaterials();
-		loadRooms();*/
-		/*loadRoomReservations();*/
+		loadRooms();
+//		loadRoomReservations();
 	}
 
 	private void loadRoomReservations()
@@ -64,7 +64,7 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 
 		RoomReservation roomReservation = new RoomReservation();
 		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
-		roomReservation.setReservedBy(userRepository.findOneByIdNumber(11427817));
+		roomReservation.setReservedBy(userRepository.findOne(11427817));
 		roomReservation.setRoom(roomRepository.findOneById(1));
 		roomReservation.setTimeReserved(7);
 		roomReservationRepository.save(roomReservation);

@@ -33,7 +33,9 @@ public class ManageMaterialController
 	public String load(
 			@RequestParam(value = "category_id", required = false, defaultValue = "-1") int categoryId, Model model)
 	{
-		model.addAttribute("material", new Material());
+		model.addAttribute("savMaterial", new Material());
+		model.addAttribute("upMaterial", new Material());
+		model.addAttribute("delMaterial", new Material());
 		if (categoryId == -1)
 		{
 			model.addAttribute("materialList", materialService.getMaterialList());
@@ -47,7 +49,7 @@ public class ManageMaterialController
 	}
 
 	@RequestMapping(value = "/manage/material/save", method = RequestMethod.POST)
-	public String save(@Valid @ModelAttribute("material") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
+	public String save(@Valid @ModelAttribute("savMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
 	{
 
 
@@ -69,6 +71,69 @@ public class ManageMaterialController
 			// probably email already exists - very rare case when multiple admins are adding same user
 			// at the same time and form validation has passed for more than one of them.
 			LOGGER.warn("Exception occurred when trying to save the material, assuming duplicate material", e);
+			bindingResult.reject("material.exist", "Material already exists");
+			return "manage/material";
+		}
+		// ok, redirect
+		return "redirect:/manage/material";
+	}
+
+	@RequestMapping(value = "/manage/material/update", method = RequestMethod.POST)
+	public String update(@Valid @ModelAttribute("upMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
+	{
+
+
+		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
+
+		if (bindingResult.hasErrors())
+		{
+			// failed validation
+			return "manage/material";
+		}
+
+		try
+		{
+			Material temp = materialService.getMaterialById(material.getId());
+			temp.setTitle(material.getTitle());
+			temp.setAuthor(material.getAuthor());
+			temp.setPublisher(material.getPublisher());
+			temp.setYear(material.getYear());
+			material.setCategory(materialType);
+			materialService.saveMaterial(temp);
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			// probably email already exists - very rare case when multiple admins are adding same user
+			// at the same time and form validation has passed for more than one of them.
+			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
+			bindingResult.reject("material.exist", "Material already exists");
+			return "manage/material";
+		}
+		// ok, redirect
+		return "redirect:/manage/material";
+	}
+	@RequestMapping(value = "/manage/material/delete", method = RequestMethod.POST)
+	public String delete(@Valid @ModelAttribute("delMaterial") Material material, BindingResult bindingResult)
+	{
+		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
+
+		if (bindingResult.hasErrors())
+		{
+			// failed validation
+
+			return "manage/material";
+		}
+
+		try
+		{
+			System.out.println("inside try. will call deleteMaterial function");
+			materialService.deleteMaterial(material.getId());
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			// probably email already exists - very rare case when multiple admins are adding same user
+			// at the same time and form validation has passed for more than one of them.
+			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
 			bindingResult.reject("material.exist", "Material already exists");
 			return "manage/material";
 		}
