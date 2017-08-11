@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.sql.Date;
@@ -50,7 +51,7 @@ public class CreateStaffController {
     }
 
     @RequestMapping(value = "manage/user/new", method = RequestMethod.POST)
-    public String handleUserCreateForm(@Valid @ModelAttribute("user") FormCreateTempAccount user, BindingResult bindingResult)
+    public String handleUserCreateForm(@Valid @ModelAttribute("user") FormCreateTempAccount user, BindingResult bindingResult  )
     {
         User newUser = new User();
         newUser.setId(user.getIdNumber());
@@ -58,7 +59,6 @@ public class CreateStaffController {
         newUser.setPasswordRepeat(user.getPasswordRepeat());
         newUser.setRole(user.getRole());
         newUser.setDateRegistered(new Date(new java.util.Date().getTime()));
-        newUser.setLocked(false);
         newUser.setTemporary(true);
 
         System.out.println(String.format("Processing user create form=%s, bindingResult=%s", user, bindingResult));
@@ -66,7 +66,7 @@ public class CreateStaffController {
         if (bindingResult.hasErrors())
         {
             // failed validation
-            return "admin/admin_create_staff";
+            return "redirect:/manage/user/new";
         }
 
         try

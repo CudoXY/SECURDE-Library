@@ -38,8 +38,6 @@ public class ManageBookController
     @RequestMapping(value = "/manage/book/save", method = RequestMethod.POST)
     public String save(@Valid @ModelAttribute("material") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
     {
-
-
         System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
 
         if (bindingResult.hasErrors())
