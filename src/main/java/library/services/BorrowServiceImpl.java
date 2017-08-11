@@ -30,4 +30,21 @@ public class BorrowServiceImpl implements BorrowService {
         borrow.setDateReturned(new Timestamp(new java.util.Date().getTime()));
         return borrowRepository.save(borrow);
     }
+
+    @Override
+    public Borrow getMaterialStatus(String materialId) {
+        return borrowRepository.findFirstByMaterial_IdOrderByDateBorrowedDesc(materialId);
+    }
+
+    @Override
+    public Borrow getBorrowMaterialById(int id) {
+        return borrowRepository.findById(id);
+    }
+
+    @Override
+    public Borrow saveBorrow(Borrow borrow) {
+        return borrowRepository.save(borrow);
+    }
+
+
 }

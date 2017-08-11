@@ -2,6 +2,7 @@ package library.services;
 
 import library.domain.Material;
 import library.domain.helper.Filter;
+import library.repositories.BorrowRepository;
 import library.repositories.MaterialRepository;
 import library.repositories.TagRepository;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -22,10 +24,16 @@ public class MaterialServiceImpl implements MaterialService {
 
     private TagRepository tagRepository;
     private MaterialRepository materialRepository;
+    private BorrowRepository borrowRepository;
 
     @Autowired
     public void setMaterialRepository(MaterialRepository materialRepository) {
         this.materialRepository = materialRepository;
+    }
+
+    @Autowired
+    public void setMaterialRepository(BorrowRepository borrowRepository) {
+        this.borrowRepository = borrowRepository;
     }
 
     @Autowired
@@ -93,7 +101,13 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public Iterable<Material> getMaterialListByCategory(int category)
     {
-        return materialRepository.findAllByCategory(category);
+        Iterable<Material> materialList = materialRepository.findAllByCategory(category);
+        Iterator<Material> iter = materialList.iterator();
+        while(iter.hasNext()){
+            Material m = iter.next();
+            m.setBorrowStatus(borrowRepository.findFirstByMaterial_IdAndDateBorrowedIsNotNullAndDateReturnedIsNull(m.getId()));
+        }
+        return materialList;
     }
 
     @Override
@@ -107,7 +121,9 @@ public class MaterialServiceImpl implements MaterialService {
     public Material getMaterialById(String id)
     {
         System.out.println("\tgetMaterialById");
-        return materialRepository.findById(id);
+        Material m = materialRepository.findById(id);
+        m.setBorrowStatus(borrowRepository.findFirstByMaterial_IdAndDateBorrowedIsNotNullAndDateReturnedIsNull(m.getId()));
+        return m;
     }
 
     @Override
@@ -121,5 +137,19 @@ public class MaterialServiceImpl implements MaterialService {
     {
         materialRepository.deleteById(materialID);
     }
+
+    @Override
+    public Iterable<Material> getMaterialWithBorrowStatus() {
+
+        Iterable<Material> materialList = materialRepository.findAll();
+        Iterator<Material> iter = materialList.iterator();
+        while(iter.hasNext()){
+            Material m = iter.next();
+                    m.setBorrowStatus(borrowRepository.findFirstByMaterial_IdAndDateBorrowedIsNotNullAndDateReturnedIsNull(m.getId()));
+        }
+
+        return materialList;
+    }
+
 
 }

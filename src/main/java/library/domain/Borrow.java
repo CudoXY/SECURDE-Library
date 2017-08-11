@@ -19,7 +19,6 @@ public class Borrow
     @ManyToOne
     private Material material;
 
-    @NotNull
     private Timestamp dateBorrowed;
 
     private Timestamp dateReturned;

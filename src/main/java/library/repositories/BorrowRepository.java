@@ -9,4 +9,15 @@ public interface BorrowRepository extends CrudRepository<Borrow, Integer>{
 
 	@Transactional
 	Borrow findFirstByMaterial_IdAndBorrower_Id(String materialId, int borrowerId);
+
+	@Transactional
+	Borrow findFirstByMaterial_IdOrderByDateBorrowedDesc(String materialId);
+
+	@Transactional
+	Borrow findFirstByMaterial_IdAndDateBorrowedIsNotNullAndDateReturnedIsNull(String materialId);
+
+	@Transactional
+	Borrow findById(int id);
+
+
 }
