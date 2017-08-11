@@ -47,7 +47,7 @@
                                 </tr>
 
                                 <tr th:each="user : ${userList}">
-                                    <td th:text="${user.idNumber}" th:id = "${user.id}+'idNumber'"></td>
+                                    <td th:text="${user.id}" th:id = "${user.id}+'id'"></td>
                                     <td th:text="${user.firstName}"></td>
                                     <td th:text="${user.middleName}"></td>
                                     <td th:text="${user.lastName}"></td>
@@ -72,7 +72,7 @@
                         <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
-                    <form action="new/">
+                    <form th:action="@{~/manage/user/new}">
                         <input type="submit" class="btn btn-info" value="Add User"/>
                     </form>
                 </div>
@@ -100,7 +100,7 @@
                                                             th:text="${role == T(library.domain.Role).ROLE_STUDENT ? 'Student': role == T(library.domain.Role).ROLE_FACULTY ? 'Faculty' : role == T(library.domain.Role).ROLE_STAFF ? 'Staff' : role == T(library.domain.Role).ROLE_MANAGER ? 'Manager' : 'Admin'}">
                                                     </option>
                                                 </select>
-                                                <input type="hidden"  name="idNumber" id="id_number"/>
+                                                <input type="hidden"  name="id" id="id_number"/>
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
@@ -136,7 +136,7 @@
                                         <h5>Are you sure you want to delete this user?</h5>
                                         <div class="box-body">
                                             <div class="form-group">
-                                                <input type="hidden"  name="idNumber" id="useridNumber"/>
+                                                <input type="hidden"  name="id" id="useridNumber"/>
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
@@ -173,7 +173,7 @@
                                         <h5>Are you sure you want to unlock this user?</h5>
                                         <div class="box-body">
                                             <div class="form-group">
-                                                <input type="hidden"  name="idNumber" id="useridNumberUnlock"/>
+                                                <input type="hidden"  name="id" id="useridNumberUnlock"/>
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
@@ -210,23 +210,22 @@
 <script>
     $(document).ready(function(){
         $(".editUser").click(function(){
-            var id = this.id;
-            console.log(id)
-            var idNumber = $("#"+id+"idNumber").text();
-            $("#id_number").val(idNumber)
-            console.log($("#" + id + "idNumber").text())
+            var id = this.id
+            var id = $("#"+id+"id").text();
+            $("#id_number").val(id)
+            console.log($("#id"))
         });
         $(".deleteUser").click(function(){
             var id = this.id
-            var idNumber = $("#"+id+"idNumber").text();
-            $("#useridNumber").val(idNumber)
-            console.log($("#" + id + "idNumber").text())
+            var id = $("#"+id+"id").text();
+            $("#useridNumber").val(id)
+            console.log($("#" + id + "id").text())
         });
         $(".unlockUser").click(function(){
             var id = this.id
-            var idNumber = $("#"+id+"idNumber").text();
-            $("#useridNumberUnlock").val(idNumber)
-            console.log($("#" + id + "idNumber").text())
+            var id = $("#"+id+"id").text();
+            $("#useridNumberUnlock").val(id)
+            console.log($("#" + id + "id").text())
         });
     });
 </script>

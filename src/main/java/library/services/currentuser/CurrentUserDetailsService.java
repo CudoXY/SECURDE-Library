@@ -26,7 +26,7 @@ public class CurrentUserDetailsService implements UserDetailsService
 	@Override
 	public CurrentUser loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-		User user = userService.getUserByIdNumber(Integer.parseInt(username));
+		User user = userService.getUserById(Integer.parseInt(username));
 
 		if (user == null)
 		{

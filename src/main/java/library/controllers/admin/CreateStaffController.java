@@ -54,12 +54,13 @@ public class CreateStaffController {
     public String handleUserCreateForm(@Valid @ModelAttribute("user") FormCreateTempAccount user, BindingResult bindingResult  )
     {
         User newUser = new User();
-        newUser.setId(user.getIdNumber());
+        newUser.setId(user.getId());
         newUser.setPassword(user.getPassword());
         newUser.setPasswordRepeat(user.getPasswordRepeat());
         newUser.setRole(user.getRole());
         newUser.setDateRegistered(new Date(new java.util.Date().getTime()));
         newUser.setTemporary(true);
+        newUser.setLocked(true);
 
         System.out.println(String.format("Processing user create form=%s, bindingResult=%s", user, bindingResult));
 
@@ -81,6 +82,6 @@ public class CreateStaffController {
             return "admin/admin_create_staff";
         }
         // ok, redirect
-        return "redirect:/manage/dashboard";
+        return "redirect:/manage/user";
     }
 }

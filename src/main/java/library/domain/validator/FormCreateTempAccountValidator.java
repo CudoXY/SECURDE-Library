@@ -34,7 +34,7 @@ public class FormCreateTempAccountValidator implements Validator
 		LOGGER.debug("Validating {}", target);
 		User user = (User) target;
 		validatePasswords(errors, user);
-		validateIdNumber(errors, user);
+		validateId(errors, user);
 	}
 
 	private void validatePasswords(Errors errors, User form)
@@ -45,9 +45,9 @@ public class FormCreateTempAccountValidator implements Validator
 		}
 	}
 
-	private void validateIdNumber(Errors errors, User form)
+	private void validateId(Errors errors, User form)
 	{
-		if (userService.getUserByIdNumber(form.getId()) != null)
+		if (userService.getUserById(form.getId()) != null)
 		{
 			errors.reject("username.exists", "User with this username already exists");
 		}

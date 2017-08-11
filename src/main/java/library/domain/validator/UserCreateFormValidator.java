@@ -35,7 +35,7 @@ public class UserCreateFormValidator implements Validator
 		FormRegistration user = (FormRegistration) target;
 		validatePasswords(errors, user);
 		validateEmail(errors, user);
-		validateIdNumber(errors, user);
+		validateId(errors, user);
 	}
 
 	private void validatePasswords(Errors errors, FormRegistration form)
@@ -54,9 +54,9 @@ public class UserCreateFormValidator implements Validator
 		}
 	}
 
-	private void validateIdNumber(Errors errors, FormRegistration form)
+	private void validateId(Errors errors, FormRegistration form)
 	{
-		if (userService.getUserByIdNumber(form.getIdNumber()) != null)
+		if (userService.getUserById(form.getId()) != null)
 		{
 			errors.reject("id.exists", "User with this ID number already exists");
 		}

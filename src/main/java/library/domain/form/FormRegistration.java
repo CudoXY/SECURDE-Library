@@ -19,7 +19,7 @@ public class FormRegistration
 	private String lastName;
 
 	@NotNull
-	private int idNumber;
+	private int id;
 
 	@NotNull
 	private String password;
@@ -78,14 +78,14 @@ public class FormRegistration
 		this.lastName = lastName;
 	}
 
-	public int getIdNumber()
+	public int getId()
 	{
-		return idNumber;
+		return id;
 	}
 
-	public void setIdNumber(int idNumber)
+	public void setId(int id)
 	{
-		this.idNumber = idNumber;
+		this.id = id;
 	}
 
 	public String getPassword()

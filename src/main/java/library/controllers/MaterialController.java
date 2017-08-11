@@ -1,12 +1,10 @@
 package library.controllers;
 
 import library.domain.Borrow;
-import library.domain.Material;
 import library.domain.Review;
 import library.domain.User;
 import library.domain.helper.Filter;
 import library.domain.helper.SearchFilter;
-import library.repositories.UserRepository;
 import library.services.BorrowService;
 import library.services.MaterialService;
 import library.services.ReviewService;
@@ -21,8 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -138,7 +134,7 @@ public class MaterialController
 		if (auth instanceof AnonymousAuthenticationToken)
 			return null;
 
-		return userService.getUserByIdNumber(Integer.parseInt(auth.getName()));
+		return userService.getUserById(Integer.parseInt(auth.getName()));
 	}
 //
 //    @RequestMapping("product/edit/{id}")

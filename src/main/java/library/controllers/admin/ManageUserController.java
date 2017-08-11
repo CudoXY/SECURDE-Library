@@ -1,6 +1,6 @@
 package library.controllers.admin;
 import library.domain.User;
-import library.domain.form.FormUserAccountOnlyIdNumber;
+import library.domain.form.FormUserAccountOnlyId;
 import library.domain.form.FormEditUserRole;
 import library.services.user.UserService;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class ManageUserController {
     @RequestMapping(value = "manage/user/save", method = RequestMethod.POST)
     public String UpdateUserRole(@Valid @ModelAttribute("newUser") FormEditUserRole newUser, BindingResult bindingResult)
     {
-        System.out.println("ID NUMBER IS: " + newUser.getIdNumber());
+        System.out.println("ID NUMBER IS: " + newUser.getId());
         System.out.println("ROLE IS " + newUser.getRole());
         System.out.println(String.format("Processing user create form=%s, bindingResult=%s", newUser, bindingResult));
 
@@ -50,7 +50,7 @@ public class ManageUserController {
 
         try
         {
-            User temp = userService.getUserByIdNumber(newUser.getIdNumber());
+            User temp = userService.getUserById(newUser.getId());
             temp.setRole(newUser.getRole());
             System.out.println("Temp user " + temp.getRole() );
             userService.save(temp);
@@ -68,9 +68,9 @@ public class ManageUserController {
     }
 
     @RequestMapping(value = "manage/user/unlock", method = RequestMethod.POST)
-    public String UpdateUserStatus(@Valid @ModelAttribute("newUser") FormUserAccountOnlyIdNumber newUser, BindingResult bindingResult)
+    public String UpdateUserStatus(@Valid @ModelAttribute("newUser") FormUserAccountOnlyId newUser, BindingResult bindingResult)
     {
-        System.out.println("ID NUMBER IS: " + newUser.getIdNumber());
+        System.out.println("ID NUMBER IS: " + newUser.getId());
         System.out.println(String.format("Processing user create form=%s, bindingResult=%s", newUser, bindingResult));
 
         if (bindingResult.hasErrors())
@@ -81,7 +81,7 @@ public class ManageUserController {
 
         try
         {
-            User temp = userService.getUserByIdNumber(newUser.getIdNumber());
+            User temp = userService.getUserById(newUser.getId());
             temp.setLocked(false);
             System.out.println("Temp user " + temp.getRole() );
             userService.save(temp);
@@ -99,9 +99,9 @@ public class ManageUserController {
     }
 
     @RequestMapping(value = "manage/user/delete", method = RequestMethod.POST)
-    public String DeleteUser(@Valid @ModelAttribute("delUser") FormUserAccountOnlyIdNumber delUser, BindingResult bindingResult)
+    public String DeleteUser(@Valid @ModelAttribute("delUser") FormUserAccountOnlyId delUser, BindingResult bindingResult)
     {
-        System.out.println("ID NUMBER IS: " + delUser.getIdNumber());
+        System.out.println("ID NUMBER IS: " + delUser.getId());
         System.out.println(String.format("Processing user create form=%s, bindingResult=%s", delUser, bindingResult));
 
         if (bindingResult.hasErrors())
@@ -113,7 +113,7 @@ public class ManageUserController {
         try
         {
             System.out.println("Attempting to Delete - ManageUserController");
-            userService.deleteByIdNumber(delUser.getIdNumber());
+            userService.deleteById(delUser.getId());
         }
         catch (DataIntegrityViolationException e)
         {
