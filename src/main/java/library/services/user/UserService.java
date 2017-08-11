@@ -15,6 +15,7 @@ public interface UserService
 
     User save(User form);
 
+    void deleteByIdNumber(int idNumber);
     // Staff
     User setUserLock(User user, boolean isLocked);
 }

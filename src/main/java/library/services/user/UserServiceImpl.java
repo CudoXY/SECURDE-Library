@@ -50,4 +50,9 @@ public class UserServiceImpl implements UserService {
         user.setLocked(isLocked);
         return userRepository.save(user);
     }
+
+    @Override
+    public void deleteByIdNumber(int idNumber) {
+        userRepository.deleteByIdNumber(idNumber);
+    }
 }

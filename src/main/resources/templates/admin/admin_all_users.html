@@ -47,7 +47,7 @@
                                 </tr>
 
                                 <tr th:each="user : ${userList}">
-                                    <td th:text="${user.username}"></td>
+                                    <td th:text="${user.idNumber}" th:id = "${user.id}+'idNumber'"></td>
                                     <td th:text="${user.firstName}"></td>
                                     <td th:text="${user.middleName}"></td>
                                     <td th:text="${user.lastName}"></td>
@@ -55,14 +55,14 @@
                                     <td th:text="${user.isLocked()} ? 'Locked' : 'Active'"></td>
                                     <td>
                                         <div class = "btn-group">
-                                            <button type="button" class="btn btn-default">
-                                                <i class="fa fa-pencil"></i>
+                                            <button type="button" class="btn btn-default editUser" th:id="${user.id}" data-toggle="modal" data-target="#modal-default">
+                                                <i class="fa fa-pencil">Edit Role</i>
                                             </button>
-                                            <button type="button" class="btn btn-default">
-                                                <i class="fa fa-trash"></i>
+                                            <button type="button" class="btn btn-default deleteUser" data-toggle="modal" data-target="#modal-delete" th:id="${user.id}">
+                                                <i class="fa fa-trash">Delete User</i>
                                             </button>
-                                            <button type="button" class="btn btn-default" th:if="${user.isLocked()}">
-                                                <i class = "fa fa-unlock-alt"> Unlock</i>
+                                            <button type="button" class="btn btn-default unlockUser" th:if="${user.isLocked()}" data-toggle="modal" data-target="#modal-unlock" th:id="${user.id}">
+                                                <i class = "fa fa-unlock-alt">Unlock</i>
                                             </button>
                                         </div>
                                     </td>
@@ -77,7 +77,121 @@
                     </form>
                 </div>
 
+                <!-- Modal for the edit buttons -->
+                <div class="modal fade" id="modal-default">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Edit Role</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box box-primary">
 
+                                    <!-- /.box-header -->
+                                    <!-- form start -->
+                                    <form role="form" th:object="${newUser}" th:action="@{~/manage/user/save}" method="post">
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <select class="form-control" name="role" id="newRole">
+                                                    <option th:each="role : ${T(library.domain.Role).values()}"
+                                                            th:value="${role}"
+                                                            th:text="${role == T(library.domain.Role).ROLE_STUDENT ? 'Student': role == T(library.domain.Role).ROLE_FACULTY ? 'Faculty' : role == T(library.domain.Role).ROLE_STAFF ? 'Staff' : role == T(library.domain.Role).ROLE_MANAGER ? 'Manager' : 'Admin'}">
+                                                    </option>
+                                                </select>
+                                                <input type="hidden"  name="idNumber" id="id_number"/>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-success">Update</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                <!-- .modal for delete -->
+                <div class="modal fade" id="modal-delete">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Delete User</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box box-primary">
+
+                                    <!-- /.box-header -->
+                                    <!-- form start -->
+                                    <form role="form" th:object="${delUser}" th:action="@{~/manage/user/delete}" method="post">
+                                        <h5>Are you sure you want to delete this user?</h5>
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <input type="hidden"  name="idNumber" id="useridNumber"/>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-success">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                <!-- .modal for unlock -->
+                <div class="modal fade" id="modal-unlock">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Unlock User</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box box-primary">
+
+                                    <!-- /.box-header -->
+                                    <!-- form start -->
+                                    <form role="form" th:object="${delUser}" th:action="@{~/manage/user/unlock}" method="post">
+                                        <h5>Are you sure you want to unlock this user?</h5>
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <input type="hidden"  name="idNumber" id="useridNumberUnlock"/>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-success">Unlock</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
             </div>
             <!-- /.row (main row) -->
 
@@ -93,5 +207,28 @@
 
 <!-- jQuery 3 -->
 <!--/*/ <th:block th:include="fragments/admin/template :: script"></th:block> /*/-->
+<script>
+    $(document).ready(function(){
+        $(".editUser").click(function(){
+            var id = this.id;
+            console.log(id)
+            var idNumber = $("#"+id+"idNumber").text();
+            $("#id_number").val(idNumber)
+            console.log($("#" + id + "idNumber").text())
+        });
+        $(".deleteUser").click(function(){
+            var id = this.id
+            var idNumber = $("#"+id+"idNumber").text();
+            $("#useridNumber").val(idNumber)
+            console.log($("#" + id + "idNumber").text())
+        });
+        $(".unlockUser").click(function(){
+            var id = this.id
+            var idNumber = $("#"+id+"idNumber").text();
+            $("#useridNumberUnlock").val(idNumber)
+            console.log($("#" + id + "idNumber").text())
+        });
+    });
+</script>
 </body>
 </html>
