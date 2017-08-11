@@ -51,10 +51,10 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event)
 	{
-		loadSecretQuestions();
+		/*loadSecretQuestions();
 		loadMaterials();
-		loadRooms();
-		loadRoomReservations();
+		loadRooms();*/
+		/*loadRoomReservations();*/
 	}
 
 	private void loadRoomReservations()
