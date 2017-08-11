@@ -15,7 +15,7 @@ public interface MaterialRepository extends CrudRepository<Material, Integer>{
 	Material findById(String id);
 
 	@Transactional
-	Material deleteById(String id);
+	void deleteById(String id);
 
 
 

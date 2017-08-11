@@ -117,9 +117,9 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public Material deleteMaterial(Material material)
+    public void deleteMaterial(String materialID)
     {
-       return materialRepository.deleteById(material.getId());
+        materialRepository.deleteById(materialID);
     }
 
 }

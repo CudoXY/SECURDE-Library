@@ -127,7 +127,7 @@ public class ManageMaterialController
 		try
 		{
 			System.out.println("inside try. will call deleteMaterial function");
-			materialService.deleteMaterial(material);
+			materialService.deleteMaterial(material.getId());
 		}
 		catch (DataIntegrityViolationException e)
 		{

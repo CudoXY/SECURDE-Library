@@ -78,7 +78,7 @@
                                     <td th:if = "${material.category == 3}" th:value="${material.category}" th:id="${material.id}+'category'" >Thesis</td>
                                     <td><span class="label label-success">In Shelf</span></td>
                                     <td>
-                                        <div class="btn-group">
+                                        <div class="btn-group pull-right" >
                                             <button type="button" th:id="${material.id}" class="editMaterial btn btn-default" data-toggle="modal"
                                                     data-target="#modal-edit">
                                                 <i class="fa fa-edit"> Edit</i>
@@ -101,6 +101,9 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-add">
                         <i class="fa fa-plus"> Add Material</i>
                     </button>
+                    <button type="button" class="btn btn-info pull-right">
+                        <i class="fa fa-plus"> Export Materials</i>
+                    </button>
                 </div>
                 <!-- .modal for delete -->
                 <div class="modal fade" id="modal-delete">
@@ -121,6 +124,11 @@
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <input type="hidden" th:field = "*{id}" class="form-control" id="materialID" placeholder="Location">
+                                                <input type="hidden" th:field = "*{title}" class="form-control" id="materialTitle" placeholder="Location">
+                                                <input type="hidden" th:field = "*{author}" class="form-control" id="materialAuthor" placeholder="Location">
+                                                <input type="hidden" th:field = "*{publisher}" class="form-control" id="materialPublisher" placeholder="Location">
+                                                <input type="hidden" th:field = "*{year}" class="form-control" id="materialYear" placeholder="Location">
+                                                <input type="hidden" th:field = "*{category}" class="form-control" id="materialCategory" placeholder="Location">
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
@@ -342,9 +350,23 @@
 
         });
         $(".deleteMaterial").click(function(){
-
-            $("#materialID").val($(this).val());
-            console.log($("#materialID").val());
+            var id = $(this).val();
+            var materialTitle = $("#" + id + "title").text();
+            var materialAuthor = $("#" + id + "author").text();
+            var materialPublisher = $("#" + id + "publisher").text();
+            var materialYear = $("#" + id + "year").text();
+            var materialCategory = $("#" + id + "category").text();
+            var materialCategoryID;
+            switch(materialCategory){
+                case "Book" : materialCategoryID = 1; break;
+                case "Magazine" : materialCategoryID = 2; break;
+                case "Thesis" : materialCategoryID = 3; break;
+            }
+            $("#materialID").val(id);
+            $("#materialAuthor").val(materialTitle);
+            $("#materialPublisher").val(materialPublisher);
+            $("#materialYear").val(materialYear);
+            $("#materialCategory").val(materialCategoryID);
         });
 
     });
