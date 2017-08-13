@@ -9,12 +9,11 @@ public interface UserService
 {
     User getUserByEmail(String email);
 
-    User getUserByIdNumber(int idNumber);
+    User getUserById(int id);
 
     Iterable<User> getAllUsers();
 
     User save(User form);
 
-    // Staff
-    User setUserLock(User user, boolean isLocked);
+    void deleteById(int id);
 }

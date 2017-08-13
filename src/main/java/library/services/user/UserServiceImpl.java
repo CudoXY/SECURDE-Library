@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByIdNumber(int idNumber) {
-        return userRepository.findOneById(idNumber);
+    public User getUserById(int id) {
+        return userRepository.findOneById(id);
     }
 
     @Override
@@ -45,9 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User setUserLock(User user, boolean isLocked)
-    {
-        user.setLocked(isLocked);
-        return userRepository.save(user);
+    public void deleteById(int id) {
+        userRepository.deleteById(id);
     }
 }

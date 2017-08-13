@@ -7,19 +7,19 @@ import library.domain.Role;
  */
 
 public class FormCreateTempAccount {
-    private int idNumber;
+    private int id;
     private String password;
 
     private String passwordRepeat;
 
     private Role role;
 
-    public int getIdNumber() {
-        return idNumber;
+    public int getId() {
+        return id;
     }
 
-    public void setIdNumber(int idNumber) {
-        this.idNumber = idNumber;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPassword() {

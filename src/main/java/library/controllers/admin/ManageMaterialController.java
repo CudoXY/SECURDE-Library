@@ -1,7 +1,9 @@
 package library.controllers.admin;
 
+import library.domain.Borrow;
 import library.domain.Material;
-import library.services.material.MaterialService;
+import library.services.BorrowService;
+import library.services.MaterialService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +17,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.GregorianCalendar;
 
 @Controller
 public class ManageMaterialController
 {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private MaterialService materialService;
+	private BorrowService borrowService;
 
 	@Autowired
 	public void setMaterialService(MaterialService materialService) {
 		this.materialService = materialService;
+	}
+
+	@Autowired
+	public void setMaterialService(BorrowService borrowService) {
+		this.borrowService = borrowService;
 	}
 
 	@RequestMapping(value = "/manage/material", method = RequestMethod.GET)
@@ -34,9 +45,13 @@ public class ManageMaterialController
 		model.addAttribute("savMaterial", new Material());
 		model.addAttribute("upMaterial", new Material());
 		model.addAttribute("delMaterial", new Material());
+		model.addAttribute("borMaterial", new Material());
+		model.addAttribute("retMaterial", new Material());
+
+
 		if (categoryId == -1)
 		{
-			model.addAttribute("materialList", materialService.getMaterialList());
+			model.addAttribute("materialList", materialService.getMaterialWithBorrowStatus());
 		}
 		else
 		{
@@ -110,7 +125,75 @@ public class ManageMaterialController
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
-	@RequestMapping(value = "/manage/material/delete", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/manage/material/return", method = RequestMethod.POST)
+	public String ret(@Valid @ModelAttribute("retMaterial") Material material, BindingResult bindingResult)
+	{
+		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
+
+		if (bindingResult.hasErrors())
+		{
+			// failed validation
+
+			return "manage/material";
+		}
+
+		try
+		{
+			System.out.println("inside try. will call return material function");
+
+			Material temp = materialService.getMaterialById(material.getId());
+
+			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
+			borrow.setDateReturned(new Timestamp(System.currentTimeMillis()));
+			borrowService.saveBorrow(borrow);
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			// probably email already exists - very rare case when multiple admins are adding same user
+			// at the same time and form validation has passed for more than one of them.
+			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
+			bindingResult.reject("material.exist", "Material already exists");
+			return "manage/material";
+		}
+		// ok, redirect
+		return "redirect:/manage/material";
+	}
+
+	@RequestMapping(value = "/manage/material/borrow", method = RequestMethod.POST)
+	public String borrow(@Valid @ModelAttribute("retMaterial") Material material, BindingResult bindingResult)
+	{
+		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
+
+		if (bindingResult.hasErrors())
+		{
+			// failed validation
+
+			return "manage/material";
+		}
+
+		try
+		{
+			System.out.println("inside try. will call borrow material function");
+
+			Material temp = materialService.getMaterialById(material.getId());
+
+			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
+			borrow.setDateBorrowed(new Timestamp(System.currentTimeMillis()));
+			borrowService.saveBorrow(borrow);
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			// probably email already exists - very rare case when multiple admins are adding same user
+			// at the same time and form validation has passed for more than one of them.
+			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
+			bindingResult.reject("material.exist", "Material already exists");
+			return "manage/material";
+		}
+		// ok, redirect
+		return "redirect:/manage/material";
+	}
+
 	public String delete(@Valid @ModelAttribute("delMaterial") Material material, BindingResult bindingResult)
 	{
 		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));

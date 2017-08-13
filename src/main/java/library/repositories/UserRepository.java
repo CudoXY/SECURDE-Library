@@ -13,4 +13,6 @@ public interface UserRepository extends CrudRepository<User, Integer>
 
 	@Transactional
 	User findOneByEmail(String email);
+	@Transactional
+    void deleteById(int id);
 }

@@ -88,7 +88,7 @@ public class RegisterController
 		u.setMiddleName(form.getMiddleName());
 		u.setLastName(form.getLastName());
 		u.setRole(form.getRole());
-		u.setId(form.getIdNumber());
+		u.setId(form.getId());
 		u.setPassword(form.getPasswordRepeat());
 		System.out.println("form.getPasswordRepeat() = " + form.getPasswordRepeat());
 		System.out.println("u.setPassword = " + u.getPassword());

@@ -6,6 +6,7 @@ import org.hibernate.search.annotations.Store;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Indexed
@@ -33,6 +34,17 @@ public class Material
     @Field(store = Store.NO)
     @NotNull
     private int category;
+
+    @Transient
+    private Borrow borrowStatus;
+
+    public Borrow getBorrowStatus() {
+        return borrowStatus;
+    }
+
+    public void setBorrowStatus(Borrow borrowStatus) {
+        this.borrowStatus = borrowStatus;
+    }
 
     public String getId()
     {
@@ -93,4 +105,6 @@ public class Material
     {
         this.category = category;
     }
+
+
 }

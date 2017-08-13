@@ -4,6 +4,8 @@ package library.services.material;
 import library.domain.Material;
 import library.domain.helper.Filter;
 
+import java.util.List;
+
 public interface MaterialService
 {
 	Iterable<Material> getMaterialList();
@@ -22,4 +24,6 @@ public interface MaterialService
 //	Material updateMaterial(Material material);
 
 	void deleteMaterial(String materialID);
+
+	Iterable<Material> getMaterialWithBorrowStatus();
 }

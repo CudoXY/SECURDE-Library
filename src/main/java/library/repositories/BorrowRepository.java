@@ -15,6 +15,7 @@ public interface BorrowRepository extends CrudRepository<Borrow, Integer>{
 	Borrow findFirstByMaterial_IdAndDateBorrowedIsNotNullAndDateReturnedIsNull(String materialId);
 
 	// Reserve
+	@Transactional
 	Borrow findFirstByMaterial_IdAndBorrower_IdAndDateBorrowedIsNullAndDateReturnedIsNull(String materialId, int borrowerId);
 
 	@Transactional
@@ -22,4 +23,15 @@ public interface BorrowRepository extends CrudRepository<Borrow, Integer>{
 
 	@Transactional
 	Borrow findFirstByMaterial_IdAndBorrower_IdAndDateBorrowedIsNotNullAndIsReleasedIsTrue(String materialId, int borrowerId);
+
+	@Transactional
+	Borrow findFirstByMaterial_IdAndBorrower_Id(String materialId, int borrowerId);
+
+	@Transactional
+	Borrow findFirstByMaterial_IdOrderByDateBorrowedDesc(String materialId);
+
+	@Transactional
+	Borrow findById(int id);
+
+
 }
