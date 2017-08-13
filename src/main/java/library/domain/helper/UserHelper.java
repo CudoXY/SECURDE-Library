@@ -19,6 +19,6 @@ public class UserHelper
 
 		System.out.println("UserService :: auth.getName() = " + auth.getName());
 
-		return userService.getUserByIdNumber(Integer.parseInt(auth.getName()));
+		return userService.getUserById(Integer.parseInt(auth.getName()));
 	}
 }

@@ -6,9 +6,8 @@ import library.domain.Borrow;
 public interface BorrowService
 {
 	// Staff
-	Borrow borrow(Borrow borrow);
+	Borrow requestBorrow(Borrow borrow);
 	Borrow reserve(Borrow borrow);
-	Borrow returnMaterial(Borrow borrow);
 
 	void cancelBorrow(String materialId, int userId);
 	void cancelReserve(String materialId, int userId);
@@ -18,5 +17,10 @@ public interface BorrowService
 	boolean isReserverByUser(String materialId, int userId);
 	java.util.Date getEstimatedAvailabilityDate(String materialId);
 	java.util.Date getEstimatedAvailabilityDateOfUser(String materialId, int userId);
+
+	Borrow returnMaterial(Borrow borrow);
+	Borrow getMaterialStatus(String materialId);
+	Borrow getBorrowMaterialById(int id);
+	void saveBorrow(Borrow borrow);
 
 }

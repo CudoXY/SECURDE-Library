@@ -20,8 +20,14 @@ public class BorrowServiceImpl implements BorrowService {
     }
 
     @Override
-    public Borrow borrow(Borrow borrow)
+    public Borrow requestBorrow(Borrow borrow)
     {
+        if (getActiveBorrower(borrow.getMaterial().getId()) != null)
+        {
+            // TODO:
+            return null;
+        }
+
         borrow.setDateBorrowed(new Date(new java.util.Date().getTime()));
         System.out.println("\tborrow = " + borrow.getBorrower().getId());
         return borrowRepository.save(borrow);
@@ -30,6 +36,9 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     public Borrow reserve(Borrow borrow)
     {
+        if (getBorrowStatusByUser(borrow.getMaterial().getId(), borrow.getBorrower().getId()) != null)
+            return null;
+
         return borrowRepository.save(borrow);
     }
 
@@ -73,7 +82,7 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     public Borrow getBorrowStatusByUser(String materialId, int userId)
     {
-        return borrowRepository.findFirstByMaterial_IdAndBorrower_IdAndDateBorrowedIsNullAndDateReturnedIsNull(materialId, userId);
+        return borrowRepository.findFirstByMaterial_IdAndBorrower_IdAndDateReturnedIsNull(materialId, userId);
     }
 
     @Override
@@ -111,5 +120,21 @@ public class BorrowServiceImpl implements BorrowService {
         }
 
         return cal.getTime();
+    }
+
+    @Override
+    public Borrow getMaterialStatus(String materialId) {
+        return borrowRepository.findFirstByMaterial_IdOrderByDateBorrowedDesc(materialId);
+    }
+
+    @Override
+    public Borrow getBorrowMaterialById(int id) {
+        return borrowRepository.findById(id);
+    }
+
+    @Override
+    public void saveBorrow(Borrow borrow)
+    {
+        borrowRepository.save(borrow);
     }
 }

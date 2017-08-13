@@ -48,7 +48,7 @@ public class FormCreateTempAccountValidator implements Validator
 
 	private void validateIdNumber(Errors errors, FormCreateTempAccount form)
 	{
-		if (userService.getUserByIdNumber(form.getIdNumber()) != null)
+		if (userService.getUserById(form.getId()) != null)
 		{
 			errors.reject("username.exists", "User with this username already exists");
 		}

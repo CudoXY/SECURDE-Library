@@ -129,7 +129,7 @@ public class MaterialController
 	@RequestMapping(value = "/borrow", method = RequestMethod.POST)
 	public String borrow(String materialId, RedirectAttributes redirectAttributes)
 	{
-		borrowService.borrow(createBorrowRequest(materialId));
+		borrowService.requestBorrow(createBorrowRequest(materialId));
 
 		redirectAttributes.addFlashAttribute("materialId", materialId);
 		return "redirect:/catalog/view?id=" + materialId;

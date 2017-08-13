@@ -2,8 +2,8 @@ package library.controllers.admin;
 
 import library.domain.Borrow;
 import library.domain.Material;
-import library.services.BorrowService;
-import library.services.MaterialService;
+import library.services.borrow.BorrowService;
+import library.services.material.MaterialService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.GregorianCalendar;
 
 @Controller
 public class ManageMaterialController
@@ -145,7 +143,7 @@ public class ManageMaterialController
 			Material temp = materialService.getMaterialById(material.getId());
 
 			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
-			borrow.setDateReturned(new Timestamp(System.currentTimeMillis()));
+			borrow.setDateReturned(new Date(System.currentTimeMillis()));
 			borrowService.saveBorrow(borrow);
 		}
 		catch (DataIntegrityViolationException e)
@@ -179,7 +177,7 @@ public class ManageMaterialController
 			Material temp = materialService.getMaterialById(material.getId());
 
 			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
-			borrow.setDateBorrowed(new Timestamp(System.currentTimeMillis()));
+			borrow.setDateBorrowed(new Date(System.currentTimeMillis()));
 			borrowService.saveBorrow(borrow);
 		}
 		catch (DataIntegrityViolationException e)

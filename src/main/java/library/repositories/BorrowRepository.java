@@ -16,6 +16,7 @@ public interface BorrowRepository extends CrudRepository<Borrow, Integer>{
 
 	// Reserve
 	@Transactional
+	Borrow findFirstByMaterial_IdAndBorrower_IdAndDateReturnedIsNull(String materialId, int borrowerId);
 	Borrow findFirstByMaterial_IdAndBorrower_IdAndDateBorrowedIsNullAndDateReturnedIsNull(String materialId, int borrowerId);
 
 	@Transactional
