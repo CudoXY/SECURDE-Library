@@ -1,4 +1,4 @@
-package library.services;
+package library.services.tag;
 
 import library.domain.Tag;
 import library.repositories.TagRepository;

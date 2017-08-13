@@ -1,7 +1,7 @@
 package library.controllers.admin;
 
 import library.domain.Material;
-import library.services.MaterialService;
+import library.services.material.MaterialService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.sql.Date;
-import java.util.GregorianCalendar;
 
 @Controller
 public class ManageMaterialController

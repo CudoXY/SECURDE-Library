@@ -1,4 +1,4 @@
-package library.services.secretquestion;
+package library.services.secret_question;
 
 
 import library.domain.SecretQuestion;
