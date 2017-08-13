@@ -1,10 +1,16 @@
 package library.controllers;
 
 import library.domain.User;
+import library.domain.helper.UserHelper;
 import library.services.BorrowService;
+import library.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -23,9 +29,17 @@ public class LoginController
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
+	@Autowired
+	private UserService userService;
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView getLoginPage(@RequestParam Optional<String> error) {
+	public String getLoginPage(@RequestParam Optional<String> error, Model model) {
+
+		if (UserHelper.getCurrentUser(userService) != null)
+			return "redirect:/";
+
+		model.addAttribute("error", error);
 		LOGGER.debug("Getting login page, error={}", error);
-		return new ModelAndView("user/login", "error", error);
+		return "user/login";
 	}
 }

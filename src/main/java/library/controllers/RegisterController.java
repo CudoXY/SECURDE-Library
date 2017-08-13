@@ -2,6 +2,7 @@ package library.controllers;
 
 import library.domain.User;
 import library.domain.form.FormRegistration;
+import library.domain.helper.UserHelper;
 import library.domain.validator.UserCreateFormValidator;
 import library.services.currentuser.CurrentUserService;
 import library.services.secretquestion.SecretQuestionService;
@@ -10,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -67,6 +71,9 @@ public class RegisterController
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String getUserCreatePage(Model model)
 	{
+		if (UserHelper.getCurrentUser(userService) != null)
+			return "redirect:/";
+
 		LOGGER.debug("Getting user create form");
 		if (!model.containsAttribute("user")) {
 			model.addAttribute("user", new FormRegistration());
@@ -86,6 +93,8 @@ public class RegisterController
 		u.setRole(form.getRole());
 		u.setId(form.getIdNumber());
 		u.setPassword(form.getPasswordRepeat());
+		System.out.println("form.getPasswordRepeat() = " + form.getPasswordRepeat());
+		System.out.println("u.setPassword = " + u.getPassword());
 		u.setEmail(form.getEmail());
 		u.setSecretQuestion(form.getSecretQuestion());
 		u.setSecretAnswer(form.getSecretAnswer());
@@ -108,7 +117,7 @@ public class RegisterController
 		{
 			userService.save(u);
 
-			currentUserService.autologin(u.getId() + "", u.getPasswordRepeat());
+			currentUserService.autologin(u.getId() + "", u.getPassword());
 		}
 		catch (DataIntegrityViolationException e)
 		{
