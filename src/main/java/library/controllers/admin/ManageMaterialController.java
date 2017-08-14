@@ -3,6 +3,7 @@ package library.controllers.admin;
 import library.domain.Borrow;
 import library.domain.Material;
 import library.domain.User;
+import library.domain.helper.UserHelper;
 import library.services.borrow.BorrowService;
 import library.services.material.MaterialService;
 import library.services.user.UserService;
@@ -38,22 +39,16 @@ public class ManageMaterialController
 	private MaterialService materialService;
 	private BorrowService borrowService;
 	private UserService userService;
-	private User getCurrentUser()
-	{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth instanceof AnonymousAuthenticationToken)
-			return null;
-
-		return userService.getUserById(Integer.parseInt(auth.getName()));
-	}
 
 	@Autowired
-	public void setMaterialService(MaterialService materialService) {
+	public void setMaterialService(MaterialService materialService)
+	{
 		this.materialService = materialService;
 	}
 
 	@Autowired
-	public void setMaterialService(BorrowService borrowService) {
+	public void setMaterialService(BorrowService borrowService)
+	{
 		this.borrowService = borrowService;
 	}
 
@@ -63,7 +58,6 @@ public class ManageMaterialController
 	{
 		model.addAttribute("savMaterial", new Material());
 		model.addAttribute("upMaterial", new Material());
-		model.addAttribute("delMaterial", new Material());
 		model.addAttribute("borMaterial", new Material());
 		model.addAttribute("retMaterial", new Material());
 
@@ -83,8 +77,6 @@ public class ManageMaterialController
 	@RequestMapping(value = "/manage/material/save", method = RequestMethod.POST)
 	public String save(@Valid @ModelAttribute("savMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
 	{
-
-
 		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
 
 		if (bindingResult.hasErrors())
@@ -196,13 +188,16 @@ public class ManageMaterialController
 			System.out.println("inside try. will call borrow material function");
 
 			Material temp = materialService.getMaterialById(material.getId());
-			User u = getCurrentUser();
+			User u = UserHelper.getCurrentUser(userService);
 			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
-			if(borrow.getDateBorrowed()!= null && borrow.getDateReturned()!= null){
+			if (borrow.getDateBorrowed() != null && borrow.getDateReturned() != null)
+			{
 				borrow = new Borrow();
 				borrow.setMaterial(temp);
 				borrow.setBorrower(u);
-			}else{
+			}
+			else
+			{
 				borrow.setDateBorrowed(new Date(System.currentTimeMillis()));
 			}
 			borrowService.saveBorrow(borrow);
@@ -218,32 +213,20 @@ public class ManageMaterialController
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
+
 	@RequestMapping(value = "/manage/material/delete", method = RequestMethod.POST)
-	public String delete(@Valid @ModelAttribute("delMaterial") Material material, BindingResult bindingResult)
+	public String delete(String materialId)
 	{
-		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
+		Borrow b = borrowService.getMaterialStatus(materialId);
 
-		if (bindingResult.hasErrors())
+		// Reject request if the material is released
+		if (b != null && b.isReleased())
 		{
-			// failed validation
+			// TODO: Handle error
+			return "redirect:/manage/material";
+		}
+		materialService.deleteMaterial(materialId);
 
-			return "manage/material";
-		}
-
-		try
-		{
-			System.out.println("inside try. will call deleteMaterial function");
-			materialService.deleteMaterial(material.getId());
-		}
-		catch (DataIntegrityViolationException e)
-		{
-			// probably email already exists - very rare case when multiple admins are adding same user
-			// at the same time and form validation has passed for more than one of them.
-			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
-			bindingResult.reject("material.exist", "Material already exists");
-			return "manage/material";
-		}
-		// ok, redirect
 		return "redirect:/manage/material";
 	}
 
@@ -253,23 +236,27 @@ public class ManageMaterialController
 		Iterable<Material> materialList = materialService.getMaterialList();
 		Iterator<Material> iter = materialList.iterator();
 		List<Material> list = new ArrayList<Material>();
-		while(iter.hasNext()){
+		while (iter.hasNext())
+		{
 			Material m = iter.next();
 			System.out.println(m.getTitle());
 			list.add(m);
 		}
 
 		List<String> headers = Arrays.asList("Id Number", "Author", "Category", "Publisher", "Title", "Year", "Borrow");
-		try {
+		try
+		{
 			System.out.println("Inside the export excel function");
 			response.addHeader("Content-disposition", "attachment; filename=Materials.xls");
 			response.setContentType("application/vnd.ms-excel");
 			SimpleExporter exporter = new SimpleExporter();
-			exporter.gridExport(headers,list,"id, title, author, publisher, year, category, borrowStatus ",response.getOutputStream());
+			exporter.gridExport(headers, list, "id, title, author, publisher, year, category, borrowStatus ", response.getOutputStream());
 			//new SimpleExporter().gridExport(headers, list, "id, title, author, publisher, year, category, borrowStatus ", response.getOutputStream());
 			//new SimpleExporter().gridExport(headers, list, "Id Number, Author, Category, Publisher, Title, Year ", response.getOutputStream());
 			response.flushBuffer();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			LOGGER.warn(e.getMessage(), e);
 		}
 	}
