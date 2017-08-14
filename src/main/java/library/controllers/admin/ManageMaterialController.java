@@ -3,6 +3,8 @@ package library.controllers.admin;
 import library.domain.Borrow;
 import library.domain.Material;
 import library.domain.User;
+import library.domain.helper.BorrowAction;
+import library.domain.helper.UserHelper;
 import library.services.borrow.BorrowService;
 import library.services.material.MaterialService;
 import library.services.user.UserService;
@@ -146,35 +148,16 @@ public class ManageMaterialController
 	}
 
 	@RequestMapping(value = "/manage/material/return", method = RequestMethod.POST)
-	public String ret(@Valid @ModelAttribute("retMaterial") Material material, BindingResult bindingResult)
+	public String ret(@Valid @ModelAttribute("retMaterial") Material materialId, BindingResult bindingResult)
 	{
-		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
-
-		if (bindingResult.hasErrors())
-		{
-			// failed validation
-
-			return "manage/material";
-		}
-
-		try
-		{
 			System.out.println("inside try. will call return material function");
 
-			Material temp = materialService.getMaterialById(material.getId());
+			Material temp = materialService.getMaterialById(materialId.getId());
 
 			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
 			borrow.setDateReturned(new Date(System.currentTimeMillis()));
 			borrowService.saveBorrow(borrow);
-		}
-		catch (DataIntegrityViolationException e)
-		{
-			// probably email already exists - very rare case when multiple admins are adding same user
-			// at the same time and form validation has passed for more than one of them.
-			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
-			bindingResult.reject("material.exist", "Material already exists");
-			return "manage/material";
-		}
+
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
@@ -182,67 +165,22 @@ public class ManageMaterialController
 	@RequestMapping(value = "/manage/material/borrow", method = RequestMethod.POST)
 	public String borrow(@Valid @ModelAttribute("retMaterial") Material material, BindingResult bindingResult)
 	{
-		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
+		System.out.println(material.getId());
+		Material m = materialService.getMaterialById(material.getId());
+		System.out.println(m.getTitle());
+		Borrow b = m.getBorrowStatus();
+		b.setReleased(true);
 
-		if (bindingResult.hasErrors())
-		{
-			// failed validation
+		borrowService.saveBorrow(b);
 
-			return "manage/material";
-		}
-
-		try
-		{
-			System.out.println("inside try. will call borrow material function");
-
-			Material temp = materialService.getMaterialById(material.getId());
-			User u = getCurrentUser();
-			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
-			if(borrow.getDateBorrowed()!= null && borrow.getDateReturned()!= null){
-				borrow = new Borrow();
-				borrow.setMaterial(temp);
-				borrow.setBorrower(u);
-			}else{
-				borrow.setDateBorrowed(new Date(System.currentTimeMillis()));
-			}
-			borrowService.saveBorrow(borrow);
-		}
-		catch (DataIntegrityViolationException e)
-		{
-			// probably email already exists - very rare case when multiple admins are adding same user
-			// at the same time and form validation has passed for more than one of them.
-			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
-			bindingResult.reject("material.exist", "Material already exists");
-			return "manage/material";
-		}
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
 	@RequestMapping(value = "/manage/material/delete", method = RequestMethod.POST)
 	public String delete(@Valid @ModelAttribute("delMaterial") Material material, BindingResult bindingResult)
 	{
-		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
-
-		if (bindingResult.hasErrors())
-		{
-			// failed validation
-
-			return "manage/material";
-		}
-
-		try
-		{
 			System.out.println("inside try. will call deleteMaterial function");
 			materialService.deleteMaterial(material.getId());
-		}
-		catch (DataIntegrityViolationException e)
-		{
-			// probably email already exists - very rare case when multiple admins are adding same user
-			// at the same time and form validation has passed for more than one of them.
-			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
-			bindingResult.reject("material.exist", "Material already exists");
-			return "manage/material";
-		}
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
