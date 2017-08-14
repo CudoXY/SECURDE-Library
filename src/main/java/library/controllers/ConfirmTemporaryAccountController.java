@@ -1,10 +1,10 @@
 package library.controllers;
 
 import library.domain.User;
-import library.domain.form.FormRegistration;
-import library.domain.validator.UserCreateFormValidator;
+import library.domain.form.FormConfirmTempAccount;
+import library.domain.validator.UserConfirmFormValidator;
 import library.services.currentuser.CurrentUserService;
-import library.services.secretquestion.SecretQuestionService;
+import library.services.secret_question.SecretQuestionService;
 import library.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class ConfirmTemporaryAccountController
 
 	private UserService userService;
 	private SecretQuestionService secretQuestionService;
-	private UserCreateFormValidator userCreateFormValidator;
+	private UserConfirmFormValidator userConfirmFormValidator;
 	private CurrentUserService currentUserService;
 
 	@Autowired
@@ -50,41 +50,41 @@ public class ConfirmTemporaryAccountController
 	}
 
 	@Autowired
-	public void setUserCreateFormValidator(UserCreateFormValidator userCreateFormValidator)
+	public void setUserConfirmFormValidator(UserConfirmFormValidator userConfirmFormValidator)
 	{
-		this.userCreateFormValidator = userCreateFormValidator;
+		this.userConfirmFormValidator = userConfirmFormValidator;
 	}
 
 	@InitBinder("user")
 	public void initBinder(WebDataBinder binder)
 	{
-		binder.addValidators(userCreateFormValidator);
+		binder.addValidators(userConfirmFormValidator);
 	}
 
 	@RequestMapping(value = "/confirmaccount", method = RequestMethod.GET)
-	public String getUserCreatePage(Model model, @RequestParam int id)
+	public String getUserCreatePage(Model model, final RedirectAttributes redirectAttributes, @ModelAttribute("id") int id)
 	{
 		LOGGER.debug("Getting user create form");
-		model.addAttribute("user", new FormRegistration());
+		model.addAttribute("user", new FormConfirmTempAccount());
 		model.addAttribute("id",id);
 		model.addAttribute("questionList", secretQuestionService.getAll());
-		return "user/confirmtempaccount";
+		System.out.println(id);
+		return "user/confirmtempacccount";
 	}
 
 	@RequestMapping(value = "/confirmaccount", method = RequestMethod.POST)
-	public String handleUserCreateForm(@Valid @ModelAttribute("user") final FormRegistration form, final BindingResult bindingResult,
+	public String handleUserConfirmForm(@Valid @ModelAttribute("user") final FormConfirmTempAccount form, final BindingResult bindingResult,
 									   final RedirectAttributes redirectAttributes)
 	{
-		User u = new User();
+		User u = userService.getUserById(form.getId());
 		u.setFirstName(form.getFirstName());
 		u.setMiddleName(form.getMiddleName());
 		u.setLastName(form.getLastName());
-		u.setRole(userService.getUserById(form.getId()).getRole());
-		u.setId(form.getId());
 		u.setPassword(form.getPasswordRepeat());
 		u.setEmail(form.getEmail());
 		u.setSecretQuestion(form.getSecretQuestion());
 		u.setSecretAnswer(form.getSecretAnswer());
+		u.setTemporary(false);
 
 		GregorianCalendar c = new GregorianCalendar(form.getYear(), form.getMonth() - 1, form.getDay());
 		Date birthDate = new Date(c.getTimeInMillis());
@@ -104,7 +104,7 @@ public class ConfirmTemporaryAccountController
 		{
 			userService.save(u);
 
-			currentUserService.autologin(u.getId() + "", u.getPasswordRepeat());
+			currentUserService.autologin(u.getId() + "", u.getPassword());
 		}
 		catch (DataIntegrityViolationException e)
 		{
@@ -112,7 +112,7 @@ public class ConfirmTemporaryAccountController
 			// at the same time and form validation has passed for more than one of them.
 			LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
 			bindingResult.reject("email.exists", "Email already exists");
-			return "user/register";
+			return "user/confirmaccount";
 		}
 		// ok, redirect
 		return "redirect:/";

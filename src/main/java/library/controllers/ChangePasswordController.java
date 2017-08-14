@@ -54,7 +54,6 @@ public class ChangePasswordController {
             if(user.getPassword().equals(formChangePassword.origPassword.trim()))
                 if((formChangePassword.newPassword.trim()).equals(formChangePassword.repNewPassword.trim())){
                     user.setPassword(formChangePassword.getRepNewPassword().trim());
-                    user.setPasswordRepeat(formChangePassword.getRepNewPassword().trim());
                     userService.save(user);
                 }
 

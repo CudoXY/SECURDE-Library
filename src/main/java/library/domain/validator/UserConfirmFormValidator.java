@@ -1,6 +1,6 @@
 package library.domain.validator;
 
-import library.domain.form.FormRegistration;
+import library.domain.form.FormConfirmTempAccount;
 import library.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +10,14 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class UserCreateFormValidator implements Validator
+public class UserConfirmFormValidator implements Validator
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserCreateFormValidator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserConfirmFormValidator.class);
 	private final UserService userService;
 
 	@Autowired
-	public UserCreateFormValidator(UserService userService)
+	public UserConfirmFormValidator(UserService userService)
 	{
 		this.userService = userService;
 	}
@@ -25,20 +25,19 @@ public class UserCreateFormValidator implements Validator
 	@Override
 	public boolean supports(Class<?> clazz)
 	{
-		return clazz.equals(FormRegistration.class);
+		return clazz.equals(FormConfirmTempAccount.class);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors)
 	{
 		LOGGER.debug("Validating {}", target);
-		FormRegistration user = (FormRegistration) target;
+		FormConfirmTempAccount user = (FormConfirmTempAccount) target;
 		validatePasswords(errors, user);
 		validateEmail(errors, user);
-		validateId(errors, user);
 	}
 
-	private void validatePasswords(Errors errors, FormRegistration form)
+	private void validatePasswords(Errors errors, FormConfirmTempAccount form)
 	{
 		if (!form.getPassword().equals(form.getPasswordRepeat()))
 		{
@@ -46,19 +45,11 @@ public class UserCreateFormValidator implements Validator
 		}
 	}
 
-	private void validateEmail(Errors errors, FormRegistration form)
+	private void validateEmail(Errors errors, FormConfirmTempAccount form)
 	{
 		if (userService.getUserByEmail(form.getEmail()) != null)
 		{
 			errors.reject("email.exists", "User with this email already exists");
-		}
-	}
-
-	private void validateId(Errors errors, FormRegistration form)
-	{
-		if (userService.getUserById(form.getId()) != null)
-		{
-			errors.reject("id.exists", "User with this ID number already exists");
 		}
 	}
 }
