@@ -41,6 +41,8 @@ public class User
 
 	private Date dateRegistered;
 
+    private String resetToken;
+
 	public User()
 	{
 		birthDate = new Date(new java.util.Date().getTime());
@@ -173,4 +175,12 @@ public class User
 	{
 		this.secretAnswer = secretAnswer;
 	}
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
 }
