@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,11 +45,13 @@ public class IndexController
 	// Sample Usage
 	// TODO: Delete this after
 	@RequestMapping("/completeRegistration")
-	String completeRegistration(HttpServletRequest request)
+	String completeRegistration(HttpServletRequest request, final RedirectAttributes redirectAttributes)
 	{
 		// Auto
+		int id = UserHelper.getCurrentUser(userService).getId();
 		UserHelper.logoutUser(request);
-		return "redirect:/catalog";
+		redirectAttributes.addFlashAttribute("id", id);
+		return "redirect:/confirmaccount";
 	}
 
 	private boolean redirectFromRole()

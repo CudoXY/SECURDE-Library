@@ -59,7 +59,6 @@ public class CreateStaffController {
         newUser.setRole(user.getRole());
         newUser.setDateRegistered(new Date(new java.util.Date().getTime()));
         newUser.setTemporary(true);
-        newUser.setLocked(true);
 
         System.out.println(String.format("Processing user create form=%s, bindingResult=%s", user, bindingResult));
 
