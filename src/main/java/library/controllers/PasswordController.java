@@ -29,16 +29,15 @@ public class PasswordController {
 
     @Autowired
     private UserService userService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    @RequestMapping(value = "/forget", method = RequestMethod.GET)
+    @RequestMapping(value = "/forgot", method = RequestMethod.GET)
     public ModelAndView getForgetPageID(@RequestParam Optional<String> error) {
         LOGGER.debug("Getting forget password id page, error={}", error);
         return new ModelAndView("user/forgetpasswordID", "error", error);
     }
 
-    @RequestMapping(value = "/forget", method = RequestMethod.POST)
+    @RequestMapping(value = "/forgot", method = RequestMethod.POST)
     public ModelAndView setForgetPageID(@RequestParam(value = "id") String id) {
         System.out.println("FORGET ID NUMBEER: " + id);
         String sq = userService.getUserById(Integer.parseInt(id)).getSecretQuestion().getQuestion();
@@ -49,7 +48,7 @@ public class PasswordController {
         return new ModelAndView("user/forgetpasswordSQ","formSQ", formSQ);
     }
 
-    @RequestMapping(value = "/forgetpass", method = RequestMethod.POST)
+    @RequestMapping(value = "/forgotpass", method = RequestMethod.POST)
     public ModelAndView checkSecretAnswer(@Valid @ModelAttribute("form") final FormSecretAnswer formSecretAnswer,
                                           final BindingResult bindingResult, final RedirectAttributes redirectAttributes)
     {
@@ -93,7 +92,7 @@ public class PasswordController {
             // failed validation
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.form", bindingResult);
             redirectAttributes.addFlashAttribute("form", formResetPassword);
-            return "redirect:/forget";
+            return "redirect:/forgot";
         }
 
         try

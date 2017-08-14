@@ -1,6 +1,9 @@
 package library.configuration;
 
 import library.domain.Role;
+import library.domain.User;
+import library.domain.helper.UserHelper;
+import library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +23,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebSecurityExpressionRoot;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -29,6 +38,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception
@@ -51,6 +63,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 				.failureUrl("/login?error")
 				.usernameParameter("idNumber")
 				.defaultSuccessUrl("/", false)
+				/*.successHandler(new AuthenticationSuccessHandler() {
+					@Override
+					public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+						User u = userService.getUserById(Integer.parseInt(authentication.getName()));
+
+						if (u != null)
+							return;
+
+						if (u.isTemporary())
+						{
+							httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+							httpServletResponse.setHeader("Location", "/temporary");
+						} else {
+							httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+							httpServletResponse.setHeader("Location", "/");
+						}
+
+					}
+				})*/
 				.permitAll()
 				.and()
 				.logout()
