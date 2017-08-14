@@ -457,24 +457,17 @@
     $(document).ready(function () {
         $(".editMaterial").click(function () {
             var id = this.id;
-            var materialId = $("#" + id + "id").text();
-            var materialTitle = $("#" + id + "title").text();
-            var materialAuthor = $("#" + id + "author").text();
-            var materialPublisher = $("#" + id + "publisher").text();
-            var materialYear = $("#" + id + "year").text();
-            var materialCategory = $("#" + id + "category").text();
-            var materialCategoryID;
-            switch (materialCategory) {
-                case "Book" :
-                    materialCategoryID = 1;
-                    break;
-                case "Magazine" :
-                    materialCategoryID = 2;
-                    break;
-                case "Thesis" :
-                    materialCategoryID = 3;
-                    break;
-            }
+            var materialId = $("#" + id + "id").text().trim();
+            var materialTitle = $("#" + id + "title").text().trim();
+            var materialAuthor = $("#" + id + "author").text().trim();
+            var materialPublisher = $("#" + id + "publisher").text().trim();
+            var materialYear = $("#" + id + "year").text().trim();
+            var materialCategory = $("#" + id + "category").text().trim();
+            var materialCategoryID = materialCategory == 'Book' ? 1 :
+                materialCategory == 'Magazine' ? 2 :
+                    materialCategory == 'Thesis' ? 3 : 1;
+
+            console.log('materialCategoryID = ' + materialCategoryID);
 
             $("#location1").val(materialId);
             $("#title1").val(materialTitle);
