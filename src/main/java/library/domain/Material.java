@@ -19,14 +19,17 @@ public class Material
     @Transient
     private String oldId;
 
+    @Field // For Search
     @NotNull
     @NotEmpty
     private String title;
 
+    @Field // For Search
     @NotNull
     @NotEmpty
     private String author;
 
+    @Field // For Search
     @NotNull
     @NotEmpty
     private String publisher;

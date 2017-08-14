@@ -79,7 +79,7 @@ public class MaterialServiceImpl implements MaterialService {
         org.apache.lucene.search.Query q =
                 queryBuilder
                         .keyword()
-                        .onField(field)
+                        .onField(field).ignoreAnalyzer()
                         .matching(filter.getQuery())
                         .createQuery();
 
