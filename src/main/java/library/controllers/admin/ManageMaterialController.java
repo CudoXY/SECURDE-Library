@@ -2,12 +2,18 @@ package library.controllers.admin;
 
 import library.domain.Borrow;
 import library.domain.Material;
+import library.domain.User;
 import library.services.BorrowService;
 import library.services.MaterialService;
+import library.services.user.UserService;
+import org.jxls.template.SimpleExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 @Controller
 public class ManageMaterialController
@@ -27,6 +35,15 @@ public class ManageMaterialController
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	private MaterialService materialService;
 	private BorrowService borrowService;
+	private UserService userService;
+	private User getCurrentUser()
+	{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth instanceof AnonymousAuthenticationToken)
+			return null;
+
+		return userService.getUserById(Integer.parseInt(auth.getName()));
+	}
 
 	@Autowired
 	public void setMaterialService(MaterialService materialService) {
@@ -177,9 +194,15 @@ public class ManageMaterialController
 			System.out.println("inside try. will call borrow material function");
 
 			Material temp = materialService.getMaterialById(material.getId());
-
+			User u = getCurrentUser();
 			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
-			borrow.setDateBorrowed(new Timestamp(System.currentTimeMillis()));
+			if(borrow.getDateBorrowed()!= null && borrow.getDateReturned()!= null){
+				borrow = new Borrow();
+				borrow.setMaterial(temp);
+				borrow.setBorrower(u);
+			}else{
+				borrow.setDateBorrowed(new Timestamp(System.currentTimeMillis()));
+			}
 			borrowService.saveBorrow(borrow);
 		}
 		catch (DataIntegrityViolationException e)
@@ -193,7 +216,7 @@ public class ManageMaterialController
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
-
+	@RequestMapping(value = "/manage/material/delete", method = RequestMethod.POST)
 	public String delete(@Valid @ModelAttribute("delMaterial") Material material, BindingResult bindingResult)
 	{
 		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
@@ -221,4 +244,33 @@ public class ManageMaterialController
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
+
+	@RequestMapping(value = "/manage/material/download", method = RequestMethod.GET)
+	public void export(HttpServletResponse response)
+	{
+		Iterable<Material> materialList = materialService.getMaterialList();
+		Iterator<Material> iter = materialList.iterator();
+		List<Material> list = new ArrayList<Material>();
+		while(iter.hasNext()){
+			Material m = iter.next();
+			System.out.println(m.getTitle());
+			list.add(m);
+		}
+
+		List<String> headers = Arrays.asList("Id Number", "Author", "Category", "Publisher", "Title", "Year", "Borrow");
+		try {
+			System.out.println("Inside the export excel function");
+			response.addHeader("Content-disposition", "attachment; filename=Materials.xls");
+			response.setContentType("application/vnd.ms-excel");
+			SimpleExporter exporter = new SimpleExporter();
+			exporter.gridExport(headers,list,"id, title, author, publisher, year, category, borrowStatus ",response.getOutputStream());
+			//new SimpleExporter().gridExport(headers, list, "id, title, author, publisher, year, category, borrowStatus ", response.getOutputStream());
+			//new SimpleExporter().gridExport(headers, list, "Id Number, Author, Category, Publisher, Title, Year ", response.getOutputStream());
+			response.flushBuffer();
+		} catch (IOException e) {
+			LOGGER.warn(e.getMessage(), e);
+		}
+	}
+
+
 }

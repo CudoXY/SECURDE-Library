@@ -12,4 +12,7 @@ public interface UserRepository extends CrudRepository<User, Integer>
 	User findByResetToken(String resetToken);
 	@Transactional
     void deleteById(int id);
+
+	@Transactional
+	User findById(int id);
 }

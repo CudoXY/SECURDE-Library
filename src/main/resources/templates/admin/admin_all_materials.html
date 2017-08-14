@@ -105,9 +105,11 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-add">
                         <i class="fa fa-plus"> Add Material</i>
                     </button>
-                    <button type="button" class="btn btn-info pull-right">
+                    <form th:action="@{~/manage/material/download}">
+                    <button type="submit"  class="btn btn-info pull-right">
                         <i class="fa fa-plus"> Export Materials</i>
                     </button>
+                    </form>
                 </div>
                 <div class="modal fade" id="modal-return">
                     <div class="modal-dialog">
@@ -124,7 +126,7 @@
                                     <!-- form start -->
                                     <!-- modal return start -->
                                     <form role="form" th:object="${retMaterial}" th:action="@{~/manage/material/return}" method="post">
-                                        <h5>Are you sure you want to Borrow this material?</h5>
+                                        <h5>Are you sure you want to Return this material?</h5>
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <input type="hidden" th:field = "*{id}" class="form-control" id="returnID" placeholder="Location">
@@ -166,9 +168,11 @@
                                     <!-- form start -->
                                     <!-- modal return start -->
                                     <form role="form" th:object="${borMaterial}" th:action="@{~/manage/material/borrow}" method="post">
-                                        <h5>Are you sure you want to Borrow this material?</h5>
+                                        <h5>Borrower Details</h5>
                                         <div class="box-body">
                                             <div class="form-group">
+                                                <label for="userID">ID Number</label>
+                                                <input type="number" class="form-control" id="userID" placeholder="ID Number">
                                                 <input type="hidden" th:field = "*{id}" class="form-control" id="borrowID" placeholder="Location">
                                                 <input type="hidden" th:field = "*{title}" class="form-control" id="borrowTitle" placeholder="Location">
                                                 <input type="hidden" th:field = "*{author}" class="form-control" id="borrowAuthor" placeholder="Location">
