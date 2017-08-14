@@ -59,7 +59,7 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 		loadUsers();
 		loadMaterials();
 		loadRooms();
-//		loadRoomReservations();
+		loadRoomReservations();
 	}
 
 	private void loadUsers()
@@ -199,9 +199,23 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 
 		RoomReservation roomReservation = new RoomReservation();
 		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
-		roomReservation.setReservedBy(userRepository.findOne(11427817));
+		roomReservation.setReservedBy(userRepository.findOne(1));
+		roomReservation.setRoom(roomRepository.findOneById(2));
+		roomReservation.setTimeReserved(12);
+		roomReservationRepository.save(roomReservation);
+
+		roomReservation = new RoomReservation();
+		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
+		roomReservation.setReservedBy(userRepository.findOne(2));
 		roomReservation.setRoom(roomRepository.findOneById(1));
-		roomReservation.setTimeReserved(7);
+		roomReservation.setTimeReserved(21);
+		roomReservationRepository.save(roomReservation);
+
+		roomReservation = new RoomReservation();
+		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
+		roomReservation.setReservedBy(userRepository.findOne(2));
+		roomReservation.setRoom(roomRepository.findOneById(1));
+		roomReservation.setTimeReserved(8);
 		roomReservationRepository.save(roomReservation);
 	}
 
