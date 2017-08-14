@@ -259,7 +259,6 @@ public class ManageMaterialController
 
 		List<String> headers = Arrays.asList("Id Number", "Author", "Category", "Publisher", "Title", "Year", "Borrow");
 		try {
-			System.out.println("Inside the export excel function");
 			response.addHeader("Content-disposition", "attachment; filename=Materials.xls");
 			response.setContentType("application/vnd.ms-excel");
 			SimpleExporter exporter = new SimpleExporter();

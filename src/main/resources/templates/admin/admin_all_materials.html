@@ -84,7 +84,7 @@
                                                     data-target="#modal-edit">
                                                 <i class="fa fa-edit"> Edit</i>
                                             </button>
-                                            <button type="button" th:if ="${material.borrowStatus == null}" th:value="${material.id}" data-target="#modal-borrow" class="borrow btn btn-default class="borrow btn btn-default">
+                                            <button type="button" th:if ="${material.borrowStatus == null}" th:value="${material.id}" data-toggle="modal" data-target="#modal-borrow" class="borrow btn btn-default class="borrow btn btn-default">
                                                 <i class="fa fa-home"> Borrow</i>
                                             </button>
                                             <button type="button" th:if ="${material.borrowStatus != null}" th:value="${material.id}" data-toggle="modal" data-target="#modal-return" class="return btn btn-default">
@@ -172,7 +172,7 @@
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="userID">ID Number</label>
-                                                <input type="number" class="form-control" id="userID" placeholder="ID Number">
+                                                <input name="" type="number" class="form-control" id="userID" placeholder="ID Number">
                                                 <input type="hidden" th:field = "*{id}" class="form-control" id="borrowID" placeholder="Location">
                                                 <input type="hidden" th:field = "*{title}" class="form-control" id="borrowTitle" placeholder="Location">
                                                 <input type="hidden" th:field = "*{author}" class="form-control" id="borrowAuthor" placeholder="Location">
