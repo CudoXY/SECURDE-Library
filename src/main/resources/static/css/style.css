@@ -47,7 +47,13 @@ div.alert.alert-danger.alert-dismissible > ul
 }
 .lc_rm_a {
     background-color: #22b14c;
-    color: #22B14C;
+    padding: 0px;
+    margin: 10px;
+    background-image: url('//lcimages.s3.amazonaws.com/room-hour-cell.gif');
+    cursor: pointer;
+}
+.lc_rm_u {
+    background-color: #27ff63;
     padding: 0px;
     margin: 10px;
     background-image: url('//lcimages.s3.amazonaws.com/room-hour-cell.gif');
@@ -60,4 +66,15 @@ div.alert.alert-danger.alert-dismissible > ul
     margin: 0px;
     background-image: url('//lcimages.s3.amazonaws.com/room-hour-cell.gif');
     cursor: pointer;
+}
+#rsvTable > thead > tr > th:nth-child(1)
+{
+    min-width: 150px;
+}
+
+#rsvTable > thead > tr > th
+{
+    min-width: 60px;
+    text-align: center;
+    vertical-align: middle;
 }

@@ -7,64 +7,170 @@
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" class="skin-blue layout-top-nav"
       style="height: auto; min-height: 100%;">
 <!--/*/ <th:block th:include="fragments/template :: navigation"></th:block> /*/-->
-<!--
-<div class="col-md-8 row-centered">-->
-    <div class="box">
-        <div class="box-header">
-            <h3 class="box-title">Room Reservation</h3>
-            <!-- /.box-header -->
-            <div class="table-responsive">
-                <table class="table table-bordered" id="rsvTable">
-                    <tbody>
-                    <tr>
-                        <th>Room</th>
-                        <th>07:00 AM</th>
-                        <th>08:00 AM</th>
-                        <th>09:00 AM</th>
-                        <th>10:00 AM</th>
-                        <th>11:00 AM</th>
-                        <th>12:00 PM</th>
-                        <th>01:00 PM</th>
-                        <th>02:00 PM</th>
-                        <th>03:00 PM</th>
-                        <th>04:00 PM</th>
-                        <th>05:00 PM</th>
-                        <th>06:00 PM</th>
-                        <th>07:00 PM</th>
-                        <th>08:00 PM</th>
-                        <th>09:00 PM</th>
-                    </tr>
-                    <!--<form action="#"  th:object="" method="post">-->
-                        <tr th:each="room,room_index : ${roomList}">
-                        <td th:text="${room.roomName}"></td>
-                        <th:block th:each="timeSlot,i: ${timeSlotList}">
-                            <th:block th:if="${i.index >= (timeSlotCount * room_index.index) && i.index < (timeSlotCount * (room_index.index + 1))}">
-                                <td th:if="${timeSlot.reservedBy == null}" th:class="lc_rm_a"th:text="${(timeSlotCount * room_index.index)}"></td>
-                                <td th:if="${timeSlot.reservedBy != null}" th:class="lc_rm_b" th:text="${(timeSlot.time)}"></td>
-                            </th:block>
-                        </th:block>
-                    </tr>
-                    <!--</form>-->
-                    </tbody>
-                </table>
-            </div>
-            <form action=""
-            <!-- /.box-body -->
+<div class="container content">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Room Reservation</h1>
+            <h4 th:text="${#dates.format(dateToday, 'EEEE, MMMMM d, yyyy')}"></h4>
+            <br>
         </div>
     </div>
+    <div class="row">
+        <!--Room Reservation Table-->
+        <div class="col-md-8">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="rsvTable">
+                    <thead>
+                    <tr>
+                        <th>Room</th>
+                        <th>7 AM</th>
+                        <th>8 AM</th>
+                        <th>9 AM</th>
+                        <th>10 AM</th>
+                        <th>11 AM</th>
+                        <th>12 PM</th>
+                        <th>1 PM</th>
+                        <th>2 PM</th>
+                        <th>3 PM</th>
+                        <th>4 PM</th>
+                        <th>5 PM</th>
+                        <th>6 PM</th>
+                        <th>7 PM</th>
+                        <th>8 PM</th>
+                        <th>9 PM</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="room,room_index : ${roomList}">
+                        <td th:text="${room.roomName}"></td>
+                        <th:block th:each="timeSlot: ${timeSlotList[room_index.index]}">
+                            <td th:id="${room.id + '_' + timeSlot.time}" th:if="${timeSlot.reservedBy == null}"
+                                class="timeslot lc_rm_a"></td>
+                            <td th:id="${room.id + '_' + timeSlot.time}" th:if="${timeSlot.reservedBy != null}"
+                                th:class="${currentUser != null && timeSlot.reservedBy.id == currentUser.id} ? 'timeslot lc_rm_u' : 'timeslot lc_rm_b'"></td>
+                        </th:block>
+                    </tr>
+                    </tbody>
+                    <!--</form>-->
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <!--Selected Rooms Sidebar-->
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Reminder</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <!--<div class="rsvItem">-->
+                    <!---->
+                    <!--</div>-->
+                    <!--<hr>-->
+                    <p>The following are the reservation quota:</p>
+                    <ul>
+                        <li>Student - 3 hours per day</li>
+                        <li>Faculty - 5 hours per day</li>
+                    </ul>
+
+                    <br>
+                    <form id="formReserve" th:object="${formRoomReserve}" th:action="@{/roomreserve/reserve}" method="post">
+                        <input type="hidden" id="timeslot" name="timeslot"/>
+                        <a type="submit" id="btnReserve" class="btn btn-primary btn-block"><b>Reserve</b></a>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+
+    </div>
+
+    <!-- .modal -->
+    <div class="modal fade" id="dlgCancel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{roomreserve/cancel}" method="post">
+                    <input type="hidden" id="dlgCancel_timeslot" name="timeslot"/>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Cancel Room Reservation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to cancel your room reservation?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Cancel Reservation</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
 <!-- Footer -->
 <!--/*/ <th:block th:include="fragments/template :: footer"></th:block> /*/-->
 
 <!--/*/ <th:block th:include="fragments/template :: script"></th:block> /*/-->
 <script>
-    $(".lc_rm_a").click(function(){
-        $(this).toggleClass('lc_rm_a');
-        $(this).toggleClass('lc_rm_t');
-    })
+    $(document).ready(function () {
 
-    %("#rsvTable").append(
+        var selectedTimeslots = [];
 
-    )
+        $('.timeslot').click(function () {
+
+            // Blocked
+            if ($(this).hasClass('lc_rm_b'))
+                return;
+
+            var id = $(this).attr('id');
+
+            // User-owned
+            if ($(this).hasClass('lc_rm_u'))
+            {
+                $('#dlgCancel_timeslot').val(id);
+                $('#dlgCancel').modal('show');
+                return;
+            }
+
+
+
+            // Available
+            if ($(this).hasClass('lc_rm_a')) {
+                selectedTimeslots.push(id);
+            } // Taken
+            else if ($(this).hasClass('lc_rm_t')) {
+                selectedTimeslots = jQuery.grep(selectedTimeslots, function (value) {
+                    return value != id;
+                });
+            }
+
+            console.log(selectedTimeslots);
+
+            $(this).toggleClass('lc_rm_a');
+            $(this).toggleClass('lc_rm_t');
+
+        });
+
+        $('#btnReserve').click(function () {
+
+            if (selectedTimeslots.length <= 0)
+                return false;
+
+            $('#timeslot').val(selectedTimeslots.join('|'));
+
+            $('#formReserve').submit();
+            return true;
+
+        });
+
+    });
+
 </script>
 </body>
 </html>
