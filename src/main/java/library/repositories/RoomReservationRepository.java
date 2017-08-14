@@ -14,5 +14,7 @@ public interface RoomReservationRepository extends CrudRepository<RoomReservatio
     List<RoomReservation> findAllByDateReservedOrderByRoom_IdAscTimeReservedAsc(Date date);
 
     @Transactional
-    RoomReservation findOneByRoom_IdAndTimeReserved(int roomId, int timeReserved);
+    RoomReservation findOneByDateReservedAndRoom_IdAndTimeReserved(Date dateReserved, int roomId, int timeReserved);
+
+    List<RoomReservation> findAllByDateReservedAndReservedBy_Id(Date activeDate, int reservedById);
 }
