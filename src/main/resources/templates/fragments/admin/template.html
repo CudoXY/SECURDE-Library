@@ -38,7 +38,7 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-green sidebar-mini">
 <div class="wrapper">
 
     <th:block th:fragment="header">
@@ -57,48 +57,37 @@
                     <span class="sr-only">Toggle navigation</span>
                 </a>
 
+
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <th:block th:if="${currentUser != null}">
-                        <!-- User Accodunt: style can be found in dropdown.less -->
-                            <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img th:src="@{~/dist/img/user2-160x160.jpg}" class="user-image" alt="User Image">
-                                <span class="hidden-xs" th:text="${currentUser.user.firstName + ' ' + currentUser.user.lastName}"> </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <!-- User image -->
-                                <li class="user-header">
-                                    <img th:src="@{~/dist/img/user2-160x160.jpg}" class="img-circle" alt="User Image">
-
-                                    <p th:text="${currentUser.user.firstName + ' ' + currentUser.user.lastName + ' ' + currentUser.user.Role}">
-                                    </p>
-                                </li>
-                                <!-- Menu Body -->
-                                <li class="user-body">
-                                    <div class="row">
-                                        <div class="col-xs-6 text-center">
-                                            <a href="#">Borrowed Materials</a>
-                                        </div>
-                                        <div class="col-xs-6 text-center">
-                                            <a href="#">Reserved Materials</a>
-                                        </div>
-                                    </div>
-                                    <!-- /.row -->
-                                </li>
-                                <!-- Menu Footer-->
-                                <li class="user-footer">
-                                    <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a th:href="@{~/login.html}" class="btn btn-default btn-flat">Sign out</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
+                        <!-- User Account Menu -->
+                        <th:block th:if="${currentUser == null}">
+                            <li>
+                                <a class=" user user-menu" th:href="@{~/login}">
+                                    <span class="hidden-xs">Sign In</span>
+                                </a>
+                            </li>
                         </th:block>
-                        <!-- Control Sidebar Toggle Button -->
+                        <th:block th:if="${currentUser != null}">
+                            <li class="dropdown user user-menu">
+                                <!-- Menu Toggle Button -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <!-- The user image in the navbar-->
+                                    <img src="../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                    <span class="hidden-xs"
+                                          th:text="${currentUser.user.firstName + ' ' + currentUser.user.lastName}"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Account</a>
+                                    </li>
+                                    <li role="presentation" class="divider"></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{~/logout}">Sign
+                                        Out</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </th:block>
                     </ul>
                 </div>
             </nav>
@@ -112,42 +101,45 @@
                 <!-- Sidebar user panel -->
 
                 <!-- search form -->
-                <form action="#" method="get" class="sidebar-form">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                    </div>
-                </form>
+                <!--<form action="#" method="get" class="sidebar-form">-->
+                    <!--<div class="input-group">-->
+                        <!--<input type="text" name="q" class="form-control" placeholder="Search...">-->
+                        <!--<span class="input-group-btn">-->
+                <!--<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>-->
+                <!--</button>-->
+              <!--</span>-->
+                    <!--</div>-->
+                <!--</form>-->
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
                     <li>
-                        <a th:href = "@{~/manage/dashboard}">
+                        <a th:href="@{~/manage/dashboard}">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="treeview">
-                        <a th:href = "@{~/manage/material}">
+                        <a th:href="@{~/manage/material}">
                             <i class="fa fa-folder"></i> <span>Materials</span>
                             <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="active"><a th:href = "@{~/manage/material}"><i class="fa fa-reorder"></i> All
+                            <li class="active"><a th:href="@{~/manage/material}"><i class="fa fa-reorder"></i> All
                                 Materials</a>
                             </li>
-                            <li><a th:href = "@{~/manage/material?category_id=1}"><i class="fa fa-book"></i> Books</a></li>
-                            <li><a th:href = "@{~/manage/material?category_id=2}"><i class="fa fa-newspaper-o"></i> Magazines</a></li>
-                            <li><a th:href = "@{~/manage/material?category_id=3}"><i class="fa fa-graduation-cap"></i> Thesis</a></li>
+                            <li><a th:href="@{~/manage/material?category_id=1}"><i class="fa fa-book"></i> Books</a>
+                            </li>
+                            <li><a th:href="@{~/manage/material?category_id=2}"><i class="fa fa-newspaper-o"></i>
+                                Magazines</a></li>
+                            <li><a th:href="@{~/manage/material?category_id=3}"><i class="fa fa-graduation-cap"></i>
+                                Thesis</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a th:href = "@{~/manage/room}">
+                        <a th:href="@{~/manage/room}">
                             <i class="fa fa-comments"></i> <span>Meeting Rooms</span>
                         </a>
                     </li>
@@ -155,18 +147,21 @@
                     <th:block th:if="${currentUser != null}">
                         <th:block th:if="${currentUser.role == T(library.domain.Role).ROLE_ADMIN}">
                             <li class="treeview">
-                                <a th:href = "@{~/manage/admin}">
+                                <a th:href="@{~/manage/admin}">
                                     <i class="fa fa-folder"></i> <span>Admin Tools</span>
                                     <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                             </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li class="active"><a th:href = "@{~/manage/user}"><i class="fa fa-users"></i>List of Users</a></li>
-                                    <li><a th:href = "@{~/manage/user/new}"><i class="fa fa-user-plus"></i>Create Temporary Staff</a></li>
+                                    <li class="active"><a th:href="@{~/manage/user}"><i class="fa fa-users"></i>List of
+                                        Users</a></li>
+                                    <li><a th:href="@{~/manage/user/new}"><i class="fa fa-user-plus"></i>Create
+                                        Temporary Staff</a></li>
                                 </ul>
                             </li>
-                        </th:block>>
+                        </th:block>
+                        >
                     </th:block>
                 </ul>
             </section>

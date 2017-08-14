@@ -84,3 +84,8 @@ div.alert.alert-danger.alert-dismissible > ul
 {
     vertical-align: middle;
 }
+
+.error-page
+{
+    margin: 100px auto 0 auto;
+}
