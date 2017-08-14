@@ -1,5 +1,6 @@
-package library.services;
+package library.services.room_reservation;
 
+import library.domain.Room;
 import library.domain.RoomReservation;
 import library.domain.User;
 import library.repositories.RoomReservationRepository;
@@ -20,18 +21,14 @@ public class RoomReservationServiceImpl implements RoomReservationService {
     }
 
     @Override
-    public RoomReservation reserveRoom(RoomReservation room, int userId)
+    public RoomReservation reserveRoom(RoomReservation room)
     {
-        User u = new User();
-        u.setId(userId);
-
-        room.setReservedBy(u);
         room.setDateReserved(new java.sql.Date(new java.util.Date().getTime()));
         return roomReservationRepository.save(room);
     }
 
     @Override
-    public void cancelReservation(RoomReservation room, int userId)
+    public void cancelReservation(RoomReservation room)
     {
         roomReservationRepository.delete(room);
     }
@@ -39,6 +36,11 @@ public class RoomReservationServiceImpl implements RoomReservationService {
     @Override
     public List<RoomReservation> getRoomReservationByDate(Date date)
     {
-       return roomReservationRepository.findAllByDateReserved(date);
+       return roomReservationRepository.findAllByDateReservedOrderByRoom_IdAscTimeReservedAsc(date);
+    }
+
+    public RoomReservation getRoomReservationByRoomAndTimeReserved(int roomId, int timeReserved)
+    {
+        return roomReservationRepository.findOneByRoom_IdAndTimeReserved(roomId, timeReserved);
     }
 }

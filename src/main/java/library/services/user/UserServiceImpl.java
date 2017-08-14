@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(int id) {
-        return userRepository.findOne(id);
+        return userRepository.findOneById(id);
     }
 
     @Override
@@ -47,5 +47,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User findUserByResetToken(String resetToken) {
+        return userRepository.findByResetToken(resetToken);
     }
 }

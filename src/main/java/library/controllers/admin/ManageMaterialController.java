@@ -3,8 +3,8 @@ package library.controllers.admin;
 import library.domain.Borrow;
 import library.domain.Material;
 import library.domain.User;
-import library.services.BorrowService;
-import library.services.MaterialService;
+import library.services.borrow.BorrowService;
+import library.services.material.MaterialService;
 import library.services.user.UserService;
 import org.jxls.template.SimpleExporter;
 import org.slf4j.Logger;
@@ -26,8 +26,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 @Controller
 public class ManageMaterialController
@@ -162,7 +164,7 @@ public class ManageMaterialController
 			Material temp = materialService.getMaterialById(material.getId());
 
 			Borrow borrow = borrowService.getBorrowMaterialById(temp.getBorrowStatus().getId());
-			borrow.setDateReturned(new Timestamp(System.currentTimeMillis()));
+			borrow.setDateReturned(new Date(System.currentTimeMillis()));
 			borrowService.saveBorrow(borrow);
 		}
 		catch (DataIntegrityViolationException e)
@@ -201,7 +203,7 @@ public class ManageMaterialController
 				borrow.setMaterial(temp);
 				borrow.setBorrower(u);
 			}else{
-				borrow.setDateBorrowed(new Timestamp(System.currentTimeMillis()));
+				borrow.setDateBorrowed(new Date(System.currentTimeMillis()));
 			}
 			borrowService.saveBorrow(borrow);
 		}

@@ -16,4 +16,6 @@ public interface UserService
     User save(User form);
 
     void deleteById(int id);
+
+    User findUserByResetToken(String resetToken);
 }

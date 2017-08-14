@@ -20,9 +20,6 @@ public class User
 	@NotNull
 	private String password;
 
-	@Transient
-	private String passwordRepeat;
-
 	@Column(unique = true)
 	@Size(min = 6, message = "Email cannot be blank")
 	private String email;
@@ -43,6 +40,8 @@ public class User
 	private String secretAnswer;
 
 	private Date dateRegistered;
+
+    private String resetToken;
 
 	public User()
 	{
@@ -105,16 +104,6 @@ public class User
 	public void setPassword(String password)
 	{
 		this.password = password;
-	}
-
-	public String getPasswordRepeat()
-	{
-		return passwordRepeat;
-	}
-
-	public void setPasswordRepeat(String passwordRepeat)
-	{
-		this.passwordRepeat = passwordRepeat;
 	}
 
 	public String getEmail()
@@ -186,4 +175,12 @@ public class User
 	{
 		this.secretAnswer = secretAnswer;
 	}
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
 }

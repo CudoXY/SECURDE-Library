@@ -1,6 +1,7 @@
 package library.domain.validator;
 
 import library.domain.User;
+import library.domain.form.FormCreateTempAccount;
 import library.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +33,12 @@ public class FormCreateTempAccountValidator implements Validator
 	public void validate(Object target, Errors errors)
 	{
 		LOGGER.debug("Validating {}", target);
-		User user = (User) target;
+		FormCreateTempAccount user = (FormCreateTempAccount) target;
 		validatePasswords(errors, user);
-		validateId(errors, user);
+		validateIdNumber(errors, user);
 	}
 
-	private void validatePasswords(Errors errors, User form)
+	private void validatePasswords(Errors errors, FormCreateTempAccount form)
 	{
 		if (!form.getPassword().equals(form.getPasswordRepeat()))
 		{
@@ -45,7 +46,7 @@ public class FormCreateTempAccountValidator implements Validator
 		}
 	}
 
-	private void validateId(Errors errors, User form)
+	private void validateIdNumber(Errors errors, FormCreateTempAccount form)
 	{
 		if (userService.getUserById(form.getId()) != null)
 		{

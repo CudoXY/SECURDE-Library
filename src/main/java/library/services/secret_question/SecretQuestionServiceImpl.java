@@ -1,13 +1,9 @@
-package library.services.secretquestion;
+package library.services.secret_question;
 
-import library.domain.Borrow;
 import library.domain.SecretQuestion;
-import library.repositories.BorrowRepository;
 import library.repositories.SecretQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
 
 @Service
 public class SecretQuestionServiceImpl implements SecretQuestionService

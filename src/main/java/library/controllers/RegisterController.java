@@ -2,9 +2,10 @@ package library.controllers;
 
 import library.domain.User;
 import library.domain.form.FormRegistration;
+import library.domain.helper.UserHelper;
 import library.domain.validator.UserCreateFormValidator;
 import library.services.currentuser.CurrentUserService;
-import library.services.secretquestion.SecretQuestionService;
+import library.services.secret_question.SecretQuestionService;
 import library.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,9 @@ public class RegisterController
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String getUserCreatePage(Model model)
 	{
+		if (UserHelper.getCurrentUser(userService) != null)
+			return "redirect:/";
+
 		LOGGER.debug("Getting user create form");
 		if (!model.containsAttribute("user")) {
 			model.addAttribute("user", new FormRegistration());
@@ -86,6 +90,8 @@ public class RegisterController
 		u.setRole(form.getRole());
 		u.setId(form.getId());
 		u.setPassword(form.getPasswordRepeat());
+		System.out.println("form.getPasswordRepeat() = " + form.getPasswordRepeat());
+		System.out.println("u.setPassword = " + u.getPassword());
 		u.setEmail(form.getEmail());
 		u.setSecretQuestion(form.getSecretQuestion());
 		u.setSecretAnswer(form.getSecretAnswer());
@@ -108,7 +114,7 @@ public class RegisterController
 		{
 			userService.save(u);
 
-			currentUserService.autologin(u.getId() + "", u.getPasswordRepeat());
+			currentUserService.autologin(u.getId() + "", u.getPassword());
 		}
 		catch (DataIntegrityViolationException e)
 		{
