@@ -1,8 +1,13 @@
 package library.domain;
 
+import org.springframework.security.access.method.P;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 public class Borrow
@@ -19,9 +24,11 @@ public class Borrow
     @ManyToOne
     private Material material;
 
-    private Timestamp dateBorrowed;
+    private java.sql.Date dateBorrowed;
 
-    private Timestamp dateReturned;
+    private java.sql.Date dateReturned;
+
+    private boolean isReleased;
 
     public int getId()
     {
@@ -53,23 +60,46 @@ public class Borrow
         this.material = material;
     }
 
-    public Timestamp getDateBorrowed()
+    public java.sql.Date getDateBorrowed()
     {
         return dateBorrowed;
     }
 
-    public void setDateBorrowed(Timestamp dateBorrowed)
+    public void setDateBorrowed(java.sql.Date dateBorrowed)
     {
         this.dateBorrowed = dateBorrowed;
     }
 
-    public Timestamp getDateReturned()
+    public java.sql.Date getDateReturned()
     {
         return dateReturned;
     }
 
-    public void setDateReturned(Timestamp dateReturned)
+    public void setDateReturned(java.sql.Date dateReturned)
     {
         this.dateReturned = dateReturned;
+    }
+
+    @Transient
+    public Date getExpectedReturnDate()
+    {
+        if (dateBorrowed == null)
+            return null;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateBorrowed);
+        cal.add(Calendar.DAY_OF_WEEK, borrower.getRole() == Role.ROLE_STUDENT ? 7 : 14);
+
+        return new Date(cal.getTimeInMillis());
+    }
+
+    public boolean isReleased()
+    {
+        return isReleased;
+    }
+
+    public void setReleased(boolean released)
+    {
+        isReleased = released;
     }
 }

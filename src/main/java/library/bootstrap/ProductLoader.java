@@ -2,6 +2,7 @@ package library.bootstrap;
 
 import library.domain.*;
 import library.repositories.*;
+import library.services.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -19,6 +20,9 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 	private RoomReservationRepository roomReservationRepository;
 	private SecretQuestionRepository secretQuestionRepository;
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserService userService;
 
 	private Logger log = Logger.getLogger(ProductLoader.class);
 
@@ -52,9 +56,140 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 	public void onApplicationEvent(ContextRefreshedEvent event)
 	{
 		loadSecretQuestions();
+		loadUsers();
 		loadMaterials();
 		loadRooms();
-//		loadRoomReservations();
+		loadRoomReservations();
+	}
+
+	private void loadUsers()
+	{
+		if (userRepository.findAll().iterator().hasNext())
+			return;
+
+		SecretQuestion s = secretQuestionRepository.findOne(1);
+
+		// Student
+		User u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(1);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Student One");
+		u.setEmail("student1@test.com");
+		u.setRole(Role.ROLE_STUDENT);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
+
+		u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(11);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Student Two");
+		u.setEmail("student2@test.com");
+		u.setRole(Role.ROLE_STUDENT);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
+
+		u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(111);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Student Three");
+		u.setEmail("student3@test.com");
+		u.setRole(Role.ROLE_STUDENT);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
+
+		// Faculty
+		u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(2);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Faculty One");
+		u.setEmail("faculty1@test.com");
+		u.setRole(Role.ROLE_FACULTY);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
+
+		u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(22);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Faculty Two");
+		u.setEmail("faculty2@test.com");
+		u.setRole(Role.ROLE_FACULTY);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
+
+		u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(222);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Faculty Three");
+		u.setEmail("faculty3@test.com");
+		u.setRole(Role.ROLE_FACULTY);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
+
+		// Staff
+		u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(3);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Staff");
+		u.setEmail("staff@test.com");
+		u.setRole(Role.ROLE_STAFF);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
+
+		// Manager
+		u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(4);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Manager");
+		u.setEmail("manager@test.com");
+		u.setRole(Role.ROLE_MANAGER);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
+
+		// Admin
+		u = new User();
+		u.setDateRegistered(new Date(new java.util.Date().getTime()));
+		u.setId(5);
+		u.setPassword("password");
+		u.setBirthDate(new Date(new java.util.Date().getTime()));
+		u.setFirstName("Test");
+		u.setLastName("Admin");
+		u.setEmail("admin@test.com");
+		u.setRole(Role.ROLE_ADMIN);
+		u.setSecretQuestion(s);
+		u.setSecretAnswer("test");
+		userService.save(u);
 	}
 
 	private void loadRoomReservations()
@@ -64,9 +199,23 @@ public class ProductLoader implements ApplicationListener<ContextRefreshedEvent>
 
 		RoomReservation roomReservation = new RoomReservation();
 		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
-		roomReservation.setReservedBy(userRepository.findOne(11427817));
+		roomReservation.setReservedBy(userRepository.findOne(1));
+		roomReservation.setRoom(roomRepository.findOneById(2));
+		roomReservation.setTimeReserved(12);
+		roomReservationRepository.save(roomReservation);
+
+		roomReservation = new RoomReservation();
+		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
+		roomReservation.setReservedBy(userRepository.findOne(2));
 		roomReservation.setRoom(roomRepository.findOneById(1));
-		roomReservation.setTimeReserved(7);
+		roomReservation.setTimeReserved(21);
+		roomReservationRepository.save(roomReservation);
+
+		roomReservation = new RoomReservation();
+		roomReservation.setDateReserved(new Date(new java.util.Date().getTime()));
+		roomReservation.setReservedBy(userRepository.findOne(2));
+		roomReservation.setRoom(roomRepository.findOneById(1));
+		roomReservation.setTimeReserved(8);
 		roomReservationRepository.save(roomReservation);
 	}
 

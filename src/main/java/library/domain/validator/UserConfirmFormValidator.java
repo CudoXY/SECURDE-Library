@@ -1,7 +1,6 @@
 package library.domain.validator;
 
-import library.domain.User;
-import library.domain.form.FormCreateTempAccount;
+import library.domain.form.FormRegistration;
 import library.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +10,14 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class FormCreateTempAccountValidator implements Validator
+public class UserCreateFormValidator implements Validator
 {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FormCreateTempAccountValidator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserCreateFormValidator.class);
 	private final UserService userService;
 
 	@Autowired
-	public FormCreateTempAccountValidator(UserService userService)
+	public UserCreateFormValidator(UserService userService)
 	{
 		this.userService = userService;
 	}
@@ -26,19 +25,20 @@ public class FormCreateTempAccountValidator implements Validator
 	@Override
 	public boolean supports(Class<?> clazz)
 	{
-		return clazz.equals(User.class);
+		return clazz.equals(FormRegistration.class);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors)
 	{
 		LOGGER.debug("Validating {}", target);
-		FormCreateTempAccount user = (FormCreateTempAccount) target;
+		FormRegistration user = (FormRegistration) target;
 		validatePasswords(errors, user);
-		validateIdNumber(errors, user);
+		validateEmail(errors, user);
+		validateId(errors, user);
 	}
 
-	private void validatePasswords(Errors errors, FormCreateTempAccount form)
+	private void validatePasswords(Errors errors, FormRegistration form)
 	{
 		if (!form.getPassword().equals(form.getPasswordRepeat()))
 		{
@@ -46,11 +46,19 @@ public class FormCreateTempAccountValidator implements Validator
 		}
 	}
 
-	private void validateIdNumber(Errors errors, FormCreateTempAccount form)
+	private void validateEmail(Errors errors, FormRegistration form)
+	{
+		if (userService.getUserByEmail(form.getEmail()) != null)
+		{
+			errors.reject("email.exists", "User with this email already exists");
+		}
+	}
+
+	private void validateId(Errors errors, FormRegistration form)
 	{
 		if (userService.getUserById(form.getId()) != null)
 		{
-			errors.reject("username.exists", "User with this username already exists");
+			errors.reject("id.exists", "User with this ID number already exists");
 		}
 	}
 }

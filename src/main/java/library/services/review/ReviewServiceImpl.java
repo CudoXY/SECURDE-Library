@@ -1,10 +1,8 @@
-package library.services;
+package library.services.review;
 
 import library.domain.Review;
 import library.repositories.BorrowRepository;
 import library.repositories.ReviewRepository;
-import library.repositories.RoomRepository;
-import library.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +47,6 @@ public class ReviewServiceImpl implements ReviewService
 	@Override
 	public boolean canUserReview(String materialId, int userId)
 	{
-		return borrowRepository.findFirstByMaterial_IdAndBorrower_Id(materialId, userId) != null;
+		return borrowRepository.findFirstByMaterial_IdAndBorrower_IdAndDateBorrowedIsNotNullAndIsReleasedIsTrue(materialId, userId) != null;
 	}
 }

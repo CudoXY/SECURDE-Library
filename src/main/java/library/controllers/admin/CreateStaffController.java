@@ -56,7 +56,6 @@ public class CreateStaffController {
         User newUser = new User();
         newUser.setId(user.getId());
         newUser.setPassword(user.getPassword());
-        newUser.setPasswordRepeat(user.getPasswordRepeat());
         newUser.setRole(user.getRole());
         newUser.setDateRegistered(new Date(new java.util.Date().getTime()));
         newUser.setTemporary(true);

@@ -1,7 +1,9 @@
 package library.controllers;
 
 import library.domain.User;
-import library.domain.form.*;
+import library.domain.form.FormResetPassword;
+import library.domain.form.FormSecretAnswer;
+import library.domain.form.FormSecretQuestion;
 import library.services.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,7 +85,6 @@ public class PasswordController {
     {
         User user = userService.getUserById(formResetPassword.getId());
         user.setPassword(formResetPassword.getPassword());
-        user.setPasswordRepeat(formResetPassword.getPassword());
         System.out.println(user.getId());
         System.out.println(formResetPassword.getPassword());
         if (bindingResult.hasErrors())

@@ -1,9 +1,6 @@
 package library.configuration;
 
 import library.domain.Role;
-import library.domain.User;
-import library.domain.helper.UserHelper;
-import library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -35,12 +32,13 @@ import java.io.IOException;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
+	@Bean
+	public AuthenticationSuccessHandler successHandler() {
+		return new RoleBasedAuthenticationSuccessHandler("/success");
+	}
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-
-	@Autowired
-	private UserService userService;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception
@@ -55,33 +53,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 		http.authorizeRequests()
 				.antMatchers("/", "/public/**").permitAll()
+				.antMatchers("/manage/**").hasAnyRole("STAFF", "MANAGER")
 				.antMatchers("/manage/user/**").hasRole("ADMIN")
 				.anyRequest().permitAll()
 				.and()
 				.formLogin()
+				.successHandler(successHandler())
 				.loginPage("/login")
 				.failureUrl("/login?error")
 				.usernameParameter("idNumber")
-				.defaultSuccessUrl("/", false)
-				/*.successHandler(new AuthenticationSuccessHandler() {
-					@Override
-					public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-						User u = userService.getUserById(Integer.parseInt(authentication.getName()));
-
-						if (u != null)
-							return;
-
-						if (u.isTemporary())
-						{
-							httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-							httpServletResponse.setHeader("Location", "/temporary");
-						} else {
-							httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-							httpServletResponse.setHeader("Location", "/");
-						}
-
-					}
-				})*/
 				.permitAll()
 				.and()
 				.logout()

@@ -3,74 +3,158 @@ package library.controllers;
 import library.domain.Room;
 import library.domain.RoomReservation;
 import library.domain.Timeslot;
+import library.domain.form.FormCancelRoomReserve;
+import library.domain.form.FormRoomReserve;
 import library.services.room.RoomService;
+import library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
-import library.services.RoomReservationService;
+import library.services.room_reservation.RoomReservationService;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Brandon on 7/31/2017.
  */
 @Controller
-public class RoomReservationController {
-    private RoomReservationService roomReservationService;
-    private RoomService roomService;
+@RequestMapping(value = "/roomreserve")
+public class RoomReservationController
+{
+	private RoomReservationService roomReservationService;
+	private RoomService roomService;
+	private UserService userService;
 
-    @Autowired
-    public void setRoomService(RoomService roomService) {
-        this.roomService = roomService;
-    }
+	@Autowired
+	public void setRoomService(RoomService roomService)
+	{
+		this.roomService = roomService;
+	}
 
-    @Autowired
-    public void setRoomReservationService(RoomReservationService roomReservationService) {
-        this.roomReservationService = roomReservationService;
-    }
+	@Autowired
+	public void setRoomReservationService(RoomReservationService roomReservationService)
+	{
+		this.roomReservationService = roomReservationService;
+	}
 
-    @RequestMapping(value = "/roomreserve", method = RequestMethod.GET)
-    public String roomreserve(Model model) {
-        final int TIMESLOTCOUNT = 15;
-        ArrayList<Timeslot> timeSlotList = new ArrayList<Timeslot>();
-        List<RoomReservation> roomReservations = roomReservationService.getRoomReservationByDate(new Date(new java.util.Date().getTime()));
-        List<Room> roomList = roomService.getAll();
+	@Autowired
+	public void setUserService(UserService userService)
+	{
+		this.userService = userService;
+	}
 
-        model.addAttribute("roomList", roomList);
-        int reserveIndex = 0;
-        for (int i = 0; i < roomList.size(); i++) {
-            for (int x = 0; x < TIMESLOTCOUNT; x++) {
-                Timeslot ts = new Timeslot();
-                timeSlotList.add(ts);
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String roomreserve(Model model)
+	{
+		final int TIMESLOTCOUNT = 15;
+		final int STARTHOUR = 7;
 
-                ts.setRoomId(roomList.get(i).getId());
-                ts.setTime(x);
+		List<Room> roomList = roomService.getAll();
+		Timeslot[][] timeSlotList = new Timeslot[roomList.size()][TIMESLOTCOUNT];
+		List<RoomReservation> roomReservationList = roomReservationService.getRoomReservationByDate(new Date(new java.util.Date().getTime()));
 
-                if (roomReservations.size() <= reserveIndex)
-                    continue;
+		int reservationIndex = 0;
+		for (int i = 0; i < roomList.size(); i++)
+		{
+			for (int j = 0; j < TIMESLOTCOUNT; j++)
+			{
+				Timeslot t = new Timeslot();
+				timeSlotList[i][j] = t;
 
-                if (roomReservations.get(reserveIndex).getRoom().getId() != roomList.get(i).getId())
-                    continue;
+				t.setRoomId(roomList.get(i).getId());
+				t.setTime(STARTHOUR + j);
 
-                ts.setReservedBy(roomReservations.get(reserveIndex).getReservedBy());
-                ts.setTime(roomReservations.get(reserveIndex).getTimeReserved());
-                reserveIndex++;
-            }
+				// If no more reservation, just proceed initializing the other timeslots
+				if (roomReservationList.size() <= reservationIndex)
+				{
+					continue;
+				}
 
-        }
-        System.out.println("timeSlotList = " + timeSlotList.size());
-        model.addAttribute("timeSlotList",
-                timeSlotList);
-        model.addAttribute("timeSlotCount",
-                TIMESLOTCOUNT);
-        return "user/roomreserve";
-    }
+				if (roomReservationList.get(reservationIndex).getRoom().getId() != t.getRoomId() ||
+						roomReservationList.get(reservationIndex).getTimeReserved() != t.getTime())
+				{
+					continue;
+				}
+
+				t.setReservedBy(roomReservationList.get(reservationIndex).getReservedBy());
+				reservationIndex++;
+			}
+		}
+
+		System.out.println(Arrays.deepToString(timeSlotList));
+
+		model.addAttribute("formRoomReserve", new FormRoomReserve());
+		model.addAttribute("formCancelRoomReserve", new FormCancelRoomReserve());
+		model.addAttribute("dateToday", new Date(new java.util.Date().getTime()));
+		model.addAttribute("TIMESLOTCOUNT", TIMESLOTCOUNT);
+		model.addAttribute("roomList", roomList);
+		model.addAttribute("timeSlotList", timeSlotList);
+
+		return "user/roomreserve";
+	}
+
+	@PreAuthorize("hasAnyRole('STUDENT', 'FACULTY')")
+	@RequestMapping(value = "/reserve", method = RequestMethod.POST)
+	public String reserve(FormRoomReserve formRoomReserve, Model model)
+	{
+		List<Timeslot> timeslotList = formRoomReserve.getTimeslotList(userService);
+
+		for (int i = 0; i < timeslotList.size(); i++)
+		{
+			Timeslot t = timeslotList.get(i);
+
+			// Check first if taken
+			RoomReservation currReservation = roomReservationService.getRoomReservationByRoomAndTimeReserved(
+					t.getRoomId(), t.getTime());
+
+			if (currReservation != null)
+			{
+				// TODO: Error
+				continue;
+			}
+
+			RoomReservation r = new RoomReservation();
+			r.setTimeReserved(t.getTime());
+			r.setRoom(roomService.getRoomById(t.getRoomId()));
+			r.setReservedBy(t.getReservedBy());
+
+			roomReservationService.reserveRoom(r);
+		}
+
+		return "redirect:/roomreserve";
+	}
+
+	@PreAuthorize("hasAnyRole('STUDENT', 'FACULTY')")
+	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
+	public String cancel(FormCancelRoomReserve formCancelRoomReserve, Model model)
+	{
+		Timeslot t = formCancelRoomReserve.getTimeslot(userService);
+
+		// Check first if taken
+		RoomReservation currReservation = roomReservationService.getRoomReservationByRoomAndTimeReserved(
+				t.getRoomId(), t.getTime());
+
+		if (currReservation == null)
+		{
+			// TODO: Error
+			return "redirect:/roomreserve";
+		}
+
+		if (currReservation.getReservedBy().getId() != t.getReservedBy().getId())
+		{
+			// TODO: Error
+			return "redirect:/roomreserve";
+		}
+
+		roomReservationService.cancelReservation(currReservation);
+
+		return "redirect:/roomreserve";
+	}
 }

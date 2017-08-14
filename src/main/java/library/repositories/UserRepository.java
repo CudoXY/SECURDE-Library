@@ -8,6 +8,10 @@ import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<User, Integer>
 {
+	@Transactional
+	User findOneById(int id);
+
+	@Transactional
 	User findOneByEmail(String email);
 	User findByResetToken(String resetToken);
 	@Transactional

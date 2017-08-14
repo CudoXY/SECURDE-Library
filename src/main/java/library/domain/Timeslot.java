@@ -34,4 +34,10 @@ public class Timeslot {
     public void setTime(int time) {
         this.time = time;
     }
+
+    @Override
+    public String toString()
+    {
+        return reservedBy == null ? "null" : reservedBy.getId() + "";
+    }
 }

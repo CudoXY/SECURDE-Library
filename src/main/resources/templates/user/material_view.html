@@ -27,14 +27,48 @@
                 <h4>Published at <p th:text="${material.year}"></p></h4>
                 <br>
 
-                <form th:action="@{/catalog/borrow}" method="post">
-                    <div class="btn-group">
-                        <input type="hidden" th:attr="name='materialId'" th:value="${material.id}"/>
-                        <button type="submit" class="btn btn-default">Borrow</button>
-                        <div class="col-md-1"></div>
-                        <a href="#review" class="btn btn-default btn2spacing">Review</a>
-                    </div>
-                </form>
+                <th:block th:switch="${borrowAction}">
+                    <th:block th:case="${T(library.domain.helper.BorrowAction).RELEASED}">
+                        <button class="btn btn-default disabled">Borrowed</button>
+                    </th:block>
+                    <th:block th:case="*">
+                        <form th:action="${borrowAction == T(library.domain.helper.BorrowAction).BORROW} ? @{/catalog/borrow} :
+                                            (${borrowAction == T(library.domain.helper.BorrowAction).RESERVE} ? @{/catalog/reserve} :
+                                            (${borrowAction == T(library.domain.helper.BorrowAction).CANCELBORROW} ? @{/catalog/borrow/cancel} :
+                                            @{/catalog/reserve/cancel}))" method="post">
+                            <div class="btn-group">
+                                <input type="hidden" th:attr="name='materialId'" th:value="${material.id}"/>
+                                <button type="submit" class="btn btn-default">
+                                    <th:block th:switch="${borrowAction}">
+                                        <th:block
+                                                th:case="${T(library.domain.helper.BorrowAction).BORROW}"
+                                                th:text="Borrow"/>
+                                        <th:block
+                                                th:case="${T(library.domain.helper.BorrowAction).RESERVE}"
+                                                th:text="Reserve"/>
+                                        <th:block th:case="*" th:text="Cancel"/>
+                                    </th:block>
+                                </button>
+                                <div class="col-md-1"></div>
+                                <a href="#review" class="btn btn-default btn2spacing">Review</a>
+                            </div>
+                        </form>
+                    </th:block>
+
+                </th:block>
+
+                <!--<h1 th:text="${returnDate}"></h1>-->
+                <!--<h1 th:text="${estimatedAvailabilityDate}"></h1>-->
+                <th:block th:if="${borrowAction == T(library.domain.helper.BorrowAction).CANCELBORROW}">
+                    <span th:text="${'You may now pick up the material. Please return it on or before ' + #dates.format(returnDate, 'MMMMM d, yyyy')}"/>
+                </th:block>
+
+                <th:block th:if="${borrowAction == T(library.domain.helper.BorrowAction).RESERVE ||
+                                    borrowAction == T(library.domain.helper.BorrowAction).CANCELRESERVE}">
+                    <span th:text="${'Please expect this material to be available on ' + #dates.format(estimatedAvailabilityDate, 'MMMMM d, yyyy')}" />
+                </th:block>
+
+
             </div>
         </div>
 
@@ -54,7 +88,8 @@
                             <input type="hidden" th:attr="name='material.id'" th:value="${material.id}"/>
                             <label class="control-label" for="focusedInput1">Write A Review</label>
 
-                            <textarea th:field="*{message}" id="focusedInput1" class="form-control span6" rows="3" placeholder="Type your review here"
+                            <textarea th:field="*{message}" id="focusedInput1" class="form-control span6" rows="3"
+                                      placeholder="Type your review here"
                                       required></textarea>
                         </div>
                         <div class="form-group">
@@ -72,10 +107,13 @@
                     <!-- Post -->
                     <div class="post">
                         <div class="user-block">
-                            <img class="img-circle img-bordered-sm" src="../dist/img/user1-128x128.jpg" alt="user image">
+                            <img class="img-circle img-bordered-sm" src="../dist/img/user1-128x128.jpg"
+                                 alt="user image">
                             <span th:text="${review.user.firstName + ' ' + review.user.lastName}"></span>
                             <br>
-                            <span class="description" data-toggle="tooltip" th:title="${#dates.format(review.dateReviewed, 'EEEE, MMMMM d, yyyy - h:mma')}" th:text="${#dates.format(review.dateReviewed, 'EEEE')}"></span>
+                            <span class="description" data-toggle="tooltip"
+                                  th:title="${#dates.format(review.dateReviewed, 'EEEE, MMMMM d, yyyy - h:mma')}"
+                                  th:text="${#dates.format(review.dateReviewed, 'EEEE')}"></span>
                         </div>
                         <!-- /.user-block -->
                         <p th:text="${review.message}"></p>
