@@ -42,7 +42,7 @@ public class ManageMaterialController
 		if (auth instanceof AnonymousAuthenticationToken)
 			return null;
 
-		return userService.getUserByIdNumber(Integer.parseInt(auth.getName()));
+		return userService.getUserById(Integer.parseInt(auth.getName()));
 	}
 
 	@Autowired
