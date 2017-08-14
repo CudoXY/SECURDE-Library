@@ -80,8 +80,9 @@
                                     <td th:if ="${material.borrowStatus != null && material.borrowStatus.released == false}"><span class="label label-warning">Pending</span></td>
                                     <td th:if ="${material.borrowStatus != null && material.borrowStatus.released == true}"><span class="label label-danger">Borrowed</span></td>
                                     <td>
-                                        <div class="btn-group pull-right" >
-                                            <button type="button" th:id="${material.id}" class="editMaterial btn btn-default" data-toggle="modal"
+                                        <div class="btn-group pull-right">
+                                            <button type="button" th:id="${material.id}"
+                                                    class="editMaterial btn btn-default" data-toggle="modal"
                                                     data-target="#modal-edit">
                                                 <i class="fa fa-edit"> Edit</i>
                                             </button>
@@ -94,7 +95,9 @@
                                             <button type="button" th:if ="${material.borrowStatus != null && material.borrowStatus.released==true}" th:value="${material.id}" data-toggle="modal" data-target="#modal-return" class="return btn btn-default">
                                             <i class="fa fa-home"> Return</i>
                                             </button>
-                                            <button type="button"  th:value="${material.id}" class="deleteMaterial btn btn-default" data-toggle="modal"
+                                            <button type="button" th:value="${material.id}"
+                                                    th:class="${'deleteMaterial btn btn-default ' + (material.borrowStatus != null && material.borrowStatus.released ? 'disabled' : '')}"
+                                                    data-toggle="modal"
                                                     data-target="#modal-delete">
                                                 <i class="fa fa-trash"></i>
                                             </button>
@@ -110,9 +113,9 @@
                         <i class="fa fa-plus"> Add Material</i>
                     </button>
                     <form th:action="@{~/manage/material/download}">
-                    <button type="submit"  class="btn btn-info pull-right">
-                        <i class="fa fa-plus"> Export Materials</i>
-                    </button>
+                        <button type="submit" class="btn btn-info pull-right">
+                            <i class="fa fa-plus"> Export Materials</i>
+                        </button>
                     </form>
                 </div>
                 <div class="modal fade" id="modal-return">
@@ -129,7 +132,8 @@
                                     <!-- /.box-header -->
                                     <!-- form start -->
                                     <!-- modal return start -->
-                                    <form role="form" th:object="${retMaterial}" th:action="@{~/manage/material/return}" method="post">
+                                    <form role="form" th:object="${retMaterial}" th:action="@{~/manage/material/return}"
+                                          method="post">
                                         <h5>Are you sure you want to Return this material?</h5>
                                         <div class="box-body">
                                             <div class="form-group">
@@ -138,7 +142,8 @@
                                         </div>
                                         <!-- /.box-body -->
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            <button type="button" class="btn btn-default pull-left"
+                                                    data-dismiss="modal">Close
                                             </button>
                                             <button type="submit" class="btn btn-success">Return</button>
                                         </div>
@@ -175,7 +180,8 @@
                                         </div>
                                         <!-- /.box-body -->
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            <button type="button" class="btn btn-default pull-left"
+                                                    data-dismiss="modal">Close
                                             </button>
                                             <button type="submit" class="btn btn-success">Borrow</button>
                                         </div>
@@ -201,29 +207,16 @@
                             <div class="modal-body">
                                 <div class="box box-primary">
 
-                                    <!-- /.box-header -->
-                                    <!-- form start -->
-                                    <form role="form" th:object="${delMaterial}" th:action="@{~/manage/material/delete}" method="post">
-                                        <h5>Are you sure you want to delete this material?</h5>
-                                        <div class="box-body">
-                                            <div class="form-group">
-                                                <input type="hidden" th:field = "*{id}" class="form-control" id="materialID" placeholder="Location">
-                                                <input type="hidden" th:field = "*{title}" class="form-control" id="materialTitle" placeholder="Location">
-                                                <input type="hidden" th:field = "*{author}" class="form-control" id="materialAuthor" placeholder="Location">
-                                                <input type="hidden" th:field = "*{publisher}" class="form-control" id="materialPublisher" placeholder="Location">
-                                                <input type="hidden" th:field = "*{year}" class="form-control" id="materialYear" placeholder="Location">
-                                                <input type="hidden" th:field = "*{category}" class="form-control" id="materialCategory" placeholder="Location">
-                                            </div>
-                                        </div>
-                                        <!-- /.box-body -->
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
-                                            </button>
-                                            <button type="submit" class="btn btn-success">Delete</button>
-                                        </div>
-                                    </form>
+                            <!-- form start -->
+                            <form id="dlgDelete" th:action="@{~/manage/material/delete}" method="post">
+                                <div class="modal-body">
+                                    <h5>Are you sure you want to delete this material?</h5>
+                                    <input type="hidden" id="dlgDelete_lblMaterialId" name="materialId">
                                 </div>
-                            </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </div>
+                            </form>
 
                         </div>
                         <!-- /.modal-content -->
@@ -245,32 +238,39 @@
 
                                     <!-- /.box-header -->
                                     <!-- form start -->
-                                    <form role="form" th:object="${upMaterial}" th:action="@{~/manage/material/update}" method="post">
+                                    <form role="form" th:object="${upMaterial}" th:action="@{~/manage/material/update}"
+                                          method="post">
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="location1">Location</label>
-                                                <input type="text" th:field = "*{id}" class="form-control" id="location1" placeholder="Location">
+                                                <input type="text" th:field="*{id}" class="form-control" id="location1"
+                                                       placeholder="Location">
                                             </div>
                                             <div class="form-group">
                                                 <label for="title2">Title</label>
-                                                <input type="text" th:field = "*{title}" class="form-control" id="title1" placeholder="Title">
+                                                <input type="text" th:field="*{title}" class="form-control" id="title1"
+                                                       placeholder="Title">
                                             </div>
                                             <div class="form-group">
                                                 <label for="auth2">Author/s</label>
-                                                <input type="text" th:field = "*{author}" class="form-control" id="auth1" placeholder="Author">
+                                                <input type="text" th:field="*{author}" class="form-control" id="auth1"
+                                                       placeholder="Author">
                                             </div>
                                             <div class="form-group">
                                                 <label for="pub2">Publisher</label>
-                                                <input type="text" th:field = "*{publisher}" class="form-control" id="pub1"
+                                                <input type="text" th:field="*{publisher}" class="form-control"
+                                                       id="pub1"
                                                        placeholder="Publisher">
                                             </div>
                                             <div class="form-group">
                                                 <label for="year2">Year</label>
-                                                <input type="number" th:field = "*{year}"class="form-control" id="year1" placeholder="Year">
+                                                <input type="number" th:field="*{year}" class="form-control" id="year1"
+                                                       placeholder="Year">
                                             </div>
                                             <div class="form-group">
                                                 <label>Type of Material</label>
-                                                <select id = "editSelect" name = "materialType" class="form-control select2" placeholder="Filter"
+                                                <select id="editSelect" name="materialType" class="form-control select2"
+                                                        placeholder="Filter"
                                                         style="width: 100%;">
                                                     <option th:each="materialType : ${T(library.domain.helper.Category).values()}"
                                                             th:value="${materialType.ordinal() + 1}"
@@ -281,7 +281,8 @@
                                         </div>
                                         <!-- /.box-body -->
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            <button type="button" class="btn btn-default pull-left"
+                                                    data-dismiss="modal">Close
                                             </button>
                                             <button type="submit" class="btn btn-success">Update</button>
                                         </div>
@@ -309,32 +310,39 @@
 
                                     <!-- /.box-header -->
                                     <!-- form start -->
-                                    <form role="form" th:object="${savMaterial}" th:action="@{~/manage/material/save}" method="post">
+                                    <form role="form" th:object="${savMaterial}" th:action="@{~/manage/material/save}"
+                                          method="post">
                                         <div class="box-body">
                                             <div class="form-group">
                                                 <label for="location2">Location</label>
-                                                <input type="text" th:field = "*{id}" class="form-control" id="location2" placeholder="Location">
+                                                <input type="text" th:field="*{id}" class="form-control" id="location2"
+                                                       placeholder="Location">
                                             </div>
                                             <div class="form-group">
                                                 <label for="title2">Title</label>
-                                                <input type="text" th:field = "*{title}" class="form-control" id="title2" placeholder="Title">
+                                                <input type="text" th:field="*{title}" class="form-control" id="title2"
+                                                       placeholder="Title">
                                             </div>
                                             <div class="form-group">
                                                 <label for="auth2">Author/s</label>
-                                                <input type="text" th:field = "*{author}" class="form-control" id="auth2" placeholder="Author">
+                                                <input type="text" th:field="*{author}" class="form-control" id="auth2"
+                                                       placeholder="Author">
                                             </div>
                                             <div class="form-group">
                                                 <label for="pub2">Publisher</label>
-                                                <input type="text" th:field = "*{publisher}" class="form-control" id="pub2"
+                                                <input type="text" th:field="*{publisher}" class="form-control"
+                                                       id="pub2"
                                                        placeholder="Publisher">
                                             </div>
                                             <div class="form-group">
                                                 <label for="year2">Year</label>
-                                                <input type="number" th:field = "*{year}"class="form-control" id="year2" placeholder="Year">
+                                                <input type="number" th:field="*{year}" class="form-control" id="year2"
+                                                       placeholder="Year">
                                             </div>
                                             <div class="form-group">
                                                 <label>Type of Material</label>
-                                                <select name = "materialType" class="form-control select2" placeholder="Filter"
+                                                <select name="materialType" class="form-control select2"
+                                                        placeholder="Filter"
                                                         style="width: 100%;">
                                                     <option th:each="materialType : ${T(library.domain.helper.Category).values()}"
                                                             th:value="${materialType.ordinal() + 1}"
@@ -345,7 +353,8 @@
                                         </div>
                                         <!-- /.box-body -->
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
+                                            <button type="button" class="btn btn-default pull-left"
+                                                    data-dismiss="modal">Close
                                             </button>
                                             <button type="submit" class="btn btn-success">Done</button>
                                         </div>
@@ -408,8 +417,8 @@
 <!-- jQuery 3 -->
 <!--/*/ <th:block th:include="fragments/admin/template :: script"></th:block> /*/-->
 <script>
-    $(document).ready(function(){
-        $(".editMaterial").click(function(){
+    $(document).ready(function () {
+        $(".editMaterial").click(function () {
             var id = this.id;
             var materialId = $("#" + id + "id").text();
             var materialTitle = $("#" + id + "title").text();
@@ -418,10 +427,16 @@
             var materialYear = $("#" + id + "year").text();
             var materialCategory = $("#" + id + "category").text();
             var materialCategoryID;
-            switch(materialCategory){
-                case "Book" : materialCategoryID = 1; break;
-                case "Magazine" : materialCategoryID = 2; break;
-                case "Thesis" : materialCategoryID = 3; break;
+            switch (materialCategory) {
+                case "Book" :
+                    materialCategoryID = 1;
+                    break;
+                case "Magazine" :
+                    materialCategoryID = 2;
+                    break;
+                case "Thesis" :
+                    materialCategoryID = 3;
+                    break;
             }
 
             $("#location1").val(materialId);
@@ -433,28 +448,13 @@
 
 
         });
-        $(".deleteMaterial").click(function(){
+        $(".deleteMaterial").click(function () {
             var id = $(this).val();
-            var materialTitle = $("#" + id + "title").text();
-            var materialAuthor = $("#" + id + "author").text();
-            var materialPublisher = $("#" + id + "publisher").text();
-            var materialYear = $("#" + id + "year").text();
-            var materialCategory = $("#" + id + "category").text();
-            var materialCategoryID;
-            switch(materialCategory){
-                case "Book" : materialCategoryID = 1; break;
-                case "Magazine" : materialCategoryID = 2; break;
-                case "Thesis" : materialCategoryID = 3; break;
-            }
-            $("#materialID").val(id);
-            $("#returnTitle").val(materialTitle);
-            $("#materialAuthor").val(materialAuthor);
-            $("#materialPublisher").val(materialPublisher);
-            $("#materialYear").val(materialYear);
-            $("#materialCategory").val(materialCategoryID);
+
+            $("#dlgDelete_lblMaterialId").val(id);
         });
 
-        $(".return").click(function(){
+        $(".return").click(function () {
             var id = $(this).val();
             var materialTitle = $("#" + id + "title").text();
             var materialAuthor = $("#" + id + "author").text();
@@ -462,10 +462,16 @@
             var materialYear = $("#" + id + "year").text();
             var materialCategory = $("#" + id + "category").text();
             var materialCategoryID;
-            switch(materialCategory){
-                case "Book" : materialCategoryID = 1; break;
-                case "Magazine" : materialCategoryID = 2; break;
-                case "Thesis" : materialCategoryID = 3; break;
+            switch (materialCategory) {
+                case "Book" :
+                    materialCategoryID = 1;
+                    break;
+                case "Magazine" :
+                    materialCategoryID = 2;
+                    break;
+                case "Thesis" :
+                    materialCategoryID = 3;
+                    break;
             }
             $("#returnID").val(id);
             $("#returnTitle").val(materialTitle);
@@ -476,7 +482,7 @@
             console.log("inside the return button function");
         });
 
-        $(".borrow").click(function(){
+        $(".borrow").click(function () {
             var id = $(this).val();
             var materialTitle = $("#" + id + "title").text();
             var materialAuthor = $("#" + id + "author").text();
@@ -484,10 +490,16 @@
             var materialYear = $("#" + id + "year").text();
             var materialCategory = $("#" + id + "category").text();
             var materialCategoryID;
-            switch(materialCategory){
-                case "Book" : materialCategoryID = 1; break;
-                case "Magazine" : materialCategoryID = 2; break;
-                case "Thesis" : materialCategoryID = 3; break;
+            switch (materialCategory) {
+                case "Book" :
+                    materialCategoryID = 1;
+                    break;
+                case "Magazine" :
+                    materialCategoryID = 2;
+                    break;
+                case "Thesis" :
+                    materialCategoryID = 3;
+                    break;
             }
             $("#borrowID").val(id);
 

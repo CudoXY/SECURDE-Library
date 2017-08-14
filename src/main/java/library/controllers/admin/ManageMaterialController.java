@@ -50,12 +50,14 @@ public class ManageMaterialController
 	}
 
 	@Autowired
-	public void setMaterialService(MaterialService materialService) {
+	public void setMaterialService(MaterialService materialService)
+	{
 		this.materialService = materialService;
 	}
 
 	@Autowired
-	public void setMaterialService(BorrowService borrowService) {
+	public void setMaterialService(BorrowService borrowService)
+	{
 		this.borrowService = borrowService;
 	}
 
@@ -85,8 +87,6 @@ public class ManageMaterialController
 	@RequestMapping(value = "/manage/material/save", method = RequestMethod.POST)
 	public String save(@Valid @ModelAttribute("savMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
 	{
-
-
 		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
 
 		if (bindingResult.hasErrors())
@@ -176,12 +176,20 @@ public class ManageMaterialController
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
+
 	@RequestMapping(value = "/manage/material/delete", method = RequestMethod.POST)
-	public String delete(@Valid @ModelAttribute("delMaterial") Material material, BindingResult bindingResult)
+	public String delete(String materialId)
 	{
-			System.out.println("inside try. will call deleteMaterial function");
-			materialService.deleteMaterial(material.getId());
-		// ok, redirect
+		Borrow b = borrowService.getMaterialStatus(materialId);
+
+		// Reject request if the material is released
+		if (b != null && b.isReleased())
+		{
+			// TODO: Handle error
+			return "redirect:/manage/material";
+		}
+		materialService.deleteMaterial(materialId);
+
 		return "redirect:/manage/material";
 	}
 
@@ -191,22 +199,27 @@ public class ManageMaterialController
 		Iterable<Material> materialList = materialService.getMaterialList();
 		Iterator<Material> iter = materialList.iterator();
 		List<Material> list = new ArrayList<Material>();
-		while(iter.hasNext()){
+		while (iter.hasNext())
+		{
 			Material m = iter.next();
 			System.out.println(m.getTitle());
 			list.add(m);
 		}
 
 		List<String> headers = Arrays.asList("Id Number", "Author", "Category", "Publisher", "Title", "Year", "Borrow");
-		try {
+		try
+		{
+			System.out.println("Inside the export excel function");
 			response.addHeader("Content-disposition", "attachment; filename=Materials.xls");
 			response.setContentType("application/vnd.ms-excel");
 			SimpleExporter exporter = new SimpleExporter();
-			exporter.gridExport(headers,list,"id, title, author, publisher, year, category, borrowStatus ",response.getOutputStream());
+			exporter.gridExport(headers, list, "id, title, author, publisher, year, category, borrowStatus ", response.getOutputStream());
 			//new SimpleExporter().gridExport(headers, list, "id, title, author, publisher, year, category, borrowStatus ", response.getOutputStream());
 			//new SimpleExporter().gridExport(headers, list, "Id Number, Author, Category, Publisher, Title, Year ", response.getOutputStream());
 			response.flushBuffer();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			LOGGER.warn(e.getMessage(), e);
 		}
 	}

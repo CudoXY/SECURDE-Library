@@ -32,6 +32,10 @@ import java.io.IOException;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
+	@Bean
+	public AuthenticationSuccessHandler successHandler() {
+		return new RoleBasedAuthenticationSuccessHandler("/success");
+	}
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -49,14 +53,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 		http.authorizeRequests()
 				.antMatchers("/", "/public/**").permitAll()
+				.antMatchers("/manage/dashboard/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
+				.antMatchers("/manage/material/**").hasAnyRole("STAFF", "MANAGER")
+				.antMatchers("/manage/room/**").hasAnyRole("STAFF", "MANAGER")
 				.antMatchers("/manage/user/**").hasRole("ADMIN")
 				.anyRequest().permitAll()
 				.and()
 				.formLogin()
+				.successHandler(successHandler())
 				.loginPage("/login")
 				.failureUrl("/login?error")
 				.usernameParameter("idNumber")
-				.defaultSuccessUrl("/", false)
 				.permitAll()
 				.and()
 				.logout()

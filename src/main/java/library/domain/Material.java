@@ -15,23 +15,18 @@ public class Material
     @Id
     private String id;
 
-    @Field
     @NotNull
     private String title;
 
-    @Field
     @NotNull
     private String author;
 
-    @Field
     @NotNull
     private String publisher;
 
-    @Field(store = Store.NO)
     @NotNull
     private int year;
 
-    @Field(store = Store.NO)
     @NotNull
     private int category;
 
