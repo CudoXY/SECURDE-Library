@@ -8,8 +8,10 @@ import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<User, Integer>
 {
-	User findOneByEmail(String email);
-	User findUsersByIdNumber(int idNumber);
 	@Transactional
-	void deleteByIdNumber(int idNumber);
+	User findOneByEmail(String email);
+	@Transactional
+	User findUsersById(int id);
+	@Transactional
+	void deleteById(int id);
 }
