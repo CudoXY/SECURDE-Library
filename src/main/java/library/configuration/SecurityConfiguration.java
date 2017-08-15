@@ -53,6 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 		http.authorizeRequests()
 				.antMatchers("/", "/public/**").permitAll()
+				.antMatchers("/manage/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
 				.antMatchers("/manage/dashboard/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
 				.antMatchers("/manage/material/**").hasAnyRole("STAFF", "MANAGER")
 				.antMatchers("/manage/room/**").hasAnyRole("STAFF", "MANAGER")
