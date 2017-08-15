@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SHS DLSU Library | Dashboard</title>
+
+    <!--/*/ <th:block th:include="fragments/template :: head"></th:block> /*/-->
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" class="skin-blue layout-top-nav"
+      style="height: auto; min-height: 100%;">
+
+<!--/*/ <th:block th:include="fragments/template :: navigation"></th:block> /*/-->
+
+<div class="container content">
+    <div class="row">
+
+        <form  method="post">
+            <input id="id" type="hidden" name="id"/>
+            <div class="form-group has-feedback">
+                <input type="password" name="origPassword" class="form-control" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="newPassword" class="form-control" placeholder="New Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="repNewPassword" class="form-control" placeholder="Retype new password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+
+            <!-- /.col -->
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
+                </div>
+            </div>
+            <!-- /.col -->
+
+        </form>
+
+
+
+
+
+    </div>
+
+</div>
+<!-- Footer -->
+<!--/*/ <th:block th:include="fragments/template :: footer"></th:block> /*/-->
+
+<!--/*/ <th:block th:include="fragments/template :: script"></th:block> /*/-->
+</body>
+</html>

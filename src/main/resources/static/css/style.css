@@ -78,3 +78,53 @@ div.alert.alert-danger.alert-dismissible > ul
     text-align: center;
     vertical-align: middle;
 }
+
+.pw-very-weak .bar {
+    background: #d00;
+    width: 30px;
+    height: 5px;
+}
+
+.pw-very-weak .label {
+    color: #d00;
+}
+
+.pw-weak .bar {
+    background: #d00;
+    width: 60px;
+    height: 5px;
+}
+
+.pw-weak .label {
+    color: #d00;
+}
+
+.pw-mediocre .bar {
+    background: #f3f01a;
+    width: 90px;
+    height: 5px;
+}
+
+.pw-mediocre .label {
+    color: #f3f01a;
+}
+
+.pw-strong .bar {
+    background: #f3b31a;
+    width: 120px;
+    height: 5px;
+}
+
+.pw-strong .label {
+    color: #f3b31a;
+}
+
+.pw-very-strong .bar {
+    background: #0d0;
+    width: 150px;
+    height: 5px;
+}
+
+.pw-very-strong .label {
+    color: #0d0;
+}

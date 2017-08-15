@@ -19,12 +19,20 @@
             <input id="id" name="id" type="hidden" th:value="${id}"/>
 
             <div class="form-group has-feedback">
-                <input type="password" th:field="*{password}" class="form-control" placeholder="New Password">
+                <input type="password" th:field="*{password}" id = "field" data-indicator="pwindicator" class="form-control" placeholder="New Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
+            <div id="pwindicator">
+                <div class="bar"></div>
+                <div class="label"></div>
+            </div>
             <div class="form-group has-feedback">
-                <input type="password" th:field="*{passwordRepeat}" class="form-control" placeholder="Retype password">
+                <input type="password" th:field="*{passwordRepeat}" id = "field2" data-indicator="pwindicator2" class="form-control" placeholder="Retype password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div id="pwindicator2">
+                <div class="bar"></div>
+                <div class="label"></div>
             </div>
 
             <label>Birth Date</label>
@@ -133,6 +141,11 @@
             increaseArea: '20%' // optional
         });
     });
+</script>
+<script th:src="@{~/dist/js/jquery.pwstrength.js}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    jQuery(function($) { $('#field').pwstrength(); });
+    jQuery(function($) { $('#field2').pwstrength(); });
 </script>
 </body>
 </html>
