@@ -89,3 +89,8 @@ div.alert.alert-danger.alert-dismissible > ul
 {
     margin: 100px auto 0 auto;
 }
+
+.box
+{
+    padding-bottom: 15px;
+}

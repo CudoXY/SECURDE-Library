@@ -1,196 +1,177 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
+<title>SHS DLSU Library | Manage Materials</title>
 <!--/*/ <th:block th:include="fragments/admin/template :: head"></th:block> /*/-->
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-  <<!--/*/ <th:block th:include="fragments/admin/template :: header"></th:block> /*/-->
-  <!-- Left side column. contains the logo and sidebar -->
-  <!--/*/ <th:block th:include="fragments/admin/template :: sidebar"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/admin/template :: header"></th:block> /*/-->
+    <!-- Left side column. contains the logo and sidebar -->
+    <!--/*/ <th:block th:include="fragments/admin/template :: sidebar"></th:block> /*/-->
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Meeting Rooms
-        <small>Room Schedules</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-      </ol>
-    </section>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <!--<section class="content-header">-->
+        <!--<h1>-->
+        <!--All Materials-->
+        <!--<small>List of Books, Magazines, and Thesis</small>-->
+        <!--</h1>-->
+        <!--<ol class="breadcrumb">-->
+        <!--<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>-->
+        <!--<li class="active">Magazines</li>-->
+        <!--</ol>-->
+        <!--</section>-->
 
-    <!-- Main content -->
-    <section class="content">
-      <!-- Small boxes (Stat box) -->
-      
-      <!-- /.row -->
-      <!-- Main row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">DLSU Library : Meeting Rooms</h3>
+        <!-- Main content -->
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
 
-              <div class="box-tools">
-                <div class="input-group input-group-sm" style="width: 300px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+            <!-- /.row -->
+            <!-- Main row -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header row">
+                            <div class="col-md-6">
+                                <h3 class="box-title">Manage Reservation Rooms</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm pull-right" style="width: 250px;">
+                                    <form th:action="@{/manage/room}" method="GET">
+                                        <select class="form-control" name="d" onchange="submit();">
+                                            <option th:each="date, i : ${allowedDateList}"
+                                                    th:value="${i.index + 1}" th:text="${#dates.format(date, 'EEEE, MMMMM d, yyyy')}"
+                                                    th:selected="${i.index + 1 == activeDateIndex}"></option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
 
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
+                        </div>
+                        <!-- /.box-header -->
 
-                </div>
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
-                <tr>
-                  <th>Room Number</th>
-                  <th>Room Name</th>
-                  <th>Time</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <td>140</td>
-                  <td>Davao</td>
-                  <td>7:30 - 9:00</td>
-                  <td>July 7, 2017</td>
-                  <td><span class="label label-success">Avaialble</span></td>
-                  <td>
-                    <button type="button" class="btn btn-default">
-                      <i class = "fa fa-unlock-alt"> Free Reservation</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>210</td>
-                  <td>Cebu</td>
-                  <td>4:30 - 5:00</td>
-                  <td>July 7, 2017</td>
-                  <td><span class="label label-success">Avaialble</span></td>
-                  <td>
-                    <button type="button" class="btn btn-default">
-                      <i class = "fa fa-unlock-alt"> Free Reservation</i>
-                    </button>
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-add">
-            <i class="fa fa-plus"> Add Meeting Room</i>
-          </button>
-        </div>
-        <!-- Left col -->
-
-        <!-- Modal for the add button -->
-        <div class="modal fade" id="modal-add">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Add Meeting Room</h4>
-              </div>
-              <div class="modal-body">
-                <div class="box box-primary">
-
-                  <!-- /.box-header -->
-                  <!-- form start -->
-                  <form role="form">
-                    <div class="box-body">
-                      <div class="form-group">
-                        <label for="room1">Room Name</label>
-                        <input type="text" class="form-control" id="room1" placeholder="Room Name">
-                      </div>
-                      <div class="form-group">
-                        <label for="time1">Time</label>
-                        <input type="text" class="form-control" id="time1" placeholder="Time">
-                      </div>
-                      <div class="form-group">
-                        <label for="date1">Date</label>
-                        <input type="text" class="form-control" id="date1"
-                               placeholder="Date">
-                      </div>
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-bordered" id="rsvTable">
+                                <thead>
+                                <tr>
+                                    <th>Room</th>
+                                    <th>7 AM</th>
+                                    <th>8 AM</th>
+                                    <th>9 AM</th>
+                                    <th>10 AM</th>
+                                    <th>11 AM</th>
+                                    <th>12 PM</th>
+                                    <th>1 PM</th>
+                                    <th>2 PM</th>
+                                    <th>3 PM</th>
+                                    <th>4 PM</th>
+                                    <th>5 PM</th>
+                                    <th>6 PM</th>
+                                    <th>7 PM</th>
+                                    <th>8 PM</th>
+                                    <th>9 PM</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="room,room_index : ${roomList}">
+                                    <td th:text="${room.roomName}"></td>
+                                    <th:block th:each="timeSlot: ${timeSlotList[room_index.index]}">
+                                        <td th:id="${room.id + '_' + timeSlot.time}" th:if="${timeSlot.reservedBy == null}"
+                                            class="timeslot lc_rm_a"></td>
+                                        <td th:id="${room.id + '_' + timeSlot.time + '_' +
+                                                    timeSlot.reservedBy.firstName + '_' + timeSlot.reservedBy.lastName + '_' +
+                                                    timeSlot.reservedBy.id}" th:if="${timeSlot.reservedBy != null}"
+                                            class="timeslot lc_rm_u"></td>
+                                    </th:block>
+                                </tr>
+                                </tbody>
+                                <!--</form>-->
+                                </thead>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box-body -->
-                  </form>
+                    <!-- /.box -->
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close
-                </button>
-                <button type="button" class="btn btn-success">Done</button>
-              </div>
+
+
             </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal end-->
-        <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
-          
-          <!-- /.nav-tabs-custom -->
-
-          <!-- Chat box -->
-          
-          <!-- /.box (chat box) -->
-
-          <!-- TO DO List -->
-          
-          <!-- /.box -->
-
-          <!-- quick email widget -->
-         
+            <!-- /.row (main row) -->
 
         </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-5 connectedSortable">
-
-          <!-- Map box -->
-          
-          <!-- /.box -->
-
-          <!-- solid sales graph -->
-          
-          <!-- /.box -->
-
-          <!-- Calendar -->
-          
-          <!-- /.box -->
-
-        </section>
-        <!-- right col -->
-      </div>
-      <!-- /.row (main row) -->
-
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <!--/*/ <th:block th:include="fragments/admin/template :: footer"></th:block> /*/-->
-
-  <!-- Control Sidebar -->
-  
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
+        <!-- /.content -->
+    </div>
+    <!--/*/ <th:block th:include="fragments/admin/template :: footer"></th:block> /*/-->
 </div>
+
+
+<!-- .modal -->
+<div class="modal fade" id="dlgCancel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Room Reservation Details</h4>
+            </div>
+            <th:block th:if="${currentUser.role == T(library.domain.Role).ROLE_MANAGER}">
+                <form th:action="@{~/manage/room/cancel}" method="post">
+                    <input type="hidden" id="dlgCancel_timeslot" name="timeslot"/>
+                    <input type="hidden" name="dateIndex" th:value="${activeDateIndex}" />
+                    <div class="modal-body">
+                        <span>Reserved by: </span> <span id="dlgCancel_owner"></span>
+                        <br>
+                        <span>ID Number: </span> <span id="dlgCancel_owner_id"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Cancel Reservation</button>
+                    </div>
+                </form>
+            </th:block>
+            <th:block th:if="${currentUser.role == T(library.domain.Role).ROLE_STAFF}">
+                <div class="modal-body">
+                    <span>Reserved by: </span> <span id="dlgCancel_owner"></span>
+                    <br>
+                    <span>ID Number: </span> <span id="dlgCancel_owner_id"></span>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </th:block>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
 <!--/*/ <th:block th:include="fragments/admin/template :: script"></th:block> /*/-->
+<script>
+    $(document).ready(function () {
+
+        $('.timeslot').click(function () {
+
+            var id = $(this).attr('id');
+            var split = id.split('_');
+
+            // User-owned
+            if ($(this).hasClass('lc_rm_u'))
+            {
+                $('#dlgCancel_owner_id').text(split[4]);
+                $('#dlgCancel_owner').text(split[2] + ' ' + split[3]);
+                $('#dlgCancel_timeslot').val(split[0] + '_' + split[1]);
+                $('#dlgCancel').modal('show');
+                return;
+            }
+
+        });
+
+    });
+
+</script>
 </body>
 </html>
