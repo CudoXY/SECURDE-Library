@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.util.GregorianCalendar;
@@ -75,7 +76,7 @@ public class ChangePasswordController {
 
     @RequestMapping(value = "/changepass", method = RequestMethod.POST)
     public String handleUserConfirmForm(@Valid @ModelAttribute("user") final FormChangePassword form, final BindingResult bindingResult,
-                                        final RedirectAttributes redirectAttributes)
+                                        final RedirectAttributes redirectAttributes, HttpServletRequest request)
     {
         bCryptPasswordEncoder = new BCryptPasswordEncoder();
         int id  = UserHelper.getCurrentUser(userService).getId();
@@ -86,7 +87,7 @@ public class ChangePasswordController {
             // failed validation
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
             redirectAttributes.addFlashAttribute("user", form);
-            return "redirect:/login";
+            return "redirect:/changepass";
         }
 
         try
@@ -96,7 +97,7 @@ public class ChangePasswordController {
             if (bCryptPasswordEncoder.matches(form.origPassword, u.getPassword())) {
                 u.setPassword(form.getPasswordRepeat().trim());
                 userService.save(u);
-                System.out.println("I'm in boys");
+                UserHelper.logoutUser(request);
             } else {
                 bindingResult.reject("Incorrrect original password", "Incorrect password");
             }
@@ -107,7 +108,7 @@ public class ChangePasswordController {
             // at the same time and form validation has passed for more than one of them.
             LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
             bindingResult.reject("email.exists", "Email already exists");
-            return "user/confirmaccount";
+            return "redirect:/changepass";
         }
         // ok, redirect
         return "redirect:/";
