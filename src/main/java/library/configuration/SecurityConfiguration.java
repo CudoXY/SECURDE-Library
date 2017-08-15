@@ -35,7 +35,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
 	@Bean
 	public AuthenticationSuccessHandler successHandler() {
-		return new RoleBasedAuthenticationSuccessHandler("/success");
+		return new RoleBasedAuthenticationSuccessHandler("/");
+	}
+
+	@Bean
+	public CustomAuthenticationFailureHandler failureHandler() {
+		return new CustomAuthenticationFailureHandler();
 	}
 
 	@Autowired
@@ -77,6 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 				.and()
 				.formLogin()
 				.successHandler(successHandler())
+				.failureHandler(failureHandler())
 				.loginPage("/login")
 				.failureUrl("/login?error")
 				.usernameParameter("idNumber")
