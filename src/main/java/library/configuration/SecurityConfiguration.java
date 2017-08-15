@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -50,10 +51,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	protected void configure(HttpSecurity http) throws Exception
 	{
 		http.sessionManagement().enableSessionUrlRewriting(false);
+		http.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+
+		// Session Fixation Protection
+		http.sessionManagement()
+				.sessionFixation().migrateSession();
+
+		// Expired session
+		http.sessionManagement()
+				.invalidSessionUrl("/login");
+
+		// Maximum Session
+		http.sessionManagement().maximumSessions(1);
 
 		http.authorizeRequests()
 				.antMatchers("/", "/public/**").permitAll()
-				.antMatchers("/manage/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
+				.antMatchers("/catalog/**").hasAnyRole("STUDENT", "FACULTY", "ANONYMOUS")
+				.antMatchers("/roomreserve/**").hasAnyRole("STUDENT", "FACULTY", "ANONYMOUS")
 				.antMatchers("/manage/dashboard/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
 				.antMatchers("/manage/material/**").hasAnyRole("STAFF", "MANAGER")
 				.antMatchers("/manage/room/**").hasAnyRole("STAFF", "MANAGER")

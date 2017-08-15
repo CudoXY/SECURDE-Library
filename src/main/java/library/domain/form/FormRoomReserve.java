@@ -14,6 +14,7 @@ import java.util.List;
 @Component
 public class FormRoomReserve
 {
+	private int dateIndex;
 	private String timeslot;
 
 	public String getTimeslot()
@@ -52,5 +53,15 @@ public class FormRoomReserve
 		}
 
 		return timeSlotList;
+	}
+
+	public int getDateIndex()
+	{
+		return dateIndex;
+	}
+
+	public void setDateIndex(int dateIndex)
+	{
+		this.dateIndex = dateIndex;
 	}
 }

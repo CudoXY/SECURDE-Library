@@ -3,6 +3,7 @@ package library.domain;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,13 +16,22 @@ public class Material
     @Id
     private String id;
 
+    @Transient
+    private String oldId;
+
+    @Field // For Search
     @NotNull
+    @NotEmpty
     private String title;
 
+    @Field // For Search
     @NotNull
+    @NotEmpty
     private String author;
 
+    @Field // For Search
     @NotNull
+    @NotEmpty
     private String publisher;
 
     @NotNull
@@ -102,4 +112,13 @@ public class Material
     }
 
 
+    public String getOldId()
+    {
+        return oldId;
+    }
+
+    public void setOldId(String oldId)
+    {
+        this.oldId = oldId;
+    }
 }

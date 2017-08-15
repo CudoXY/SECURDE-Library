@@ -5,6 +5,7 @@ import library.domain.User;
 import library.domain.helper.UserHelper;
 import library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class IndexController
+public class IndexController implements ErrorController
 {
 
 	private UserService userService;
@@ -59,5 +60,17 @@ public class IndexController
 		User u = UserHelper.getCurrentUser(userService);
 
 		return u != null && (u.getRole() == Role.ROLE_STAFF || u.getRole() == Role.ROLE_MANAGER || u.getRole() == Role.ROLE_ADMIN);
+	}
+
+	private static final String PATH = "/error";
+
+	@RequestMapping(value = PATH)
+	public String error() {
+		return "user/500errorpage";
+	}
+
+	@Override
+	public String getErrorPath() {
+		return PATH;
 	}
 }
