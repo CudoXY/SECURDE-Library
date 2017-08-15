@@ -115,14 +115,16 @@
                                 <i class="fa fa-plus"> Add Material</i>
                             </button>
                         </div>
+                        <form th:action="@{~/manage/material/download}">
                         <div class="col-md-6">
                             <button type="submit" class="btn btn-info pull-right">
                                 <i class="fa fa-download"> Export Materials</i>
                             </button>
                         </div>
+                        </form>
                     </div>
-                    <form th:action="@{~/manage/material/download}">
-                    </form>
+
+
                 </div>
                 <div class="modal fade" id="modal-return">
                     <div class="modal-dialog">
