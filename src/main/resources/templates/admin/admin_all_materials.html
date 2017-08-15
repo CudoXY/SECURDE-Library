@@ -68,28 +68,17 @@
                                     <th></th>
                                 </tr>
                                 <tr th:each="material : ${materialList}">
-                                    <td th:id="${material.id}+'id'" th:text="${material.id}">183</td>
-                                    <td th:id="${material.id}+'title'" th:text="${material.title}">Introduction to
-                                        Algorithims
-                                    </td>
-                                    <td th:id="${material.id}+'author'" th:text="${material.author}">Neil Patrick Del
-                                        Gallego
-                                    </td>
+                                    <td th:id = "${material.id}+'id'" th:text="${material.id}">183</td>
+                                    <td th:id="${material.id}+'title'" th:text="${material.title}">Introduction to Algorithims</td>
+                                    <td th:id="${material.id}+'author'" th:text="${material.author}">Neil Patrick Del Gallego</td>
                                     <td th:id="${material.id}+'publisher'" th:text="${material.publisher}">Nanay Mo</td>
                                     <td th:id="${material.id}+'year'" th:text="${material.year}">2015</td>
-                                    <td th:if="${material.category == 1}" th:value="${material.category}"
-                                        th:id="${material.id}+'category'">Book
-                                    </td>
-                                    <td th:if="${material.category == 2}" th:value="${material.category}"
-                                        th:id="${material.id}+'category'">Magazine
-                                    </td>
-                                    <td th:if="${material.category == 3}" th:value="${material.category}"
-                                        th:id="${material.id}+'category'">Thesis
-                                    </td>
-                                    <td th:if="${material.borrowStatus == null}"><span class="label label-success">In Shelf</span>
-                                    </td>
-                                    <td th:if="${material.borrowStatus != null}"><span class="label label-danger">Borrowed</span>
-                                    </td>
+                                    <td th:if = "${material.category == 1}" th:value="${material.category}" th:id="${material.id}+'category'">Book</td>
+                                    <td th:if = "${material.category == 2}" th:value="${material.category}" th:id="${material.id}+'category'" >Magazine</td>
+                                    <td th:if = "${material.category == 3}" th:value="${material.category}" th:id="${material.id}+'category'" >Thesis</td>
+                                    <td th:if ="${material.borrowStatus == null || material.borrowStatus.dateReturned != null}"><span class="label label-success">In Shelf</span></td>
+                                    <td th:if ="${material.borrowStatus != null && material.borrowStatus.released == false}"><span class="label label-warning">Pending</span></td>
+                                    <td th:if ="${material.borrowStatus != null && material.borrowStatus.released == true}"><span class="label label-danger">Borrowed</span></td>
                                     <td>
                                         <div class="btn-group pull-right">
                                             <button type="button" th:id="${material.id}"
@@ -97,16 +86,14 @@
                                                     data-target="#modal-edit">
                                                 <i class="fa fa-edit"> Edit</i>
                                             </button>
-                                            <button type="button" th:if="${material.borrowStatus == null}"
-                                                    th:value="${material.id}" data-target="#modal-borrow"
-                                                    class="borrow btn btn-default class=" borrow btn btn-default
-                                            ">
+                                            <button type="button" th:if ="${material.borrowStatus == null}" th:value="${material.id}"  class="borrow btn btn-default disabled">
                                             <i class="fa fa-home"> Borrow</i>
                                             </button>
-                                            <button type="button" th:if="${material.borrowStatus != null}"
-                                                    th:value="${material.id}" data-toggle="modal"
-                                                    data-target="#modal-return" class="return btn btn-default">
-                                                <i class="fa fa-home"> Return</i>
+                                            <button type="button" th:if ="${material.borrowStatus != null&&material.borrowStatus.released==false}" th:value="${material.id}" data-toggle="modal" data-target="#modal-borrow" class="borrow btn btn-default class="borrow btn btn-default">
+                                                <i class="fa fa-home"> Borrow</i>
+                                            </button>
+                                            <button type="button" th:if ="${material.borrowStatus != null && material.borrowStatus.released==true}" th:value="${material.id}" data-toggle="modal" data-target="#modal-return" class="return btn btn-default">
+                                            <i class="fa fa-home"> Return</i>
                                             </button>
                                             <button type="button" th:value="${material.id}"
                                                     th:class="${'deleteMaterial btn btn-default ' + (material.borrowStatus != null && material.borrowStatus.released ? 'disabled' : '')}"
@@ -128,14 +115,16 @@
                                 <i class="fa fa-plus"> Add Material</i>
                             </button>
                         </div>
+                        <form th:action="@{~/manage/material/download}">
                         <div class="col-md-6">
                             <button type="submit" class="btn btn-info pull-right">
                                 <i class="fa fa-download"> Export Materials</i>
                             </button>
                         </div>
+                        </form>
                     </div>
-                    <form th:action="@{~/manage/material/download}">
-                    </form>
+
+
                 </div>
                 <div class="modal fade" id="modal-return">
                     <div class="modal-dialog">
@@ -156,18 +145,7 @@
                                         <h5>Are you sure you want to Return this material?</h5>
                                         <div class="box-body">
                                             <div class="form-group">
-                                                <input type="hidden" th:field="*{id}" class="form-control" id="returnID"
-                                                       placeholder="Location">
-                                                <input type="hidden" th:field="*{title}" class="form-control"
-                                                       id="returnTitle" placeholder="Location">
-                                                <input type="hidden" th:field="*{author}" class="form-control"
-                                                       id="returnAuthor" placeholder="Location">
-                                                <input type="hidden" th:field="*{publisher}" class="form-control"
-                                                       id="returnPublisher" placeholder="Location">
-                                                <input type="hidden" th:field="*{year}" class="form-control"
-                                                       id="returnYear" placeholder="Location">
-                                                <input type="hidden" th:field="*{category}" class="form-control"
-                                                       id="returnCategory" placeholder="Location">
+                                                <input type="hidden" th:field = "*{id}" class="form-control" id="returnID" placeholder="Location">
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
@@ -198,26 +176,11 @@
                                     <!-- /.box-header -->
                                     <!-- form start -->
                                     <!-- modal return start -->
-                                    <form role="form" th:object="${borMaterial}" th:action="@{~/manage/material/borrow}"
-                                          method="post">
-                                        <h5>Borrower Details</h5>
+                                    <form role="form" th:object="${borMaterial}" th:action="@{~/manage/material/borrow}" method="post">
+                                        <h5>Are you sure you want to Checkout this material?</h5>
                                         <div class="box-body">
                                             <div class="form-group">
-                                                <label for="userID">ID Number</label>
-                                                <input type="number" class="form-control" id="userID"
-                                                       placeholder="ID Number">
-                                                <input type="hidden" th:field="*{id}" class="form-control" id="borrowID"
-                                                       placeholder="Location">
-                                                <input type="hidden" th:field="*{title}" class="form-control"
-                                                       id="borrowTitle" placeholder="Location">
-                                                <input type="hidden" th:field="*{author}" class="form-control"
-                                                       id="borrowAuthor" placeholder="Location">
-                                                <input type="hidden" th:field="*{publisher}" class="form-control"
-                                                       id="borrowPublisher" placeholder="Location">
-                                                <input type="hidden" th:field="*{year}" class="form-control"
-                                                       id="borrowYear" placeholder="Location">
-                                                <input type="hidden" th:field="*{category}" class="form-control"
-                                                       id="borrowCategory" placeholder="Location">
+                                                <input type="hidden" th:field = "*{id}" class="form-control" id="borrowID" placeholder="Location">
                                             </div>
                                         </div>
                                         <!-- /.box-body -->
@@ -243,6 +206,8 @@
                                     <span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">Delete Material</h4>
                             </div>
+                            <div class="modal-body">
+                                <div class="box box-primary">
 
                             <!-- form start -->
                             <form id="dlgDelete" th:action="@{~/manage/material/delete}" method="post">
@@ -534,11 +499,7 @@
                     break;
             }
             $("#borrowID").val(id);
-            $("#borrowTitle").val(materialTitle);
-            $("#borrowAuthor").val(materialAuthor);
-            $("#borrowPublisher").val(materialPublisher);
-            $("#borrowYear").val(materialYear);
-            $("#borrowCategory").val(materialCategoryID);
+
             console.log("inside the return button function");
         });
 
