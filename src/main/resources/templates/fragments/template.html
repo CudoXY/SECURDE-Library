@@ -45,9 +45,9 @@
         <nav class="navbar navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a href="../src/homepage.html" class="navbar-brand"><b>SHS</b>Library</a>
+                    <a th:href="@{~/}" class="navbar-brand"><b>SHS</b>Library</a>
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#navbar-collapse">
+                            data-target="#  navbar-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
                 </div>
@@ -104,9 +104,10 @@
                                           th:text="${currentUser.user.firstName + ' ' + currentUser.user.lastName}"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Account</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{~/changepass}">Change Password</a>
                                     <li role="presentation" class="divider"></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{~/logout}">Sign Out</a>
+                                    <li role="presentation" class="divider"></li>
                                     </li>
                                 </ul>
                             </li>
