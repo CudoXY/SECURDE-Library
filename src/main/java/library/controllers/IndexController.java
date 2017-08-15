@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class IndexController //implements ErrorController
+public class IndexController implements ErrorController
 {
 
 	private UserService userService;
@@ -62,15 +62,15 @@ public class IndexController //implements ErrorController
 		return u != null && (u.getRole() == Role.ROLE_STAFF || u.getRole() == Role.ROLE_MANAGER || u.getRole() == Role.ROLE_ADMIN);
 	}
 
-//	private static final String PATH = "/error";
-//
-//	@RequestMapping(value = PATH)
-//	public String error() {
-//		return "user/500errorpage";
-//	}
-//
-//	@Override
-//	public String getErrorPath() {
-//		return PATH;
-//	}
+	private static final String PATH = "/error";
+
+	@RequestMapping(value = PATH)
+	public String error() {
+		return "user/500errorpage";
+	}
+
+	@Override
+	public String getErrorPath() {
+		return PATH;
+	}
 }

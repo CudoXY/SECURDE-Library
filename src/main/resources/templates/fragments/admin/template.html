@@ -102,13 +102,13 @@
 
                 <!-- search form -->
                 <!--<form action="#" method="get" class="sidebar-form">-->
-                    <!--<div class="input-group">-->
-                        <!--<input type="text" name="q" class="form-control" placeholder="Search...">-->
-                        <!--<span class="input-group-btn">-->
+                <!--<div class="input-group">-->
+                <!--<input type="text" name="q" class="form-control" placeholder="Search...">-->
+                <!--<span class="input-group-btn">-->
                 <!--<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>-->
                 <!--</button>-->
-              <!--</span>-->
-                    <!--</div>-->
+                <!--</span>-->
+                <!--</div>-->
                 <!--</form>-->
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -119,50 +119,50 @@
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         </a>
                     </li>
-                    <li class="treeview">
-                        <a th:href="@{~/manage/material}">
-                            <i class="fa fa-folder"></i> <span>Materials</span>
-                            <span class="pull-right-container">
+                    <th:block th:if="${currentUser.role == T(library.domain.Role).ROLE_STAFF
+                                    || currentUser.role == T(library.domain.Role).ROLE_MANAGER}">
+                        <li class="treeview">
+                            <a th:href="@{~/manage/material}">
+                                <i class="fa fa-folder"></i> <span>Materials</span>
+                                <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                             </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="active"><a th:href="@{~/manage/material}"><i class="fa fa-reorder"></i> All
-                                Materials</a>
-                            </li>
-                            <li><a th:href="@{~/manage/material?category_id=1}"><i class="fa fa-book"></i> Books</a>
-                            </li>
-                            <li><a th:href="@{~/manage/material?category_id=2}"><i class="fa fa-newspaper-o"></i>
-                                Magazines</a></li>
-                            <li><a th:href="@{~/manage/material?category_id=3}"><i class="fa fa-graduation-cap"></i>
-                                Thesis</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a th:href="@{~/manage/room}">
-                            <i class="fa fa-comments"></i> <span>Meeting Rooms</span>
-                        </a>
-                    </li>
-
-                    <th:block th:if="${currentUser != null}">
-                        <th:block th:if="${currentUser.role == T(library.domain.Role).ROLE_ADMIN}">
-                            <li class="treeview">
-                                <a th:href="@{~/manage/admin}">
-                                    <i class="fa fa-folder"></i> <span>Admin Tools</span>
-                                    <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li class="active"><a th:href="@{~/manage/user}"><i class="fa fa-users"></i>List of
-                                        Users</a></li>
-                                    <li><a th:href="@{~/manage/user/new}"><i class="fa fa-user-plus"></i>Create
-                                        Temporary Staff</a></li>
-                                </ul>
-                            </li>
-                        </th:block>
-                        >
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active"><a th:href="@{~/manage/material}"><i class="fa fa-reorder"></i> All
+                                    Materials</a>
+                                </li>
+                                <li><a th:href="@{~/manage/material?category_id=1}"><i class="fa fa-book"></i> Books</a>
+                                </li>
+                                <li><a th:href="@{~/manage/material?category_id=2}"><i class="fa fa-newspaper-o"></i>
+                                    Magazines</a></li>
+                                <li><a th:href="@{~/manage/material?category_id=3}"><i class="fa fa-graduation-cap"></i>
+                                    Thesis</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a th:href="@{~/manage/room}">
+                                <i class="fa fa-comments"></i> <span>Meeting Rooms</span>
+                            </a>
+                        </li>
                     </th:block>
+
+                    <th:block th:if="${currentUser.role == T(library.domain.Role).ROLE_ADMIN}">
+                        <li class="treeview">
+                            <a th:href="@{~/manage/admin}">
+                                <i class="fa fa-folder"></i> <span>Admin Tools</span>
+                                <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="active"><a th:href="@{~/manage/user}"><i class="fa fa-users"></i>Manage Users</a></li>
+                                <li><a th:href="@{~/manage/user/new}"><i class="fa fa-user-plus"></i>Create
+                                    Temporary Account</a></li>
+                            </ul>
+                        </li>
+                    </th:block>
+
                 </ul>
             </section>
             <!-- /.sidebar -->
