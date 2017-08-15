@@ -79,7 +79,7 @@ public class MaterialServiceImpl implements MaterialService {
         org.apache.lucene.search.Query q =
                 queryBuilder
                         .keyword()
-                        .onField(field)
+                        .onField(field).ignoreAnalyzer()
                         .matching(filter.getQuery())
                         .createQuery();
 
@@ -122,6 +122,10 @@ public class MaterialServiceImpl implements MaterialService {
     {
         System.out.println("\tgetMaterialById");
         Material m = materialRepository.findById(id);
+
+        if (m == null)
+            return null;
+
         m.setBorrowStatus(borrowRepository.findFirstByMaterial_IdAndDateBorrowedIsNotNullAndDateReturnedIsNull(m.getId()));
         return m;
     }

@@ -4,21 +4,28 @@ import library.domain.Room;
 import library.domain.RoomReservation;
 import library.domain.Timeslot;
 import library.domain.form.FormCancelRoomReserve;
+import library.domain.form.FormRegistration;
 import library.domain.form.FormRoomReserve;
+import library.domain.helper.RoomReservationHelper;
+import library.domain.validator.FormReserveValidator;
 import library.services.room.RoomService;
 import library.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import library.services.room_reservation.RoomReservationService;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -28,9 +35,17 @@ import java.util.List;
 @RequestMapping(value = "/roomreserve")
 public class RoomReservationController
 {
+
 	private RoomReservationService roomReservationService;
 	private RoomService roomService;
 	private UserService userService;
+	private FormReserveValidator formReserveValidator;
+
+	@Autowired
+	public void setFormReserveValidator(FormReserveValidator formReserveValidator)
+	{
+		this.formReserveValidator = formReserveValidator;
+	}
 
 	@Autowired
 	public void setRoomService(RoomService roomService)
@@ -51,14 +66,21 @@ public class RoomReservationController
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String roomreserve(Model model)
+	public String load(@RequestParam(value = "d", required = false, defaultValue = "1") int dateIndex, Model model)
 	{
+		if (!model.containsAttribute("formRoomReserve")) {
+			model.addAttribute("formRoomReserve", new FormRoomReserve());
+		}
+
 		final int TIMESLOTCOUNT = 15;
 		final int STARTHOUR = 7;
 
+		Date dateToView = RoomReservationHelper.getActiveDate(dateIndex);
+		// Day to view
+
 		List<Room> roomList = roomService.getAll();
 		Timeslot[][] timeSlotList = new Timeslot[roomList.size()][TIMESLOTCOUNT];
-		List<RoomReservation> roomReservationList = roomReservationService.getRoomReservationByDate(new Date(new java.util.Date().getTime()));
+		List<RoomReservation> roomReservationList = roomReservationService.getRoomReservationByDate(dateToView);
 
 		int reservationIndex = 0;
 		for (int i = 0; i < roomList.size(); i++)
@@ -90,9 +112,21 @@ public class RoomReservationController
 
 		System.out.println(Arrays.deepToString(timeSlotList));
 
-		model.addAttribute("formRoomReserve", new FormRoomReserve());
 		model.addAttribute("formCancelRoomReserve", new FormCancelRoomReserve());
-		model.addAttribute("dateToday", new Date(new java.util.Date().getTime()));
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(new java.util.Date());
+		List<java.util.Date> allowedDate = new ArrayList<>();
+
+		for (int i = 0; i < RoomReservationHelper.ADVANCERANGE + 1; i++)
+		{
+			allowedDate.add(c.getTime());
+			c.add(Calendar.DAY_OF_WEEK, 1);
+		}
+
+
+		model.addAttribute("activeDateIndex", dateIndex);
+		model.addAttribute("allowedDateList", allowedDate);
 		model.addAttribute("TIMESLOTCOUNT", TIMESLOTCOUNT);
 		model.addAttribute("roomList", roomList);
 		model.addAttribute("timeSlotList", timeSlotList);
@@ -100,19 +134,40 @@ public class RoomReservationController
 		return "user/roomreserve";
 	}
 
+
+	@InitBinder("formRoomReserve")
+	public void initBinder(WebDataBinder binder)
+	{
+		binder.addValidators(formReserveValidator);
+	}
+
 	@PreAuthorize("hasAnyRole('STUDENT', 'FACULTY')")
 	@RequestMapping(value = "/reserve", method = RequestMethod.POST)
-	public String reserve(FormRoomReserve formRoomReserve, Model model)
+	public String reserve(@Valid @ModelAttribute("formRoomReserve") final FormRoomReserve formRoomReserve, final BindingResult bindingResult,
+						  final RedirectAttributes redirectAttributes)
 	{
+		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", formRoomReserve, bindingResult));
+
+		if (bindingResult.hasErrors())
+		{
+			// failed validation
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.formRoomReserve", bindingResult);
+			redirectAttributes.addFlashAttribute("formRoomReserve", formRoomReserve);
+			return "redirect:/roomreserve?d=" + formRoomReserve.getDateIndex();
+		}
+
 		List<Timeslot> timeslotList = formRoomReserve.getTimeslotList(userService);
+		Date d = RoomReservationHelper.getActiveDate(formRoomReserve.getDateIndex());
+
+		System.out.println("d = " + d);
 
 		for (int i = 0; i < timeslotList.size(); i++)
 		{
 			Timeslot t = timeslotList.get(i);
 
 			// Check first if taken
-			RoomReservation currReservation = roomReservationService.getRoomReservationByRoomAndTimeReserved(
-					t.getRoomId(), t.getTime());
+			RoomReservation currReservation = roomReservationService.getRoomReservationByDateRoomTimeReserved(
+					d, t.getRoomId(), t.getTime());
 
 			if (currReservation != null)
 			{
@@ -121,6 +176,7 @@ public class RoomReservationController
 			}
 
 			RoomReservation r = new RoomReservation();
+			r.setDateReserved(d);
 			r.setTimeReserved(t.getTime());
 			r.setRoom(roomService.getRoomById(t.getRoomId()));
 			r.setReservedBy(t.getReservedBy());
@@ -128,7 +184,7 @@ public class RoomReservationController
 			roomReservationService.reserveRoom(r);
 		}
 
-		return "redirect:/roomreserve";
+		return "redirect:/roomreserve?d=" + formRoomReserve.getDateIndex();
 	}
 
 	@PreAuthorize("hasAnyRole('STUDENT', 'FACULTY')")
@@ -136,25 +192,27 @@ public class RoomReservationController
 	public String cancel(FormCancelRoomReserve formCancelRoomReserve, Model model)
 	{
 		Timeslot t = formCancelRoomReserve.getTimeslot(userService);
+		Date d = RoomReservationHelper.getActiveDate(formCancelRoomReserve.getDateIndex());
+		String redirectPath = "redirect:/roomreserve?d=" + formCancelRoomReserve.getDateIndex();
 
 		// Check first if taken
-		RoomReservation currReservation = roomReservationService.getRoomReservationByRoomAndTimeReserved(
-				t.getRoomId(), t.getTime());
+		RoomReservation currReservation = roomReservationService.getRoomReservationByDateRoomTimeReserved(
+				d, t.getRoomId(), t.getTime());
 
 		if (currReservation == null)
 		{
 			// TODO: Error
-			return "redirect:/roomreserve";
+			return redirectPath;
 		}
 
 		if (currReservation.getReservedBy().getId() != t.getReservedBy().getId())
 		{
 			// TODO: Error
-			return "redirect:/roomreserve";
+			return redirectPath;
 		}
 
 		roomReservationService.cancelReservation(currReservation);
 
-		return "redirect:/roomreserve";
+		return redirectPath;
 	}
 }

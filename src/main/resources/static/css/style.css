@@ -128,3 +128,19 @@ div.alert.alert-danger.alert-dismissible > ul
 .pw-very-strong .label {
     color: #0d0;
 }
+
+
+.table>tbody>tr>td
+{
+    vertical-align: middle;
+}
+
+.error-page
+{
+    margin: 100px auto 0 auto;
+}
+
+.box
+{
+    padding-bottom: 15px;
+}

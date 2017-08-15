@@ -15,6 +15,7 @@ import java.util.List;
 public class FormCancelRoomReserve
 {
 	private String timeslot;
+	private int dateIndex;
 
 	public String getTimeslot()
 	{
@@ -41,5 +42,15 @@ public class FormCancelRoomReserve
 		t.setReservedBy(UserHelper.getCurrentUser(userService));
 
 		return t;
+	}
+
+	public int getDateIndex()
+	{
+		return dateIndex;
+	}
+
+	public void setDateIndex(int dateIndex)
+	{
+		this.dateIndex = dateIndex;
 	}
 }

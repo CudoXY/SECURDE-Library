@@ -5,6 +5,8 @@ import library.domain.Material;
 import library.domain.User;
 import library.domain.helper.BorrowAction;
 import library.domain.helper.UserHelper;
+import library.domain.validator.FormEditMaterialValidator;
+import library.domain.validator.FormSaveMaterialValidator;
 import library.services.borrow.BorrowService;
 import library.services.material.MaterialService;
 import library.services.user.UserService;
@@ -13,16 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -40,13 +37,19 @@ public class ManageMaterialController
 	private MaterialService materialService;
 	private BorrowService borrowService;
 	private UserService userService;
-	private User getCurrentUser()
-	{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth instanceof AnonymousAuthenticationToken)
-			return null;
+	private FormSaveMaterialValidator formSaveMaterialValidator;
+	private FormEditMaterialValidator formEditMaterialValidator;
 
-		return userService.getUserById(Integer.parseInt(auth.getName()));
+	@Autowired
+	public void setFormSaveMaterialValidator(FormSaveMaterialValidator formSaveMaterialValidator)
+	{
+		this.formSaveMaterialValidator = formSaveMaterialValidator;
+	}
+
+	@Autowired
+	public void setFormEditMaterialValidator(FormEditMaterialValidator formEditMaterialValidator)
+	{
+		this.formEditMaterialValidator = formEditMaterialValidator;
 	}
 
 	@Autowired
@@ -84,6 +87,12 @@ public class ManageMaterialController
 		return "admin/admin_all_materials";
 	}
 
+	@InitBinder("savMaterial")
+	public void initAddMaterialBinder(WebDataBinder binder)
+	{
+		binder.addValidators(formSaveMaterialValidator);
+	}
+
 	@RequestMapping(value = "/manage/material/save", method = RequestMethod.POST)
 	public String save(@Valid @ModelAttribute("savMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
 	{
@@ -92,7 +101,7 @@ public class ManageMaterialController
 		if (bindingResult.hasErrors())
 		{
 			// failed validation
-			return "manage/material";
+			return "redirect:/manage/material";
 		}
 
 		try
@@ -106,23 +115,27 @@ public class ManageMaterialController
 			// at the same time and form validation has passed for more than one of them.
 			LOGGER.warn("Exception occurred when trying to save the material, assuming duplicate material", e);
 			bindingResult.reject("material.exist", "Material already exists");
-			return "manage/material";
+			return "redirect:/manage/material";
 		}
 		// ok, redirect
 		return "redirect:/manage/material";
 	}
 
+	@InitBinder("upMaterial")
+	public void initEditMaterialBinder(WebDataBinder binder)
+	{
+		binder.addValidators(formEditMaterialValidator);
+	}
+
 	@RequestMapping(value = "/manage/material/update", method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("upMaterial") Material material, BindingResult bindingResult, @RequestParam(value = "materialType", required = true) int materialType)
 	{
-
-
 		System.out.println(String.format("Processing user create form=%s, bindingResult=%s", material, bindingResult));
 
 		if (bindingResult.hasErrors())
 		{
 			// failed validation
-			return "manage/material";
+			return "redirect:/manage/material";
 		}
 
 		try
@@ -132,7 +145,7 @@ public class ManageMaterialController
 			temp.setAuthor(material.getAuthor());
 			temp.setPublisher(material.getPublisher());
 			temp.setYear(material.getYear());
-			material.setCategory(materialType);
+			temp.setCategory(materialType);
 			materialService.saveMaterial(temp);
 		}
 		catch (DataIntegrityViolationException e)
@@ -141,7 +154,7 @@ public class ManageMaterialController
 			// at the same time and form validation has passed for more than one of them.
 			LOGGER.warn("Exception occurred when trying to update the material, assuming duplicate material", e);
 			bindingResult.reject("material.exist", "Material already exists");
-			return "manage/material";
+			return "redirect:/manage/material";
 		}
 		// ok, redirect
 		return "redirect:/manage/material";
@@ -206,7 +219,7 @@ public class ManageMaterialController
 			list.add(m);
 		}
 
-		List<String> headers = Arrays.asList("Id Number", "Author", "Category", "Publisher", "Title", "Year", "Borrow");
+		List<String> headers = Arrays.asList("Location", "Title", "Author", "Publisher", "Year Published", "Category", "Borrowed");
 		try
 		{
 			System.out.println("Inside the export excel function");

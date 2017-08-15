@@ -4,14 +4,24 @@
     <title>SHS DLSU Library | Home</title>
     <!--/*/ <th:block th:include="fragments/template :: head"></th:block> /*/-->
 </head>
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" class="skin-blue layout-top-nav"
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" class="skin-green layout-top-nav"
       style="height: auto; min-height: 100%;">
 <!--/*/ <th:block th:include="fragments/template :: navigation"></th:block> /*/-->
 <div class="container content">
     <div class="row">
         <div class="col-md-12">
             <h1>Room Reservation</h1>
-            <h4 th:text="${#dates.format(dateToday, 'EEEE, MMMMM d, yyyy')}"></h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <form th:action="@{/roomreserve}" method="GET">
+                        <select class="form-control" name="d" onchange="submit();">
+                            <option th:each="date, i : ${allowedDateList}"
+                                    th:value="${i.index + 1}" th:text="${#dates.format(date, 'EEEE, MMMMM d, yyyy')}"
+                                    th:selected="${i.index + 1 == activeDateIndex}"></option>
+                        </select>
+                    </form>
+                </div>
+            </div>
             <br>
         </div>
     </div>
@@ -78,7 +88,18 @@
                     <br>
                     <form id="formReserve" th:object="${formRoomReserve}" th:action="@{/roomreserve/reserve}" method="post">
                         <input type="hidden" id="timeslot" name="timeslot"/>
+                        <input type="hidden" name="dateIndex" th:value="${activeDateIndex}" />
                         <a type="submit" id="btnReserve" class="btn btn-primary btn-block"><b>Reserve</b></a>
+                        <br>
+                        <div th:if="${#fields.hasErrors('global')}" class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <ul>
+                                <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+                                    <span th:text="${e.global}? '*' : ${e.fieldName + ' | '}">The field name</span>
+                                    <span th:text="${e.message}">The error message</span>
+                                </li>
+                            </ul>
+                        </div>
                     </form>
                 </div>
                 <!-- /.box-body -->
@@ -94,6 +115,7 @@
             <div class="modal-content">
                 <form th:action="@{roomreserve/cancel}" method="post">
                     <input type="hidden" id="dlgCancel_timeslot" name="timeslot"/>
+                    <input type="hidden" name="dateIndex" th:value="${activeDateIndex}" />
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
